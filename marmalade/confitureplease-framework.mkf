@@ -1,0 +1,23 @@
+options
+{
+	cflags="-std=gnu++0x"
+} 
+
+includepath
+{
+	../src/gesture
+	../src/ui
+}
+
+files
+{
+	[src/gesture]
+	(../src/gesture)
+	"*.h"
+	"*.cpp"
+	
+	[src//ui]
+	(../src/ui)
+	"*.h"
+	"*.cpp"
+}

@@ -1,0 +1,21 @@
+includepath
+{
+	../src/gesture
+	../src/ui
+}
+
+library
+{
+	".,confitureplease"
+}
+
+files
+{
+	[src/gesture]
+	(../src/gesture)
+	"*.h"
+	
+	[src/ui]
+	(../src/ui)
+	"*.h"
+}
