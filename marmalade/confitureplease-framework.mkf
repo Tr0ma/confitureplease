@@ -1,5 +1,6 @@
 options
 {
+	module_path="../../bootplease/marmalade/"
 	cflags="-std=gnu++0x"
 } 
 
@@ -9,6 +10,11 @@ includepath
 	../src/ui
 }
 
+subprojects
+{
+	bootplease
+}
+
 files
 {
 	[src/gesture]
@@ -16,8 +22,8 @@ files
 	"*.h"
 	"*.cpp"
 	
-	[src//ui]
-	(../src/ui)
-	"*.h"
-	"*.cpp"
+	#[src//ui]
+	#(../src/ui)
+	#"*.h"
+	#"*.cpp"
 }
