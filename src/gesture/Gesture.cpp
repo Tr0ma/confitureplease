@@ -27,5 +27,5 @@ GestureManager::~GestureManager()
 
 TapGesture& GestureManager::GetTapGesture(Display& target)
 {
-	
+	return *(new TapGesture(target));
 }

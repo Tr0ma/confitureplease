@@ -15,7 +15,7 @@ files
 	(../src/gesture)
 	"*.h"
 	
-	[src/ui]
-	(../src/ui)
-	"*.h"
+	#[src//ui]
+	#(../src/ui)
+	#"*.h"
 }

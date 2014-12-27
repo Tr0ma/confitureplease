@@ -30,7 +30,8 @@ protected:
 	TouchesManager*	m_TouchesManager;
 
 public:
-	void SetTouchesManager(TouchesManager& value) { m_TouchesManager = &value; };
+	TouchesManager&		GetTouchesManager()							{ return *m_TouchesManager; }
+	void				SetTouchesManager(TouchesManager& value)	{ m_TouchesManager = &value; };
 
 public:
 	InputAdapter() {}
@@ -80,33 +81,43 @@ private:
 	void	(C::*m_Fct)(Event&);
 
 public:
-	explicit GestureMapItemSpec(Gesture& gesture) : GestureMapItemSpecBase(gesture) {}
+	explicit GestureMapItemSpec(Gesture& gesture, C& proxy, void (C::*fct)(Event&)) 
+		: GestureMapItemSpecBase(gesture), m_Proxy(proxy), m_Fct(fct) {}
 	virtual ~GestureMapItemSpec() {}
 };
 
 class GestureMapItem
 {
 private:
-	GestureMapItemSpecBase&	m_Spec;
+	GestureMapItemSpecBase*	m_Spec;
 
 public:
 	template<class C>
-	explicit GestureMapItem(Gesture& gesture) { m_Spec = new GestureMapItemSpec<C>(gesture); }
-	~GestureMapItem() {}
+	explicit GestureMapItem(Gesture& gesture, C& proxy, void (C::*fct)(Event&))
+	{
+		m_Spec = new GestureMapItemSpec<C>(gesture, proxy, fct);
+	}
+
+	~GestureMapItem()
+	{
+		delete &m_Spec;
+	}
 };
 
 class GestureManager
 {
 private:
-	InputAdapter&		m_InputAdapater;
-	TouchesManager*		m_TouchesManager;
+	InputAdapter&			m_InputAdapater;
+	TouchesManager*			m_TouchesManager;
+	vector<GestureMapItem*>	m_Items;
+
 
 public:
 	explicit GestureManager(InputAdapter& inputAdapter);
 	~GestureManager();
 
-	template<class C, class G>
-	G& AddGesture(Display& target, void (C::*fct)(Event&), C& proxy, const char* gestureType);
+	template<class G, class C>
+	G& AddGesture(Display& target, void (C::*fct)(Event&), C& proxy);
 
 	template<class C>
 	void RemoveGesture(Gesture& gesture, void (C::*fct)(Event&), C& proxy, const char* gestureType) {};
@@ -124,14 +135,14 @@ private:
 	void RemoveAllGestures() {}
 };
 
-template<class C, class G>
-G& GestureManager::AddGesture(Display& target, void (C::*fct)(Event&), C& proxy, const char* gestureType)
+template<class G, class C>
+G& GestureManager::AddGesture(Display& target, void (C::*fct)(Event&), C& proxy)
 {
-	Gesture* gesture = new G(target);
-
+	G* gesture = new G(target);
+	GestureMapItem* item = new GestureMapItem(*gesture, proxy, fct);
+	m_Items.push_back(item);
+	return *gesture;
 }
-
-
 
 
 #endif
