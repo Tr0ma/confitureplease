@@ -55,6 +55,45 @@ protected:
 	void OnTouchMove(Touch& touch) {};
 };
 
+class TapGesture : public Gesture
+{
+public:
+	explicit TapGesture(Display& target) : Gesture(target) {}
+	~TapGesture() {}
+};
+
+class GestureMapItemSpecBase
+{
+private:
+	Gesture&	m_Gesture;
+
+public:
+	explicit GestureMapItemSpecBase(Gesture& gesture) : m_Gesture(gesture) {}
+	virtual ~GestureMapItemSpecBase() {}
+};
+
+template<class C>
+class GestureMapItemSpec : public GestureMapItemSpecBase
+{
+private:
+	C&		m_Proxy;
+	void	(C::*m_Fct)(Event&);
+
+public:
+	explicit GestureMapItemSpec(Gesture& gesture) : GestureMapItemSpecBase(gesture) {}
+	virtual ~GestureMapItemSpec() {}
+};
+
+class GestureMapItem
+{
+private:
+	GestureMapItemSpecBase&	m_Spec;
+
+public:
+	template<class C>
+	explicit GestureMapItem(Gesture& gesture) { m_Spec = new GestureMapItemSpec<C>(gesture); }
+	~GestureMapItem() {}
+};
 
 class GestureManager
 {
@@ -66,41 +105,33 @@ public:
 	explicit GestureManager(InputAdapter& inputAdapter);
 	~GestureManager();
 
-	void AddGesture(Gesture& gesture) {};
-	void RemoveGesture(Gesture& gesture) {};
-
-	void OnTouchBegin(Touch& touch) {};
-	void OnTouchEnd(Touch& touch) {};
-	void OnTouchMove(Touch& touch) {};
-};
-
-
-class TapGesture : public Gesture
-{
-public:
-	explicit TapGesture(Display& target) : Gesture(target) {}
-	~TapGesture() {}
-};
-
-
-class GestureHandler
-{
-public:
-	GestureHandler() {}
-	~GestureHandler() {}
+	template<class C, class G>
+	G& AddGesture(Display& target, void (C::*fct)(Event&), C& proxy, const char* gestureType);
 
 	template<class C>
-	void AddGesture(Gesture& gesture, void (C::*fct)(Event&), C& proxy, const char* gestureType) {};
-
-	template<class C>
-	void RemoveGesture(Display& target, void (C::*fct)(Event&), C& proxy, const char* gestureType) {};
+	void RemoveGesture(Gesture& gesture, void (C::*fct)(Event&), C& proxy, const char* gestureType) {};
 
 	template<class C>
 	void RemoveAllGesturesOf(C& proxy) {};
 
+	TapGesture& GetTapGesture(Display& target);
+
+	void OnTouchBegin(Touch& touch) {};
+	void OnTouchEnd(Touch& touch) {};
+	void OnTouchMove(Touch& touch) {};
+
 private:
 	void RemoveAllGestures() {}
 };
+
+template<class C, class G>
+G& GestureManager::AddGesture(Display& target, void (C::*fct)(Event&), C& proxy, const char* gestureType)
+{
+	Gesture* gesture = new G(target);
+
+}
+
+
 
 
 #endif

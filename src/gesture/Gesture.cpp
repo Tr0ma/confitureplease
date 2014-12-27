@@ -24,3 +24,8 @@ GestureManager::~GestureManager()
 {
 	delete m_TouchesManager;
 }
+
+TapGesture& GestureManager::GetTapGesture(Display& target)
+{
+	
+}
