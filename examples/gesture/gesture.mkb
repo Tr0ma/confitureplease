@@ -1,0 +1,32 @@
+options
+{
+	module_path="../../marmalade/"
+	enable-exceptions=1
+}
+
+includepath 
+{
+	src
+}
+
+files
+{
+	[src]
+	(src)
+	"*.h"
+	"*.cpp"
+}
+
+subprojects
+{
+	iw2d
+	iw2dscenegraph
+	iw2dscenegraphcore
+	confitureplease-framework
+}
+
+assets
+{
+	(data)
+	textures
+}

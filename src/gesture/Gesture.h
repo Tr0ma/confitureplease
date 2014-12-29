@@ -7,31 +7,26 @@
 
 class GestureManager;
 
-class Touch {};
 
-class TouchesManager
+class GestureEvent : public Event
 {
-private:
-	GestureManager&		m_GestureManager;
+public:
+	static const char* GESTURE_RECOGNIZED;
 
 public:
-	explicit TouchesManager(GestureManager& gestureManager) : m_GestureManager(gestureManager) {}
-	~TouchesManager() {}
-
-	void OnTouchBegin(int x, int y);
-	void OnTouchEnd(int x, int y);
-	void OnTouchMove(int x, int y);
+	explicit GestureEvent(const char* type) : Event(type) {}
+	~GestureEvent() {};
 };
 
 
 class InputAdapter : public IUpdateable
 {
 protected:
-	TouchesManager*	m_TouchesManager;
+	GestureManager*		m_GestureManager;
 
 public:
-	TouchesManager&		GetTouchesManager()							{ return *m_TouchesManager; }
-	void				SetTouchesManager(TouchesManager& value)	{ m_TouchesManager = &value; };
+	GestureManager&		GetGestureManager()							{ return *m_GestureManager; }
+	void				SetGestureManager(GestureManager& value)	{ m_GestureManager = &value; }
 
 public:
 	InputAdapter() {}
@@ -41,27 +36,58 @@ public:
 };
 
 
-class Gesture
+class Gesture : public EventDispatcher
 {
 private:
-	Display&	m_Target;
-
-public:
-	explicit Gesture(Display& target) : m_Target(target) {}
-	virtual ~Gesture() {}
+	Display&		m_Target;
+	bool			m_Enabled;
 
 protected:
-	void OnTouchBegin(Touch& touch) {};
-	void OnTouchEnd(Touch& touch) {};
-	void OnTouchMove(Touch& touch) {};
+	int				m_TouchCount;
+
+	enum GestureState
+	{
+		BEGAN,
+		ENDED
+	};
+
+	GestureState	m_State;
+
+public:
+	Display&	GetTarget() { return m_Target; }
+
+	bool		GetEnabled()			{ return m_Enabled; }
+	void		SetEnabled(bool value)	{ m_Enabled = value; }
+
+public:
+	explicit Gesture(Display& target) : m_Target(target), m_TouchCount(0) {}
+	virtual ~Gesture() {}
+
+	void BeginTouch(int x, int y);
+	void EndTouch(int x, int y);
+	void MoveTouch(int x, int y);
+
+protected:
+	void SetState(GestureState state);
+
+	virtual void OnTouchBegin(int x, int y) {};
+	virtual void OnTouchEnd(int x, int y) {};
+	virtual void OnTouchMove(int x, int y) {};
 };
+
 
 class TapGesture : public Gesture
 {
 public:
 	explicit TapGesture(Display& target) : Gesture(target) {}
 	~TapGesture() {}
+
+protected:
+	virtual void OnTouchBegin(int x, int y) override;
+	virtual void OnTouchEnd(int x, int y) override;
+	virtual void OnTouchMove(int x, int y) override;
 };
+
 
 class GestureMapItemSpecBase
 {
@@ -69,8 +95,13 @@ private:
 	Gesture&	m_Gesture;
 
 public:
+	Gesture&	GetGesture() { return m_Gesture; }
+
+public:
 	explicit GestureMapItemSpecBase(Gesture& gesture) : m_Gesture(gesture) {}
 	virtual ~GestureMapItemSpecBase() {}
+
+	virtual void operator()(Event& evt) {}
 };
 
 template<class C>
@@ -81,40 +112,43 @@ private:
 	void	(C::*m_Fct)(Event&);
 
 public:
+	C&		GetProxy()					{ return m_Proxy; }
+	void	(C::*GetFunction())(Event&) { return m_Fct; };
+
+public:
 	explicit GestureMapItemSpec(Gesture& gesture, C& proxy, void (C::*fct)(Event&)) 
 		: GestureMapItemSpecBase(gesture), m_Proxy(proxy), m_Fct(fct) {}
 	virtual ~GestureMapItemSpec() {}
+
+	void operator()(Event& evt) override	{ (&m_Proxy->*m_Fct)(evt); }
 };
+
 
 class GestureMapItem
 {
 private:
-	GestureMapItemSpecBase*	m_Spec;
+	Gesture& m_Gesture;
 
 public:
-	template<class C>
-	explicit GestureMapItem(Gesture& gesture, C& proxy, void (C::*fct)(Event&))
-	{
-		m_Spec = new GestureMapItemSpec<C>(gesture, proxy, fct);
-	}
+	Gesture&	GetGesture() { return m_Gesture; }
 
-	~GestureMapItem()
-	{
-		delete &m_Spec;
-	}
+public:
+	explicit GestureMapItem(Gesture& gesture) : m_Gesture(gesture) {}
+	~GestureMapItem() {}
 };
 
-class GestureManager
+
+class GestureManager : public IUpdateable
 {
 private:
 	InputAdapter&			m_InputAdapater;
-	TouchesManager*			m_TouchesManager;
 	vector<GestureMapItem*>	m_Items;
-
 
 public:
 	explicit GestureManager(InputAdapter& inputAdapter);
-	~GestureManager();
+	~GestureManager() {};
+
+	void Update(float deltaTime = 0.0f) override;
 
 	template<class G, class C>
 	G& AddGesture(Display& target, void (C::*fct)(Event&), C& proxy);
@@ -127,9 +161,9 @@ public:
 
 	TapGesture& GetTapGesture(Display& target);
 
-	void OnTouchBegin(Touch& touch) {};
-	void OnTouchEnd(Touch& touch) {};
-	void OnTouchMove(Touch& touch) {};
+	void OnTouchBegin(int x, int y);
+	void OnTouchEnd(int x, int y);
+	void OnTouchMove(int x, int y);
 
 private:
 	void RemoveAllGestures() {}
@@ -139,7 +173,8 @@ template<class G, class C>
 G& GestureManager::AddGesture(Display& target, void (C::*fct)(Event&), C& proxy)
 {
 	G* gesture = new G(target);
-	GestureMapItem* item = new GestureMapItem(*gesture, proxy, fct);
+	gesture->AddListener(GestureEvent::GESTURE_RECOGNIZED, fct, proxy);
+	GestureMapItem* item = new GestureMapItem(*gesture);
 	m_Items.push_back(item);
 	return *gesture;
 }
