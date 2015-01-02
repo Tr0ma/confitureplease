@@ -6,8 +6,10 @@ options
 
 includepath
 {
+	../src/display
 	../src/gesture
-	../src/ui
+	../src/screen
+	../src/tween
 }
 
 subprojects
@@ -17,13 +19,23 @@ subprojects
 
 files
 {
+
+	[src/display]
+	(../src/display)
+	"*.h"
+	
 	[src/gesture]
 	(../src/gesture)
 	"*.h"
 	"*.cpp"
 	
-	#[src//ui]
-	#(../src/ui)
-	#"*.h"
-	#"*.cpp"
+	[src/screen]
+	(../src/screen)
+	"*.h"
+	"*.cpp"
+	
+	[src/tween]
+	(../src/tween)
+	"*.h"
+	"*.cpp"
 }

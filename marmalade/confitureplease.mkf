@@ -1,7 +1,9 @@
 includepath
 {
+	../src/display
 	../src/gesture
-	../src/ui
+	../src/screen
+	../src/tween
 }
 
 library
@@ -11,11 +13,19 @@ library
 
 files
 {
+	[src/display]
+	(../src/display)
+	"*.h"
+	
 	[src/gesture]
 	(../src/gesture)
 	"*.h"
 	
-	#[src//ui]
-	#(../src/ui)
-	#"*.h"
+	[src/screen]
+	(../src/screen)
+	"*.h"
+	
+	[src/tween]
+	(../src/tween)
+	"*.h"
 }
