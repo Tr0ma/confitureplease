@@ -78,7 +78,7 @@ private:
 	EventDispatcher				m_Dispatcher;
 	bool						m_Busy;
 	vector<TransitionItem*>		m_Transitions;
-	vector<IDisplay*>			m_ScreenStack;
+	vector<Container*>			m_ScreenStack;
 	TweenManager&				m_TweenManager;
 
 public:
@@ -86,7 +86,7 @@ public:
 	~ScreenManager() {}
 
 	template<class C>
-	void ShowScreen(IDisplay& screen, Transition& (C::*fct)(), C& proxy);
+	void ShowScreen(Container& screen, Transition& (C::*fct)(), C& proxy);
 
 	void ShowPreviousScreen() {};
 
@@ -98,7 +98,7 @@ private:
 };
 
 template<class C>
-void ScreenManager::ShowScreen(IDisplay& screen, Transition& (C::*fct)(), C& proxy)
+void ScreenManager::ShowScreen(Container& screen, Transition& (C::*fct)(), C& proxy)
 {
 	if (m_Busy) return;
 

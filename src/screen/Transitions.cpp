@@ -15,7 +15,7 @@ void MoveLeft::Play()
 
 	TweenX& tween = m_TweenManager->CreateTween<TweenX>(*m_NextScreen);
 	tween
-		.From(m_NextScreen->GetScreenWidth())
+		.From(m_NextScreen->GetStage()->GetWidth())
 		.To(0)
 		.Duration(DEFAULT_ANIMATION_TIME)
 		.OnComplete(&MoveLeft::OnTransitionComplete, *this)
@@ -25,7 +25,7 @@ void MoveLeft::Play()
 	{
 		TweenX& prevScrTween = m_TweenManager->CreateTween<TweenX>(*m_PreviousScreen);
 		prevScrTween
-			.To(m_PreviousScreen->GetScreenWidth())
+			.To(m_PreviousScreen->GetStage()->GetWidth())
 			.Duration(DEFAULT_ANIMATION_TIME)
 			.Play();
 	}
@@ -40,7 +40,7 @@ void MoveLeft::Reverse()
 {
 	TweenX& tween = m_TweenManager->CreateTween<TweenX>(*m_NextScreen);
 	tween
-		.To(m_NextScreen->GetScreenWidth())
+		.To(m_NextScreen->GetStage()->GetWidth())
 		.Duration(DEFAULT_ANIMATION_TIME)
 		.OnComplete(&MoveLeft::OnTransitionComplete, *this)
 		.Play();

@@ -7,7 +7,7 @@
 class TweenTest
 {
 public:
-	IDisplay*		display;
+	Container*		display;
 	TweenManager*	tweenManager;
 
 public:

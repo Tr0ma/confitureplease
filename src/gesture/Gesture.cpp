@@ -115,7 +115,7 @@ void GestureManager::Update(float deltaTime)
 	m_InputAdapater.Update(deltaTime);
 }
 
-TapGesture& GestureManager::GetTapGesture(IDisplay& target)
+TapGesture& GestureManager::GetTapGesture(Container& target)
 {
 	return *(new TapGesture(target));
 }

@@ -4,7 +4,7 @@
 #include "Gesture.h"
 #include "s3eInputAdapter.h"
 #include "Iw2DSceneGraph.h"
-#include "CFSprite.h"
+#include "Display.h"
 
 using namespace Iw2DSceneGraph;
 using namespace Iw2DSceneGraphCore;
@@ -17,8 +17,8 @@ private:
 	CIw2DImage* m_ImageUp;
 	CIw2DImage* m_ImageDown;
 
-	CFSprite*	m_UpButton;
-	CFSprite*	m_DownButton;
+	Sprite*	m_UpButton;
+	Sprite*	m_DownButton;
 
 	s3eInputAdapter* inputAdapater;
 	GestureManager* gestureManager;

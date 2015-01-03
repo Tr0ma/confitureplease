@@ -2,14 +2,14 @@
 #include <iostream>
 
 #include "Easing.h"
-#include "CFSprite.h"
+#include "Display.h"
 
 using namespace std;
 
 TweenTest::TweenTest()
 {
 	tweenManager = new TweenManager();
-	display = new CFSprite();
+	display = new Container();
 
 	TweenX& tweenX = tweenManager->CreateTween<TweenX>(*display);
 	tweenX.AddListener(TweenEvent::START, &TweenTest::onTweenStart, *this);

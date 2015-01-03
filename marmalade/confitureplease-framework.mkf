@@ -23,6 +23,7 @@ files
 	[src/display]
 	(../src/display)
 	"*.h"
+	"*.cpp"
 	
 	[src/gesture]
 	(../src/gesture)

@@ -11,19 +11,19 @@ GestureTest::GestureTest()
 	m_ImageUp = Iw2DCreateImage("textures/button_up.png");
 	m_ImageDown = Iw2DCreateImage("textures/button_down.png");
 
-	m_UpButton = new CFSprite();
+	m_UpButton = new Sprite();
 	m_UpButton->SetImage(m_ImageUp);
 	m_UpButton->SetWidth(static_cast<int>(m_ImageUp->GetWidth()));
 	m_UpButton->SetHeight(static_cast<int>(m_ImageUp->GetHeight()));
 
-	m_DownButton = new CFSprite();
+	m_DownButton = new Sprite();
 	m_DownButton->SetImage(m_ImageDown);
 	m_DownButton->SetAlpha(0);
 	m_DownButton->SetWidth(static_cast<int>(m_ImageUp->GetWidth()));
 	m_DownButton->SetHeight(static_cast<int>(m_ImageUp->GetHeight()));
 
-	m_Scene->AddChild(&(m_DownButton->GetSprite()));
-	m_Scene->AddChild(&(m_UpButton->GetSprite()));
+	m_Scene->AddChild(&(m_DownButton->GetCNode()));
+	m_Scene->AddChild(&(m_UpButton->GetCNode()));
 	
 	inputAdapater = new s3eInputAdapter();
 	gestureManager = new GestureManager(*inputAdapater);
