@@ -40,6 +40,8 @@ Thumbs.db
 #######################
 examples/tests/build_tests_vc11/
 examples/tests/data-ram/
+examples/display/build_display_vc11/
+examples/display/data-ram/
 examples/gesture/build_gesture_vc11/
 examples/gesture/data-ram/
 examples/tween/build_tween_vc11/
