@@ -11,7 +11,7 @@ class RenderSupport
 {
 private:
 	vector<Matrix*>		m_MatrixStack;
-	int					m_MatrixStackSize;
+	unsigned int		m_MatrixStackSize;
 	Matrix				m_ModelViewMatrix;
 
 	int m_DrawCount;

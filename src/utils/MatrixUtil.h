@@ -5,6 +5,7 @@
 
 class MatrixUtil
 {
+public:
 	static void PrependMatrix(Matrix& base, Matrix& prep);
 };
 

@@ -19,6 +19,8 @@ public:
 
 	void SetTo(float a = 1, float b = 0, float c = 0, float d = 1, float tx = 0, float ty = 0);
 
+	void CopyFrom(Matrix& matrix);
+
 };
 
 #endif
