@@ -54,7 +54,10 @@ public:
 	void						SetParent(DisplayObjectContainer* value);
 
 public:
-	DisplayObject() {}
+	DisplayObject() 
+		: m_X(0), m_Y(0), m_PivotX(0), m_PivotY(0), m_ScaleX(1.0f), m_ScaleY(1.0f), m_Rotation(0), 
+		m_Alpha(1.0f), m_Visible(true), m_Parent(nullptr), m_OrientationChanged(false) {}
+
 	virtual ~DisplayObject() {}
 
 	virtual void Render(RenderSupport& renderSupport, float parentAlpha) {}

@@ -19,13 +19,13 @@ Atlas::~Atlas()
 	}
 }
 
-Texture* Atlas::GetTexture(const char* name)
+Texture* Atlas::GetTexture(const string name)
 {
 	const int l = m_SubTextures.size();
 	for (int i = 0 ; i < l ; i++)
 	{
 		SubTextureItem* item = m_SubTextures[i];
-		if (*item->m_Name == *name)
+		if (item->m_Name == name)
 		{
 			return &(item->m_SubTexture);
 		}
@@ -45,7 +45,7 @@ void Atlas::ParseAtlas(const char* atlasData)
 		cJSON* frameItem = cJSON_GetArrayItem(frames, i);
 		cJSON* frame = cJSON_GetObjectItem(frameItem, "frame");
 
-		const char* name = cJSON_GetObjectItem(frameItem, "filename")->valuestring;
+		const string name = static_cast<string>(cJSON_GetObjectItem(frameItem, "filename")->valuestring);
 		int x = cJSON_GetObjectItem(frame, "x")->valueint;
 		int y = cJSON_GetObjectItem(frame, "y")->valueint;
 		int w = cJSON_GetObjectItem(frame, "w")->valueint;
@@ -57,7 +57,7 @@ void Atlas::ParseAtlas(const char* atlasData)
 	cJSON_Delete(root);
 }
 
-void Atlas::AddRegion(const char* name, Rectangle region)
+void Atlas::AddRegion(const string name, Rectangle region)
 {
 	SubTexture* subTexture = new SubTexture(m_AtlasTexture, region);
 	SubTextureItem* item = new SubTextureItem(name, *subTexture);

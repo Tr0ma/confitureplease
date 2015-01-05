@@ -23,7 +23,7 @@ public:
 	int GetDrawCount() { return m_DrawCount; }
 
 public:
-	RenderSupport() : m_MatrixStackSize(0), m_DrawCount(0) {}
+	RenderSupport() : m_MatrixStackSize(0), m_DrawCount(0), m_CurrentTexture(nullptr) {}
 	~RenderSupport() {}
 
 	void NextFrame();

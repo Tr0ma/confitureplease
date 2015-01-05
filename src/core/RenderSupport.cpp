@@ -36,7 +36,7 @@ void RenderSupport::PopMatrix()
 
 void RenderSupport::DrawImage(Image& image, float parentAlpha)
 {
-	if (&m_CurrentTexture->GetImage() != &image.GetTexture().GetImage())
+	if (!m_CurrentTexture || (&m_CurrentTexture->GetImage() != &image.GetTexture().GetImage()))
 	{
 		m_DrawCount++;
 	}
@@ -46,6 +46,8 @@ void RenderSupport::DrawImage(Image& image, float parentAlpha)
 	CIwFMat2D mat;
 	mat.SetTrans()
 	Iw2DSetTransformMatrix(mat);*/
+
+	m_CurrentTexture = &image.GetTexture();
 
 	Texture& texture = image.GetTexture();
 	CIw2DImage* cIw2DImage = &(texture.GetImage());

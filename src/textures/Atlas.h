@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "SubTexture.h"
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -12,11 +13,11 @@ class Atlas
 	class SubTextureItem
 	{
 	public:
-		const char*		m_Name;
+		const string	m_Name;
 		SubTexture&		m_SubTexture;
 
 	public:
-		explicit SubTextureItem(const char* name, SubTexture& texture) 
+		explicit SubTextureItem(const string name, SubTexture& texture) 
 			: m_Name(name), m_SubTexture(texture) {}
 	};
 
@@ -31,11 +32,11 @@ public:
 	explicit Atlas(Texture& atlasTexture, const char* atlasData);
 	~Atlas();
 
-	Texture* GetTexture(const char* name);
+	Texture* GetTexture(const string name);
 
 private:
 	void ParseAtlas(const char* atlasData);
-	void AddRegion(const char* name, Rectangle region);
+	void AddRegion(const string name, Rectangle region);
 };
 
 #endif
