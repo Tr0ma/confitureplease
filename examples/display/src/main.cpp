@@ -7,20 +7,22 @@ int main()
 {
 	Iw2DInit();
 
-	Tests test;
+	Tests* test = new Tests();
 
 	while (!s3eDeviceCheckQuitRequest())
     {
-		test.Update(FRAME_TIME);
+		test->Update(FRAME_TIME);
 
 		Iw2DSurfaceClear(0xff000000);
 
-		test.Render();
+		test->Render();
 
 		Iw2DSurfaceShow();
 		
 		s3eDeviceYield(0);
 	}
+
+	delete test;
 
 	Iw2DTerminate();
 

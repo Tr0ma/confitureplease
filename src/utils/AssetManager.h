@@ -24,10 +24,10 @@ private:
 
 public:
 	AssetManager() {}
-	~AssetManager() {}
+	~AssetManager();
 
 	void	AddAtlas(const char* name, const char* imagePath, const char* dataPath);
-	Atlas&	GetTextureAtlas(const char* name);
+	Atlas*	GetTextureAtlas(const char* name);
 
 };
 

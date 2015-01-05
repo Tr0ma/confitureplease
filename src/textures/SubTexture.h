@@ -7,6 +7,7 @@
 class SubTexture : public Texture
 {
 private:
+	Texture&	m_ParentTexture;
 	Rectangle	m_Region;
 
 public:
@@ -14,7 +15,8 @@ public:
 	virtual int		GetHeight() override	{ return m_Region.m_Height; }
 
 public:
-	explicit SubTexture(CIw2DImage& image, Rectangle region);
+	explicit SubTexture(Texture& parentTexture, Rectangle region) 
+		: Texture(parentTexture.GetImage()), m_ParentTexture(parentTexture), m_Region(region) {}
 	virtual ~SubTexture() {}
 };
 

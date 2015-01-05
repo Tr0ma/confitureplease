@@ -2,11 +2,13 @@
 #define _TESTS_H_
 
 #include "Confiture.h"
+#include "AssetManager.h"
 
 class Tests
 {
 private:
-	Confiture* m_Confiture;
+	Confiture*		m_Confiture;
+	AssetManager*	m_AssetManager;
 
 public:
 	Tests();

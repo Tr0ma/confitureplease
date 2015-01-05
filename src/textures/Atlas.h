@@ -25,10 +25,13 @@ private:
 	vector<SubTextureItem*> m_SubTextures;
 
 public:
-	explicit Atlas(Texture& atlasTexture, const char* atlasData) : m_AtlasTexture(atlasTexture) {};
-	virtual ~Atlas() {};
+	Texture&				GetAtlasTexture() { return m_AtlasTexture; }
 
-	Texture& GetTexture(const char* name);
+public:
+	explicit Atlas(Texture& atlasTexture, const char* atlasData);
+	~Atlas();
+
+	Texture* GetTexture(const char* name);
 
 private:
 	void ParseAtlas(const char* atlasData);
