@@ -1,6 +1,7 @@
 options
 {
 	module_path="../../bootplease/marmalade/"
+	module_path="../libs/cJSON/"
 	cflags="-std=gnu++0x"
 } 
 
@@ -18,6 +19,7 @@ includepath
 subprojects
 {
 	bootplease
+	cjson
 }
 
 files

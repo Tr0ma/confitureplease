@@ -21,7 +21,5 @@ void Confiture::Render()
 
 	m_Stage->Render(m_RenderSupport, 1.0f);
 
-	m_RenderSupport.FinishQuadBatch();
-
 	// consider displaying stats here by getting draw count
 }

@@ -1,16 +1,12 @@
 #include "RenderSupport.h"
 #include "MatrixUtil.h"
+#include "Image.h"
 
 void RenderSupport::NextFrame()
 {
 	ResetMatrix();
 
 	m_DrawCount = 0;
-}
-
-void RenderSupport::FinishQuadBatch()
-{
-	m_DrawCount++;
 }
 
 void RenderSupport::PrependMatrix(Matrix& matrix)
@@ -35,7 +31,17 @@ void RenderSupport::PushMatrix()
 
 void RenderSupport::PopMatrix()
 {
+	m_ModelViewMatrix.CopyFrom(*(m_MatrixStack[--m_MatrixStackSize]));
+}
 
+void RenderSupport::DrawImage(Image& image, float parentAlpha)
+{
+	if (&m_CurrentTexture->GetImage() != &image.GetTexture().GetImage())
+	{
+		m_DrawCount++;
+	}
+
+	// and now draw here
 }
 
 void RenderSupport::ResetMatrix()

@@ -1,22 +1,23 @@
 #ifndef _TEXTURE_H_
 #define _TEXTURE_H_
 
+#include <Iw2D.h>
 
 class Texture
 {
 protected:
-	int		m_Width;
-	int		m_Height;
+	CIw2DImage&		m_Image;
 
 public:
-	int GetWidth()	{ return m_Width; }
-	int GetHeight() { return m_Height; }
+	virtual int		GetWidth()	{ return static_cast<int>(m_Image.GetWidth()); }
+	virtual int		GetHeight() { return static_cast<int>(m_Image.GetHeight()); }
+	CIw2DImage&		GetImage()	{ return m_Image; }
 
 public:
-	explicit Texture() {}
+	explicit Texture(CIw2DImage& image) : m_Image(image) {}
 	virtual ~Texture() {}
 
-	Texture* GetBase() { return nullptr; }
+	
 };
 
 #endif

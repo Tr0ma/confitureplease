@@ -3,9 +3,12 @@
 
 #include "Matrix.h"
 #include "DisplayObject.h"
+#include "Texture.h"
 #include <vector>
 
 using namespace std;
+
+class Image;
 
 class RenderSupport
 {
@@ -13,8 +16,8 @@ private:
 	vector<Matrix*>		m_MatrixStack;
 	unsigned int		m_MatrixStackSize;
 	Matrix				m_ModelViewMatrix;
-
-	int m_DrawCount;
+	Texture*			m_CurrentTexture;
+	int					m_DrawCount;
 
 public:
 	int GetDrawCount() { return m_DrawCount; }
@@ -24,11 +27,11 @@ public:
 	~RenderSupport() {}
 
 	void NextFrame();
-	void FinishQuadBatch();
 	void PrependMatrix(Matrix& matrix);
 	void TransformMatrix(DisplayObject& object);
 	void PushMatrix();
 	void PopMatrix();
+	void DrawImage(Image& image, float parentAlpha);
 
 private:
 	void ResetMatrix();
