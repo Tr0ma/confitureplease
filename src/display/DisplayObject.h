@@ -50,8 +50,8 @@ public:
 	bool		GetVisible() 					{ return m_Visible; }
 	void		SetVisible(bool value) 			{ m_Visible = value; }
 
-	DisplayObjectContainer&		GetParent() 								{ return *m_Parent; }
-	void						SetParent(DisplayObjectContainer& value);
+	DisplayObjectContainer*		GetParent() 								{ return m_Parent; }
+	void						SetParent(DisplayObjectContainer* value);
 
 public:
 	DisplayObject() {}

@@ -41,10 +41,29 @@ void RenderSupport::DrawImage(Image& image, float parentAlpha)
 		m_DrawCount++;
 	}
 
+	/*Iw2DSetTransformMatrix(CIwFMat2D::g_Identity);
+
+	CIwFMat2D mat;
+	mat.SetTrans()
+	Iw2DSetTransformMatrix(mat);*/
+
+	Texture& texture = image.GetTexture();
+	CIw2DImage* cIw2DImage = &(texture.GetImage());
+	int x = image.GetX();
+	int y = image.GetY();
+	int w = texture.GetWidth();
+	int h = texture.GetHeight();
+	int srcX = texture.GetX();
+	int srcY = texture.GetY();
+	int srcW = texture.GetWidth();
+	int srcH = texture.GetHeight();
+
+	Iw2DDrawImageRegion(cIw2DImage, CIwFVec2(x, y), CIwFVec2(w, h), CIwFVec2(srcX, srcY), CIwFVec2(srcW, srcH));
 	// and now draw here
 }
 
 void RenderSupport::ResetMatrix()
 {
+	m_MatrixStackSize = 0;
 	m_ModelViewMatrix.Identity();
 }

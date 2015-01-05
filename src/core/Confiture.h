@@ -15,6 +15,9 @@ private:
 	Rectangle		m_Viewport;
 
 public:
+	Stage&	GetStage() { return *m_Stage; }
+
+public:
 	explicit Confiture(Rectangle viewport);
 	~Confiture();
 

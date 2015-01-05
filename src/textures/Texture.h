@@ -9,6 +9,8 @@ protected:
 	CIw2DImage&		m_Image;
 
 public:
+	virtual int		GetX()		{ return 0; }
+	virtual int		GetY()		{ return 0; }
 	virtual int		GetWidth()	{ return static_cast<int>(m_Image.GetWidth()); }
 	virtual int		GetHeight() { return static_cast<int>(m_Image.GetHeight()); }
 	CIw2DImage&		GetImage()	{ return m_Image; }

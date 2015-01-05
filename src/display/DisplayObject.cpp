@@ -71,10 +71,10 @@ void DisplayObject::SetAlpha(float value)
 	m_Alpha = value < 0 ? 0 : (value > 1.0f) ? 1.0f : value;
 }
 
-void DisplayObject::SetParent(DisplayObjectContainer& value)
+void DisplayObject::SetParent(DisplayObjectContainer* value)
 {
 	// todo check if we re not adding it to itself
-	m_Parent = &value;
+	m_Parent = value;
 }
 
 bool DisplayObject::hasVisibleArea()

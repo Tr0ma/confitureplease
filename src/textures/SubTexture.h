@@ -11,6 +11,8 @@ private:
 	Rectangle	m_Region;
 
 public:
+	virtual int		GetX() override			{ return m_Region.m_X; }
+	virtual int		GetY() override			{ return m_Region.m_Y; }
 	virtual int		GetWidth() override		{ return m_Region.m_Width; }
 	virtual int		GetHeight() override	{ return m_Region.m_Height; }
 
