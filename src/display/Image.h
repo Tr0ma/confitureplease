@@ -3,13 +3,21 @@
 
 #include "RenderSupport.h"
 
-class Image
-{
-public:
-	Image() {};
-	virtual ~Image() {};
+class Texture;
 
-	virtual void Render(RenderSupport& renderSupport, float parentAlpha) {};
+class Image : public DisplayObject
+{
+private:
+	Texture& m_Texture;
+
+public:
+	Texture& GetTexture() { return m_Texture; }
+
+public:
+	explicit Image(Texture& texture) : m_Texture(texture) {}
+	virtual ~Image() {}
+
+	virtual void Render(RenderSupport& renderSupport, float parentAlpha) override;
 };
 
 #endif

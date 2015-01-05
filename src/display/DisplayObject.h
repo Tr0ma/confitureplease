@@ -54,10 +54,10 @@ public:
 	void						SetParent(DisplayObjectContainer& value);
 
 public:
-	DisplayObject() {};
-	virtual ~DisplayObject() {};
+	DisplayObject() {}
+	virtual ~DisplayObject() {}
 
-	virtual void Render(RenderSupport& renderSupport, float parentAlpha) {};
+	virtual void Render(RenderSupport& renderSupport, float parentAlpha) {}
 
 	bool hasVisibleArea();
 
