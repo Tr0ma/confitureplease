@@ -45,6 +45,12 @@ int	DisplayObjectContainer::GetChildIndex(DisplayObject& container)
 	return -1;
 }
 
+Rectangle DisplayObjectContainer::GetBounds()
+{
+
+}
+
+
 void DisplayObjectContainer::Render(RenderSupport& renderSupport, float parentAlpha)
 {
 	float alpha = parentAlpha * GetAlpha();

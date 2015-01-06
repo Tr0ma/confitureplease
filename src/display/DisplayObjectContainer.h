@@ -23,7 +23,10 @@ public:
 	DisplayObject&			GetChildAt(int index);
 	int						GetChildIndex(DisplayObject& child);
 
+	virtual Rectangle	GetBounds() override;
+
 	virtual void Render(RenderSupport& renderSupport, float parentAlpha) override;
+
 
 private:
 	DisplayObject& CleanChild(DisplayObject& child, int index);

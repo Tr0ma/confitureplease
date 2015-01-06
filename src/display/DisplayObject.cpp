@@ -1,4 +1,6 @@
 #include "DisplayObject.h"
+#include "DisplayObjectContainer.h"
+#include "MatrixUtil.h"
 #include <math.h>
 
 void DisplayObject::SetX(int value)
@@ -77,6 +79,17 @@ void DisplayObject::SetParent(DisplayObjectContainer* value)
 	m_Parent = value;
 }
 
+DisplayObject& DisplayObject::GetBase()
+{
+	DisplayObject& current = *this;
+	while(current.GetParent())
+	{
+		current = *dynamic_cast<DisplayObject*>(current.GetParent());
+	}
+
+	return current;
+}
+
 bool DisplayObject::hasVisibleArea()
 {
 	// add scaleX/scaleY != 0
@@ -110,4 +123,47 @@ Matrix& DisplayObject::GetTransformationMatrix()
 	}
 
 	return m_TransformationMatrix;
+}
+
+Matrix&	DisplayObject::GetRelativeTransformationMatrix(DisplayObject* target, Matrix* resultMatrix)
+{
+	DisplayObject* commonParent = nullptr;
+	DisplayObject* currentObject = nullptr;
+
+	if (resultMatrix)
+	{
+		resultMatrix->Identity();
+	}
+	else
+	{
+		resultMatrix = new Matrix();
+	}
+
+	if (target == this)
+	{
+		return *resultMatrix;
+	}
+	else if (target == dynamic_cast<DisplayObject*>(m_Parent) || (!target && !m_Parent))
+	{
+		resultMatrix->CopyFrom(GetTransformationMatrix());
+		return *resultMatrix;
+	}
+	else if (!target || target == &GetBase())
+	{
+		currentObject = this;
+		while (currentObject != target)
+		{
+			MatrixUtil::PrependMatrix(*resultMatrix, currentObject->GetTransformationMatrix());
+			currentObject = currentObject->m_Parent;
+		}
+
+		return *resultMatrix;
+	}
+	else if (target->GetParent() == this)
+	{
+		target->GetRelativeTransformationMatrix(this, resultMatrix);
+	}
+
+
+
 }

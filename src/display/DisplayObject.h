@@ -2,6 +2,7 @@
 #define _DISPLAYOBJECT_H_
 
 #include "Matrix.h"
+#include "Rectangle.h"
 
 class RenderSupport;
 class DisplayObjectContainer;
@@ -53,6 +54,11 @@ public:
 	DisplayObjectContainer*		GetParent() 								{ return m_Parent; }
 	void						SetParent(DisplayObjectContainer* value);
 
+	DisplayObject&				GetBase();
+
+protected:
+	static Rectangle helperRect;
+
 public:
 	DisplayObject() 
 		: m_X(0), m_Y(0), m_PivotX(0), m_PivotY(0), m_ScaleX(1.0f), m_ScaleY(1.0f), m_Rotation(0), 
@@ -60,11 +66,12 @@ public:
 
 	virtual ~DisplayObject() {}
 
+	bool				hasVisibleArea();
+	virtual Rectangle	GetBounds();
+	Matrix&				GetTransformationMatrix();
+	Matrix&				GetRelativeTransformationMatrix(DisplayObject* target, Matrix* resultMatrix);
+
 	virtual void Render(RenderSupport& renderSupport, float parentAlpha) {}
-
-	bool hasVisibleArea();
-
-	Matrix& GetTransformationMatrix();
 };
 
 #endif
