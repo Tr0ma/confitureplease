@@ -3,6 +3,7 @@
 #include "Confiture.h"
 #include "Iw2D.h"
 #include "Image.h"
+#include <math.h>
 
 using namespace std;
 
@@ -16,8 +17,20 @@ Tests::Tests()
 
 	Atlas* atlas = m_AssetManager->GetTextureAtlas("my-atlas");
 
+	DisplayObjectContainer* topContainer = new DisplayObjectContainer();
+	topContainer->SetScaleX(0.5f);
+	topContainer->SetX(100);
+	m_Confiture->GetStage().AddChild(*topContainer);
+
+	DisplayObjectContainer* container = new DisplayObjectContainer();
+	container->SetScaleY(0.5f);
+	topContainer->AddChild(*container);
+
 	Image* image = new Image(*(atlas->GetTexture("blue.png")));
-	m_Confiture->GetStage().AddChild(*image);
+	//container->AddChild(*image);
+
+	//topContainer->SetRotation(PI / 8);
+	container->AddChild(*image);
 }
 
 Tests::~Tests()

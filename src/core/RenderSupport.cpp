@@ -1,6 +1,7 @@
 #include "RenderSupport.h"
 #include "MatrixUtil.h"
 #include "Image.h"
+#include <cmath>
 
 void RenderSupport::NextFrame()
 {
@@ -41,16 +42,11 @@ void RenderSupport::DrawImage(Image& image, float parentAlpha)
 		m_DrawCount++;
 	}
 
-	/*Iw2DSetTransformMatrix(CIwFMat2D::g_Identity);
-
-	CIwFMat2D mat;
-	mat.SetTrans()
-	Iw2DSetTransformMatrix(mat);*/
-
 	m_CurrentTexture = &image.GetTexture();
 
 	Texture& texture = image.GetTexture();
 	CIw2DImage* cIw2DImage = &(texture.GetImage());
+
 	int x = image.GetX();
 	int y = image.GetY();
 	int w = texture.GetWidth();
@@ -60,8 +56,27 @@ void RenderSupport::DrawImage(Image& image, float parentAlpha)
 	int srcW = texture.GetWidth();
 	int srcH = texture.GetHeight();
 
+	float a = m_ModelViewMatrix.m_A;
+	float b = m_ModelViewMatrix.m_B;
+	float c = m_ModelViewMatrix.m_C;
+	float d = m_ModelViewMatrix.m_D;
+
+	float tx = m_ModelViewMatrix.m_Tx;
+	float ty = m_ModelViewMatrix.m_Ty;
+	float sx = (a / abs(a)) * (sqrt(pow(a, 2.0f) + pow(c, 2.0f)));
+	float sy = (d / abs(d)) * (sqrt(pow(b, 2.0f) + pow(d, 2.0f)));
+	float q	= atan2(b, d); 
+
+	Iw2DSetColour(0xffffffff);
+	Iw2DSetTransformMatrix(CIwFMat2D::g_Identity);
+	CIwFMat2D mat;
+	mat.SetRot(q);
+	mat.m[0][0] = sx;
+	mat.m[1][1] = sy;
+	mat.SetTrans(CIwFVec2(tx, ty));
+	Iw2DSetTransformMatrix(mat);
+
 	Iw2DDrawImageRegion(cIw2DImage, CIwFVec2(x, y), CIwFVec2(w, h), CIwFVec2(srcX, srcY), CIwFVec2(srcW, srcH));
-	// and now draw here
 }
 
 void RenderSupport::ResetMatrix()
