@@ -11,3 +11,11 @@ void MatrixUtil::PrependMatrix(Matrix& base, Matrix& prep)
 		base.m_Ty + base.m_B * prep.m_Tx + base.m_D * prep.m_Ty
 		);
 }
+
+Vec2d& MatrixUtil::TransformCoords(Matrix& matrix, float x, float y, Vec2d& resultVec2d)
+{
+	resultVec2d.x = matrix.m_A * x + matrix.m_C * y + matrix.m_Tx;
+	resultVec2d.y = matrix.m_D * y + matrix.m_B * x + matrix.m_Ty;
+
+	return resultVec2d;
+}

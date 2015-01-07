@@ -57,7 +57,9 @@ public:
 	DisplayObject&				GetBase();
 
 protected:
-	static Rectangle helperRect;
+	static Rectangle	helperRect;
+	static Matrix		helperMatrix;
+	static Vec2d		helperVec2d;
 
 public:
 	DisplayObject() 
@@ -67,7 +69,7 @@ public:
 	virtual ~DisplayObject() {}
 
 	bool				hasVisibleArea();
-	virtual Rectangle	GetBounds();
+	virtual Rectangle	GetBounds(DisplayObject* target, Rectangle* resultRect);
 	Matrix&				GetTransformationMatrix();
 	Matrix&				GetRelativeTransformationMatrix(DisplayObject* target, Matrix* resultMatrix);
 

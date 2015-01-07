@@ -152,10 +152,13 @@ Matrix&	DisplayObject::GetRelativeTransformationMatrix(DisplayObject* target, Ma
 	
 	if (!target || target == &GetBase())
 	{
+		// target at null represent the target space of the base object
+		// -> move up from this to base
+
 		currentObject = this;
 		while (currentObject != target)
 		{
-			MatrixUtil::PrependMatrix(*resultMatrix, currentObject->GetTransformationMatrix());
+			resultMatrix->Concat(currentObject->GetTransformationMatrix());
 			currentObject = currentObject->m_Parent;
 		}
 
@@ -170,15 +173,40 @@ Matrix&	DisplayObject::GetRelativeTransformationMatrix(DisplayObject* target, Ma
 		return *resultMatrix;
 	}
 
+	// 1. find commun parent of this and the target space
+
 	commonParent = &FindCommonParent(*this, *target);
+
+	// 2. move up from this to common parent
 
 	currentObject = this;
 	while (currentObject != commonParent)
 	{
-		
+		resultMatrix->Concat(currentObject->GetTransformationMatrix());
+		currentObject = currentObject->GetParent();
 	}
 
+	if (commonParent == target)
+	{
+		return *resultMatrix;
+	}
 
+	// 3. now move up from target until we reach the common parent
+
+	helperMatrix.Identity();
+	currentObject = target;
+	while (currentObject != commonParent)
+	{
+		helperMatrix.Concat(currentObject->GetTransformationMatrix());
+		currentObject = currentObject->GetParent();
+	}
+
+	// 4. now combine the two matrices
+
+	helperMatrix.Invert();
+	resultMatrix->Concat(helperMatrix);
+
+	return *resultMatrix;
 }
 
 DisplayObject& DisplayObject::FindCommonParent(DisplayObject& objectA, DisplayObject& objectB)

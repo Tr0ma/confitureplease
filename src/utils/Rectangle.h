@@ -13,6 +13,11 @@ public:
 	explicit Rectangle(int x = 0, int y = 0, int width = 0, int height = 0) 
 		: m_X(x), m_Y(y), m_Width(width), m_Height(height) {}
 
+	void SetTo(int x, int y, int width, int height);
+
+	int GetRight();
+	int GetBottom();
+
 	~Rectangle() {}
 };
 
