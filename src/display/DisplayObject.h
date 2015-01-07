@@ -57,9 +57,10 @@ public:
 	DisplayObject&				GetBase();
 
 protected:
-	static Rectangle	helperRect;
-	static Matrix		helperMatrix;
-	static Vec2d		helperVec2d;
+	static vector<DisplayObject*>	ancestors;
+	static Rectangle				helperRect;
+	static Matrix					helperMatrix;
+	static Vec2d					helperVec2d;
 
 public:
 	DisplayObject() 
@@ -76,7 +77,8 @@ public:
 	virtual void Render(RenderSupport& renderSupport, float parentAlpha) {}
 
 private:
-	DisplayObject& FindCommonParent(DisplayObject& objectA, DisplayObject& objectB);
+	DisplayObject*	FindCommonParent(DisplayObject& objectA, DisplayObject& objectB);
+	int				GetIndexOf(vector<DisplayObject*> list, DisplayObject& target);
 };
 
 #endif

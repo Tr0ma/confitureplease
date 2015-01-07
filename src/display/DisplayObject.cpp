@@ -175,7 +175,7 @@ Matrix&	DisplayObject::GetRelativeTransformationMatrix(DisplayObject* target, Ma
 
 	// 1. find commun parent of this and the target space
 
-	commonParent = &FindCommonParent(*this, *target);
+	commonParent = FindCommonParent(*this, *target);
 
 	// 2. move up from this to common parent
 
@@ -209,7 +209,43 @@ Matrix&	DisplayObject::GetRelativeTransformationMatrix(DisplayObject* target, Ma
 	return *resultMatrix;
 }
 
-DisplayObject& DisplayObject::FindCommonParent(DisplayObject& objectA, DisplayObject& objectB)
+DisplayObject* DisplayObject::FindCommonParent(DisplayObject& objectA, DisplayObject& objectB)
 {
+	DisplayObject* currentObject = &objectA;
 
+	while (currentObject)
+	{
+		ancestors.push_back(currentObject);
+		currentObject = currentObject->GetParent();
+	}
+
+	currentObject = &objectB;
+
+	while (currentObject && GetIndexOf(ancestors, *currentObject) != -1)
+	{
+		currentObject = currentObject->GetParent();
+	}
+
+	ancestors.clear();
+
+	if (currentObject)
+	{
+		return currentObject;
+	}
+	
+	return nullptr;
+}
+
+int DisplayObject::GetIndexOf(vector<DisplayObject*> list, DisplayObject& target)
+{
+	const unsigned l = list.size();
+	for (int i = 0 ; i < l ; i++)
+	{
+		if (list[i] == &target)
+		{
+			return i;
+		}
+	}
+
+	return -1;
 }
