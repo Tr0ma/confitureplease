@@ -10,6 +10,17 @@ void Matrix::Identity()
 	m_Ty = 0;
 }
 
+void Matrix::Invert()
+{
+	float det = m_A * m_D - m_B * m_C;
+
+	SetTo(
+		m_D / det, -m_B / det, -m_C / det, m_A / det,
+		(m_C * m_Ty - m_D * m_Tx) / det,
+		(m_Tx * m_B - m_Ty * m_A) / det
+		);
+}
+
 void Matrix::SetTo(float a, float b, float c, float d, float tx, float ty)
 {
 	m_A = a;
@@ -18,6 +29,18 @@ void Matrix::SetTo(float a, float b, float c, float d, float tx, float ty)
 	m_D = d;
 	m_Tx = tx;
 	m_Ty = ty;
+}
+
+void Matrix::Prepend(Matrix& matrix)
+{
+	SetTo(
+		m_A * matrix.m_A + m_C * matrix.m_B,
+		m_B * matrix.m_A + m_D * matrix.m_B,
+		m_A * matrix.m_C + m_C * matrix.m_D,
+		m_B * matrix.m_C + m_D * matrix.m_D,
+		m_Tx + m_A * matrix.m_Tx + m_C * matrix.m_Ty,
+		m_Ty + m_B * matrix.m_Tx + m_D * matrix.m_Ty
+		);
 }
 
 void Matrix::CopyFrom(Matrix& matrix)
