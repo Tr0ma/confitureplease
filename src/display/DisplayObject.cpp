@@ -143,12 +143,14 @@ Matrix&	DisplayObject::GetRelativeTransformationMatrix(DisplayObject* target, Ma
 	{
 		return *resultMatrix;
 	}
-	else if (target == dynamic_cast<DisplayObject*>(m_Parent) || (!target && !m_Parent))
+	
+	if (target == dynamic_cast<DisplayObject*>(m_Parent) || (!target && !m_Parent))
 	{
 		resultMatrix->CopyFrom(GetTransformationMatrix());
 		return *resultMatrix;
 	}
-	else if (!target || target == &GetBase())
+	
+	if (!target || target == &GetBase())
 	{
 		currentObject = this;
 		while (currentObject != target)
@@ -159,11 +161,27 @@ Matrix&	DisplayObject::GetRelativeTransformationMatrix(DisplayObject* target, Ma
 
 		return *resultMatrix;
 	}
-	else if (target->GetParent() == this)
+	
+	if (target->GetParent() == this)
 	{
 		target->GetRelativeTransformationMatrix(this, resultMatrix);
+		resultMatrix->Invert();
+		
+		return *resultMatrix;
+	}
+
+	commonParent = &FindCommonParent(*this, *target);
+
+	currentObject = this;
+	while (currentObject != commonParent)
+	{
+		
 	}
 
 
+}
+
+DisplayObject& DisplayObject::FindCommonParent(DisplayObject& objectA, DisplayObject& objectB)
+{
 
 }

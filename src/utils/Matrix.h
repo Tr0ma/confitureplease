@@ -19,6 +19,7 @@ public:
 	void	Invert();
 	void	SetTo(float a = 1, float b = 0, float c = 0, float d = 1, float tx = 0, float ty = 0);
 	void	Prepend(Matrix& matrix);
+	void	Concat(Matrix& matrix);
 	void	CopyFrom(Matrix& matrix);
 
 };

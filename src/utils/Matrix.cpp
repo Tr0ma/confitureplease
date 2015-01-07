@@ -43,6 +43,18 @@ void Matrix::Prepend(Matrix& matrix)
 		);
 }
 
+void Matrix::Concat(Matrix& matrix)
+{
+	SetTo(
+		matrix.m_A * m_A + matrix.m_C * m_B,
+		matrix.m_B * m_A + matrix.m_D * m_B,
+		matrix.m_A * m_C + matrix.m_C * m_D,
+		matrix.m_B * m_C + matrix.m_D * m_D,
+		matrix.m_Tx + matrix.m_A * m_Tx + matrix.m_C * m_Ty,
+		matrix.m_Ty + matrix.m_B * m_Tx + matrix.m_D * m_Ty
+		);
+}
+
 void Matrix::CopyFrom(Matrix& matrix)
 {
 	m_A = matrix.m_A;

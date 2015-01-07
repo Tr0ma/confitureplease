@@ -72,6 +72,9 @@ public:
 	Matrix&				GetRelativeTransformationMatrix(DisplayObject* target, Matrix* resultMatrix);
 
 	virtual void Render(RenderSupport& renderSupport, float parentAlpha) {}
+
+private:
+	DisplayObject& FindCommonParent(DisplayObject& objectA, DisplayObject& objectB);
 };
 
 #endif
