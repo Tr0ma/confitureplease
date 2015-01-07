@@ -8,14 +8,17 @@ class Texture;
 class Image : public DisplayObject
 {
 private:
-	Texture& m_Texture;
+	Texture&	m_Texture;
+	Rectangle	m_TextureBounds;
 
 public:
 	Texture& GetTexture() { return m_Texture; }
 
 public:
-	explicit Image(Texture& texture) : m_Texture(texture) {}
+	explicit Image(Texture& texture);
 	virtual ~Image() {}
+
+	virtual Rectangle	GetBounds(DisplayObject* target, Rectangle* resultRect) override;
 
 	virtual void Render(RenderSupport& renderSupport, float parentAlpha) override;
 };

@@ -66,8 +66,10 @@ Rectangle DisplayObjectContainer::GetBounds(DisplayObject* target, Rectangle* re
 	}
 	else
 	{
-		int minX, minY = INT_MAX;
-		int maxX, maxY = -INT_MAX; 
+		int minX = INT_MAX;
+		int minY = INT_MAX;
+		int maxX = -INT_MAX;
+		int maxY = -INT_MAX; 
 
 		for (int i = 0 ; i < m_NumChildren ; i++)
 		{
