@@ -6,12 +6,14 @@
 class Stage: public DisplayObjectContainer
 {
 private:
-	int m_Width;
-	int m_Height;
+	float m_Width;
+	float m_Height;
 
 public:
-	Stage(int width, int height) : m_Width(width), m_Height(height) {};
+	Stage(float width, float height) : m_Width(width), m_Height(height) {};
 	~Stage() {};
+
+    virtual DisplayObject*	HitTest(Vec2d localPoint) override;
 };
 
 #endif

@@ -84,20 +84,18 @@ public:
 		: m_X(0.0f), m_Y(0.0f), m_PivotX(0.0f), m_PivotY(0.0f), m_ScaleX(1.0f), m_ScaleY(1.0f), m_Rotation(0.0f), 
 		m_Alpha(1.0f), m_Visible(true), m_Parent(nullptr), m_OrientationChanged(false) {}
 
-	virtual ~DisplayObject() {}
+    virtual ~DisplayObject() {}
 
-	bool				hasVisibleArea();
-	virtual Rectangle&	GetBounds(DisplayObject& target, Rectangle& resultRect) { return resultRect; }
-	Matrix&				GetTransformationMatrix();
-	Matrix&				GetRelativeTransformationMatrix(DisplayObject* target, Matrix& resultMatrix);
-
-	DisplayObject*		HitTest(Vec2d localPoint);
-
-	virtual void		Render(RenderSupport& renderSupport, float parentAlpha) {}
+	bool					hasVisibleArea();
+	virtual Rectangle&		GetBounds(DisplayObject& target, Rectangle& resultRect) { return resultRect; }
+	Matrix&					GetTransformationMatrix();
+	Matrix&					GetRelativeTransformationMatrix(DisplayObject* target, Matrix& resultMatrix);
+	virtual DisplayObject*	HitTest(Vec2d localPoint);
+	virtual void			Render(RenderSupport& renderSupport, float parentAlpha) {}
 
 private:
-	DisplayObject*		FindCommonParent(DisplayObject& objectA, DisplayObject& objectB);
-	int					GetIndexOf(vector<DisplayObject*> list, DisplayObject& target);
+	DisplayObject*			FindCommonParent(DisplayObject& objectA, DisplayObject& objectB);
+	int						GetIndexOf(vector<DisplayObject*> list, DisplayObject& target);
 };
 
 #endif

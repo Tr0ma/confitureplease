@@ -47,14 +47,14 @@ void RenderSupport::DrawImage(Image& image, float parentAlpha)
 	Texture& texture = image.GetTexture();
 	CIw2DImage* cIw2DImage = &(texture.GetImage());
 
-	int x = image.GetX();
-	int y = image.GetY();
-	int w = texture.GetWidth();
-	int h = texture.GetHeight();
-	int srcX = texture.GetX();
-	int srcY = texture.GetY();
-	int srcW = texture.GetWidth();
-	int srcH = texture.GetHeight();
+	float x = image.GetX();
+	float y = image.GetY();
+	float w = texture.GetWidth();
+	float h = texture.GetHeight();
+	float srcX = texture.GetX();
+	float srcY = texture.GetY();
+	float srcW = texture.GetWidth();
+	float srcH = texture.GetHeight();
 
 	float a = m_ModelViewMatrix.m_A;
 	float b = m_ModelViewMatrix.m_B;

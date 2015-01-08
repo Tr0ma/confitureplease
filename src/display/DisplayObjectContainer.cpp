@@ -82,6 +82,30 @@ Rectangle& DisplayObjectContainer::GetBounds(DisplayObject& target, Rectangle& r
 	return resultRect;
 }
 
+DisplayObject* DisplayObjectContainer::HitTest(Vec2d localPoint)
+{
+    if (!GetVisible() || !GetTouchable()) return nullptr;
+
+    float x = localPoint.x;
+    float y = localPoint.y;
+    DisplayObject* target = nullptr;
+
+    for (int i = m_NumChildren - 1 ; i >=0 ; i--)
+    {
+        DisplayObject& child = *m_Children[i];
+        GetRelativeTransformationMatrix(&child, helperMatrix);
+
+        MatrixUtil::TransformCoords(helperMatrix, x, y, helperVec2d);
+        target = child.HitTest(helperVec2d);
+
+        if (target)
+        {
+            return target;
+        }
+    }
+
+    return target;
+}
 
 void DisplayObjectContainer::Render(RenderSupport& renderSupport, float parentAlpha)
 {
