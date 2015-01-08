@@ -47,18 +47,13 @@ int	DisplayObjectContainer::GetChildIndex(DisplayObject& container)
 	return -1;
 }
 
-Rectangle DisplayObjectContainer::GetBounds(DisplayObject* target, Rectangle* resultRect)
+Rectangle& DisplayObjectContainer::GetBounds(DisplayObject& target, Rectangle& resultRect)
 {
-	if (!resultRect)
-	{
-		resultRect = new Rectangle();
-	}
-
 	if (m_NumChildren == 0)
 	{
-		GetRelativeTransformationMatrix(target, &helperMatrix);
+		GetRelativeTransformationMatrix(&target, helperMatrix);
 		MatrixUtil::TransformCoords(helperMatrix, 0.0f, 0.0f, helperVec2d);
-		resultRect->SetTo(helperVec2d.x, helperVec2d.y, 0, 0);
+		resultRect.SetTo(helperVec2d.x, helperVec2d.y, 0, 0);
 	}
 	else if (m_NumChildren == 1)
 	{
@@ -75,29 +70,31 @@ Rectangle DisplayObjectContainer::GetBounds(DisplayObject* target, Rectangle* re
 		{
 			m_Children[i]->GetBounds(target, resultRect);
 
-			if (minX > resultRect->m_X)
+			if (minX > resultRect.m_X)
 			{
-				minX = resultRect->m_X;
+				minX = resultRect.m_X;
 			}
 
-			if (maxX < resultRect->GetRight())
+			if (maxX < resultRect.GetRight())
 			{
-				maxX = resultRect->GetRight();
+				maxX = resultRect.GetRight();
 			}
 
-			if (minY > resultRect->m_Y)
+			if (minY > resultRect.m_Y)
 			{
-				minY = resultRect->m_Y;
+				minY = resultRect.m_Y;
 			}
 
-			if (maxY > resultRect->GetBottom())
+			if (maxY > resultRect.GetBottom())
 			{
-				maxY = resultRect->GetBottom();
+				maxY = resultRect.GetBottom();
 			}
 		}
 
-		resultRect->SetTo(minX, minY, maxX - minX, maxY - minY);
+		resultRect.SetTo(minX, minY, maxX - minX, maxY - minY);
 	}
+
+	return resultRect;
 }
 
 

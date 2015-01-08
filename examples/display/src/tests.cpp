@@ -23,14 +23,20 @@ Tests::Tests()
 	m_Confiture->GetStage().AddChild(*topContainer);
 
 	DisplayObjectContainer* container = new DisplayObjectContainer();
+	container->SetScaleX(0.5f);
 	container->SetScaleY(0.5f);
-	topContainer->AddChild(*container);
+	m_Confiture->GetStage().AddChild(*container);
+	//topContainer->AddChild(*container);
 
 	Image* image = new Image(*(atlas->GetTexture("blue.png")));
+	image->SetWidth(100);
 	//container->AddChild(*image);
 
 	//topContainer->SetRotation(PI / 8);
 	container->AddChild(*image);
+
+	cout << "Image width : " << image->GetWidth() << endl;
+	cout << "Container width : " << container->GetWidth() << endl;
 }
 
 Tests::~Tests()

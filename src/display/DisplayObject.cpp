@@ -1,7 +1,11 @@
 #include "DisplayObject.h"
 #include "DisplayObjectContainer.h"
-#include "MatrixUtil.h"
 #include <math.h>
+
+vector<DisplayObject*>	DisplayObject::ancestors;
+Rectangle				DisplayObject::helperRect;
+Matrix					DisplayObject::helperMatrix;
+Vec2d					DisplayObject::helperVec2d;
 
 void DisplayObject::SetX(int value)
 {
@@ -73,6 +77,36 @@ void DisplayObject::SetAlpha(float value)
 	m_Alpha = value < 0 ? 0 : (value > 1.0f) ? 1.0f : value;
 }
 
+int DisplayObject::GetWidth()
+{
+	return GetBounds(*m_Parent, helperRect).m_Width;
+}
+
+void DisplayObject::SetWidth(int value)
+{
+	SetScaleX(1.0f);
+	int actualWidth = GetWidth();
+	if (actualWidth != 0)
+	{
+		SetScaleX(value / actualWidth);
+	}
+}
+
+int DisplayObject::GetHeight()
+{
+	return GetBounds(*m_Parent, helperRect).m_Height;
+}
+
+void DisplayObject::SetHeight(int value)
+{
+	SetScaleY(1.0f);
+	int actualHeight = GetHeight();
+	if (actualHeight != 0)
+	{
+		SetScaleY(value / actualHeight);
+	}
+}
+
 void DisplayObject::SetParent(DisplayObjectContainer* value)
 {
 	// todo check if we re not adding it to itself
@@ -81,13 +115,13 @@ void DisplayObject::SetParent(DisplayObjectContainer* value)
 
 DisplayObject& DisplayObject::GetBase()
 {
-	DisplayObject& current = *this;
-	while(current.GetParent())
+	DisplayObject* current = this;
+	while(current->GetParent())
 	{
-		current = *dynamic_cast<DisplayObject*>(current.GetParent());
+		current = dynamic_cast<DisplayObject*>(current->GetParent());
 	}
 
-	return current;
+	return *current;
 }
 
 bool DisplayObject::hasVisibleArea()
@@ -125,29 +159,22 @@ Matrix& DisplayObject::GetTransformationMatrix()
 	return m_TransformationMatrix;
 }
 
-Matrix&	DisplayObject::GetRelativeTransformationMatrix(DisplayObject* target, Matrix* resultMatrix)
+Matrix&	DisplayObject::GetRelativeTransformationMatrix(DisplayObject* target, Matrix& resultMatrix)
 {
-	DisplayObject* commonParent = nullptr;
-	DisplayObject* currentObject = nullptr;
+	DisplayObject* commonParent;
+	DisplayObject* currentObject;
 
-	if (resultMatrix)
-	{
-		resultMatrix->Identity();
-	}
-	else
-	{
-		resultMatrix = new Matrix();
-	}
+	resultMatrix.Identity();
 
 	if (target == this)
 	{
-		return *resultMatrix;
+		return resultMatrix;
 	}
 	
 	if (target == dynamic_cast<DisplayObject*>(m_Parent) || (!target && !m_Parent))
 	{
-		resultMatrix->CopyFrom(GetTransformationMatrix());
-		return *resultMatrix;
+		resultMatrix.CopyFrom(GetTransformationMatrix());
+		return resultMatrix;
 	}
 	
 	if (!target || target == &GetBase())
@@ -158,19 +185,19 @@ Matrix&	DisplayObject::GetRelativeTransformationMatrix(DisplayObject* target, Ma
 		currentObject = this;
 		while (currentObject != target)
 		{
-			resultMatrix->Concat(currentObject->GetTransformationMatrix());
+			resultMatrix.Concat(currentObject->GetTransformationMatrix());
 			currentObject = currentObject->m_Parent;
 		}
 
-		return *resultMatrix;
+		return resultMatrix;
 	}
 	
 	if (target->GetParent() == this)
 	{
 		target->GetRelativeTransformationMatrix(this, resultMatrix);
-		resultMatrix->Invert();
+		resultMatrix.Invert();
 		
-		return *resultMatrix;
+		return resultMatrix;
 	}
 
 	// 1. find commun parent of this and the target space
@@ -182,13 +209,13 @@ Matrix&	DisplayObject::GetRelativeTransformationMatrix(DisplayObject* target, Ma
 	currentObject = this;
 	while (currentObject != commonParent)
 	{
-		resultMatrix->Concat(currentObject->GetTransformationMatrix());
+		resultMatrix.Concat(currentObject->GetTransformationMatrix());
 		currentObject = currentObject->GetParent();
 	}
 
 	if (commonParent == target)
 	{
-		return *resultMatrix;
+		return resultMatrix;
 	}
 
 	// 3. now move up from target until we reach the common parent
@@ -204,9 +231,9 @@ Matrix&	DisplayObject::GetRelativeTransformationMatrix(DisplayObject* target, Ma
 	// 4. now combine the two matrices
 
 	helperMatrix.Invert();
-	resultMatrix->Concat(helperMatrix);
+	resultMatrix.Concat(helperMatrix);
 
-	return *resultMatrix;
+	return resultMatrix;
 }
 
 DisplayObject* DisplayObject::FindCommonParent(DisplayObject& objectA, DisplayObject& objectB)
@@ -238,8 +265,8 @@ DisplayObject* DisplayObject::FindCommonParent(DisplayObject& objectA, DisplayOb
 
 int DisplayObject::GetIndexOf(vector<DisplayObject*> list, DisplayObject& target)
 {
-	const unsigned l = list.size();
-	for (int i = 0 ; i < l ; i++)
+	const unsigned int l = list.size();
+	for (unsigned int i = 0 ; i < l ; i++)
 	{
 		if (list[i] == &target)
 		{

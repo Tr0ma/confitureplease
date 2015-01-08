@@ -23,9 +23,8 @@ public:
 	DisplayObject&			GetChildAt(int index);
 	int						GetChildIndex(DisplayObject& child);
 
-	virtual Rectangle	GetBounds(DisplayObject* target, Rectangle* resultRect) override;
-
-	virtual void Render(RenderSupport& renderSupport, float parentAlpha) override;
+	virtual Rectangle&		GetBounds(DisplayObject& target, Rectangle& resultRect) override;
+	virtual void			Render(RenderSupport& renderSupport, float parentAlpha) override;
 
 
 private:

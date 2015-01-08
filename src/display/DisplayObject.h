@@ -3,6 +3,11 @@
 
 #include "Matrix.h"
 #include "Rectangle.h"
+#include "Vec2d.h"
+
+#include <vector>
+
+using namespace std;
 
 class RenderSupport;
 class DisplayObjectContainer;
@@ -51,6 +56,12 @@ public:
 	bool		GetVisible() 					{ return m_Visible; }
 	void		SetVisible(bool value) 			{ m_Visible = value; }
 
+	int			GetWidth();
+	void		SetWidth(int value);
+
+	int			GetHeight();
+	void		SetHeight(int value);
+
 	DisplayObjectContainer*		GetParent() 								{ return m_Parent; }
 	void						SetParent(DisplayObjectContainer* value);
 
@@ -70,9 +81,9 @@ public:
 	virtual ~DisplayObject() {}
 
 	bool				hasVisibleArea();
-	virtual Rectangle	GetBounds(DisplayObject* target, Rectangle* resultRect);
+	virtual Rectangle&	GetBounds(DisplayObject& target, Rectangle& resultRect) { return resultRect; };
 	Matrix&				GetTransformationMatrix();
-	Matrix&				GetRelativeTransformationMatrix(DisplayObject* target, Matrix* resultMatrix);
+	Matrix&				GetRelativeTransformationMatrix(DisplayObject* target, Matrix& resultMatrix);
 
 	virtual void Render(RenderSupport& renderSupport, float parentAlpha) {}
 
