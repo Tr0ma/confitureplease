@@ -3,10 +3,11 @@
 
 #include "Updateable.h"
 #include "Tween.h"
-#include "Display.h"
 #include <vector>
 
 using namespace std;
+
+class DisplayObject;
 
 class TweenManager : public IUpdateable
 {
@@ -21,7 +22,7 @@ public:
 	void		Update(float deltaTime = 0.0f) override;
 
 	template<class C>
-	C&			CreateTween(Container& target);
+	C&			CreateTween(DisplayObject& target);
 
 private:
 	void		AddTween(Tween& tween);
@@ -32,7 +33,7 @@ private:
 };
 
 template<class C>
-C& TweenManager::CreateTween(Container& target)
+C& TweenManager::CreateTween(DisplayObject& target)
 {
 	C* c = new C(target);
 	AddTween(*c);

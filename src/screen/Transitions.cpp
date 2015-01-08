@@ -1,4 +1,6 @@
 #include "Transitions.h"
+#include "DisplayObject.h"
+#include "Stage.h"
 
 const char* TransitionEvent::COMPLETE = "TransitionEvent_COMPLETE";
 const float Transition::DEFAULT_ANIMATION_TIME = 0.5f;

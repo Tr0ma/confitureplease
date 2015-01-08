@@ -1,4 +1,5 @@
 #include "Rectangle.h"
+#include "Vec2d.h"
 
 void Rectangle::SetTo(float x, float y, float width, float height)
 {
@@ -16,4 +17,10 @@ float Rectangle::GetRight()
 float Rectangle::GetBottom()
 {
 	return m_Y + m_Height;
+}
+
+bool Rectangle::ContainsPoint(Vec2d point)
+{
+	return (point.x >= m_X && point.x <= GetRight() 
+		&& point.y >= m_Y && point.y <= GetBottom());
 }

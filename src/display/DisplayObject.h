@@ -11,6 +11,7 @@ using namespace std;
 
 class RenderSupport;
 class DisplayObjectContainer;
+class Stage;
 
 class DisplayObject
 {
@@ -27,6 +28,7 @@ private:
 	DisplayObjectContainer*		m_Parent;
 	Matrix						m_TransformationMatrix;
 	bool						m_OrientationChanged;
+	bool						m_Touchable;
 
 public:
 	float		GetX() 							{ return m_X; }
@@ -62,9 +64,13 @@ public:
 	float		GetHeight();
 	void		SetHeight(float value);
 
+	bool		GetTouchable()					{ return m_Touchable; }
+	void		SetTouchable(bool value)		{ m_Touchable = value; }
+
 	DisplayObjectContainer*		GetParent() 								{ return m_Parent; }
 	void						SetParent(DisplayObjectContainer* value);
 
+	Stage*						GetStage();
 	DisplayObject&				GetBase();
 
 protected:
@@ -75,21 +81,23 @@ protected:
 
 public:
 	DisplayObject() 
-		: m_X(0), m_Y(0), m_PivotX(0), m_PivotY(0), m_ScaleX(1.0f), m_ScaleY(1.0f), m_Rotation(0), 
+		: m_X(0.0f), m_Y(0.0f), m_PivotX(0.0f), m_PivotY(0.0f), m_ScaleX(1.0f), m_ScaleY(1.0f), m_Rotation(0.0f), 
 		m_Alpha(1.0f), m_Visible(true), m_Parent(nullptr), m_OrientationChanged(false) {}
 
 	virtual ~DisplayObject() {}
 
 	bool				hasVisibleArea();
-	virtual Rectangle&	GetBounds(DisplayObject& target, Rectangle& resultRect) { return resultRect; };
+	virtual Rectangle&	GetBounds(DisplayObject& target, Rectangle& resultRect) { return resultRect; }
 	Matrix&				GetTransformationMatrix();
 	Matrix&				GetRelativeTransformationMatrix(DisplayObject* target, Matrix& resultMatrix);
 
-	virtual void Render(RenderSupport& renderSupport, float parentAlpha) {}
+	DisplayObject*		HitTest(Vec2d localPoint);
+
+	virtual void		Render(RenderSupport& renderSupport, float parentAlpha) {}
 
 private:
-	DisplayObject*	FindCommonParent(DisplayObject& objectA, DisplayObject& objectB);
-	int				GetIndexOf(vector<DisplayObject*> list, DisplayObject& target);
+	DisplayObject*		FindCommonParent(DisplayObject& objectA, DisplayObject& objectB);
+	int					GetIndexOf(vector<DisplayObject*> list, DisplayObject& target);
 };
 
 #endif

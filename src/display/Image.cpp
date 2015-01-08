@@ -1,16 +1,17 @@
 #include "Image.h"
 #include "DisplayObject.h"
 #include "DisplayObjectContainer.h"
-#include <MatrixUtil.h>
+#include "MatrixUtil.h"
+#include <limits> 
 
 Image::Image(Texture& texture) : m_Texture(texture)
 {
-	int width = texture.GetWidth();
-	int height = texture.GetHeight();
+	float width = texture.GetWidth();
+	float height = texture.GetHeight();
 
-	m_Vertex.push_back(Vec2d(0, 0));
-	m_Vertex.push_back(Vec2d(width, 0));
-	m_Vertex.push_back(Vec2d(0, height));
+	m_Vertex.push_back(Vec2d(0.0f, 0.0f));
+	m_Vertex.push_back(Vec2d(width, 0.0f));
+	m_Vertex.push_back(Vec2d(0.0f, height));
 	m_Vertex.push_back(Vec2d(width, height));
 }
 
@@ -48,15 +49,15 @@ Rectangle& Image::GetBounds(DisplayObject& target, Rectangle& resultRect)
 	else
 	{
 		GetRelativeTransformationMatrix(&target, helperMatrix);
-		long minX = INT_MAX;
-		long minY = INT_MAX;
-		long maxX = -INT_MAX;
-		long maxY = -INT_MAX;
+		float minX = numeric_limits<float>::max();
+		float minY = numeric_limits<float>::max();
+		float maxX = numeric_limits<float>::min();
+		float maxY = numeric_limits<float>::min();
 
 		for (int i = 0 ; i < 4 ; i++)
 		{
-			int x = m_Vertex[i].x;
-			int y = m_Vertex[i].y;
+			float x = m_Vertex[i].x;
+			float y = m_Vertex[i].y;
 
 			MatrixUtil::TransformCoords(helperMatrix, x, y, helperVec2d);
 

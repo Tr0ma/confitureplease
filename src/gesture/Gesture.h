@@ -2,7 +2,7 @@
 #define _GESTURE_H_
 
 #include "EventDispatcher.h"
-#include "Display.h"
+#include "DisplayObject.h"
 #include "Updateable.h"
 
 class GestureManager;
@@ -39,7 +39,7 @@ public:
 class Gesture : public EventDispatcher
 {
 private:
-	Container&		m_Target;
+	DisplayObject&	m_Target;
 	bool			m_Enabled;
 
 protected:
@@ -54,13 +54,13 @@ protected:
 	GestureState	m_State;
 
 public:
-	Container&	GetTarget() { return m_Target; }
+	DisplayObject&	GetTarget() { return m_Target; }
 
 	bool		GetEnabled()			{ return m_Enabled; }
 	void		SetEnabled(bool value)	{ m_Enabled = value; }
 
 public:
-	explicit Gesture(Container& target) : m_Target(target), m_TouchCount(0) {}
+	explicit Gesture(DisplayObject& target) : m_Target(target), m_TouchCount(0) {}
 	virtual ~Gesture() {}
 
 	void BeginTouch(int x, int y);
@@ -79,7 +79,7 @@ protected:
 class TapGesture : public Gesture
 {
 public:
-	explicit TapGesture(Container& target) : Gesture(target) {}
+	explicit TapGesture(DisplayObject& target) : Gesture(target) {}
 	~TapGesture() {}
 
 protected:
@@ -151,7 +151,7 @@ public:
 	void Update(float deltaTime = 0.0f) override;
 
 	template<class G, class C>
-	G& AddGesture(Container& target, void (C::*fct)(Event&), C& proxy);
+	G& AddGesture(DisplayObject& target, void (C::*fct)(Event&), C& proxy);
 
 	template<class C>
 	void RemoveGesture(Gesture& gesture, void (C::*fct)(Event&), C& proxy, const char* gestureType) {};
@@ -159,7 +159,7 @@ public:
 	template<class C>
 	void RemoveAllGesturesOf(C& proxy) {};
 
-	TapGesture& GetTapGesture(Container& target);
+	TapGesture& GetTapGesture(DisplayObject& target);
 
 	void OnTouchBegin(int x, int y);
 	void OnTouchEnd(int x, int y);
@@ -170,7 +170,7 @@ private:
 };
 
 template<class G, class C>
-G& GestureManager::AddGesture(Container& target, void (C::*fct)(Event&), C& proxy)
+G& GestureManager::AddGesture(DisplayObject& target, void (C::*fct)(Event&), C& proxy)
 {
 	G* gesture = new G(target);
 	gesture->AddListener(GestureEvent::GESTURE_RECOGNIZED, fct, proxy);

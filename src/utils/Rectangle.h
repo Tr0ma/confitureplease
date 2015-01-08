@@ -1,6 +1,8 @@
 #ifndef _RECTANGLE_H_
 #define _RECTANGLE_H_
 
+#include "Vec2d.h"
+
 class Rectangle
 {
 public:
@@ -19,6 +21,8 @@ public:
 	float GetBottom();
 
 	~Rectangle() {}
+
+	bool ContainsPoint(Vec2d point);
 };
 
 #endif

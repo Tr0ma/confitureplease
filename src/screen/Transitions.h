@@ -1,9 +1,10 @@
 #ifndef _TRANSITIONS_H_
 #define _TRANSITIONS_H_
 
-#include "Display.h"
 #include "EventDispatcher.h"
 #include "TweenManager.h"
+
+class DisplayObject;
 
 class Transition : public EventDispatcher
 {
@@ -11,13 +12,13 @@ public:
 	static const float DEFAULT_ANIMATION_TIME;
 
 protected:
-	Container*		m_NextScreen;
-	Container*		m_PreviousScreen;
-	TweenManager*	m_TweenManager;
+	DisplayObject*		m_NextScreen;
+	DisplayObject*		m_PreviousScreen;
+	TweenManager*		m_TweenManager;
 
 public:
-	void	SetNextScreen(Container& value)		{ m_NextScreen = &value; };
-	void	SetPreviousScreen(Container& value)	{ m_PreviousScreen = &value; };
+	void	SetNextScreen(DisplayObject& value)		{ m_NextScreen = &value; };
+	void	SetPreviousScreen(DisplayObject& value)	{ m_PreviousScreen = &value; };
 	void	SetTweenManager(TweenManager& value)		{ m_TweenManager = &value; };
 
 public:

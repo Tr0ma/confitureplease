@@ -67,7 +67,7 @@ void GestureManager::OnTouchBegin(int x, int y)
 
 		if (!gesture.GetEnabled()) continue;
 
-		if (gesture.GetTarget().HitTest(x, y))
+		if (gesture.GetTarget().HitTest(Vec2d(x, y)))
 		{
 			gesture.BeginTouch(x, y);
 		}
@@ -85,7 +85,7 @@ void GestureManager::OnTouchEnd(int x, int y)
 
 		if (!gesture.GetEnabled()) continue;
 
-		if (gesture.GetTarget().HitTest(x, y))
+		if (gesture.GetTarget().HitTest(Vec2d(x, y)))
 		{
 			gesture.EndTouch(x, y);
 		}
@@ -103,7 +103,7 @@ void GestureManager::OnTouchMove(int x, int y)
 
 		if (!gesture.GetEnabled()) continue;
 
-		if (gesture.GetTarget().HitTest(x, y))
+		if (gesture.GetTarget().HitTest(Vec2d(x, y)))
 		{
 			gesture.MoveTouch(x, y);
 		}
@@ -115,7 +115,7 @@ void GestureManager::Update(float deltaTime)
 	m_InputAdapater.Update(deltaTime);
 }
 
-TapGesture& GestureManager::GetTapGesture(Container& target)
+TapGesture& GestureManager::GetTapGesture(DisplayObject& target)
 {
 	return *(new TapGesture(target));
 }

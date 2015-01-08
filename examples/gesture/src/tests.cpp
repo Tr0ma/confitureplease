@@ -6,73 +6,66 @@ using namespace std;
 
 GestureTest::GestureTest()
 {
-	m_Scene = new CNode();
+	Rectangle viewport = Rectangle(0, 0, static_cast<float>(Iw2DGetSurfaceWidth()), static_cast<float>(Iw2DGetSurfaceHeight()));
+	m_Confiture = new Confiture(viewport);
 
-	m_ImageUp = Iw2DCreateImage("textures/button_up.png");
-	m_ImageDown = Iw2DCreateImage("textures/button_down.png");
+	m_AssetManager = new AssetManager();
+	m_AssetManager->AddAtlas("my-atlas", "atlas/my-atlas.png", "atlas/my-atlas.json");
 
-	m_UpButton = new Sprite();
-	m_UpButton->SetImage(m_ImageUp);
-	m_UpButton->SetWidth(static_cast<int>(m_ImageUp->GetWidth()));
-	m_UpButton->SetHeight(static_cast<int>(m_ImageUp->GetHeight()));
+	Atlas* atlas = m_AssetManager->GetTextureAtlas("my-atlas");
 
-	m_DownButton = new Sprite();
-	m_DownButton->SetImage(m_ImageDown);
+	m_UpButton = new Image(*(atlas->GetTexture("blue.png")));
+	m_Confiture->GetStage().AddChild(*m_UpButton);
+
+	m_DownButton = new Image(*(atlas->GetTexture("green.png")));
 	m_DownButton->SetAlpha(0);
-	m_DownButton->SetWidth(static_cast<int>(m_ImageUp->GetWidth()));
-	m_DownButton->SetHeight(static_cast<int>(m_ImageUp->GetHeight()));
+	m_DownButton->SetTouchable(true);
+	m_Confiture->GetStage().AddChild(*m_DownButton);
 
-	m_Scene->AddChild(&(m_DownButton->GetCNode()));
-	m_Scene->AddChild(&(m_UpButton->GetCNode()));
-	
-	inputAdapater = new s3eInputAdapter();
-	gestureManager = new GestureManager(*inputAdapater);
+	m_InputAdapter = new s3eInputAdapter();
+	m_GestureManager = new GestureManager(*m_InputAdapter);
 
-	m_UpTap = &(gestureManager->AddGesture<TapGesture>(*m_UpButton, &GestureTest::OnUpTap, *this));
-	m_DownTap = &(gestureManager->AddGesture<TapGesture>(*m_DownButton, &GestureTest::OnDownTap, *this));
-	m_DownTap->SetEnabled(false);
+	m_UpTap = &(m_GestureManager->AddGesture<TapGesture>(*m_UpButton, &GestureTest::OnUpTap, *this));
+	m_DownTap = &(m_GestureManager->AddGesture<TapGesture>(*m_DownButton, &GestureTest::OnDownTap, *this));
 }
 
 GestureTest::~GestureTest()
 {
-	delete gestureManager;
-	delete inputAdapater;
+	delete m_GestureManager;
+	delete m_InputAdapter;
 
 	delete m_DownButton;
 	delete m_UpButton;
-
-	delete m_ImageDown;
-	delete m_ImageUp;
-
-	delete m_Scene;
 }
 
 void GestureTest::OnUpTap(Event& evt)
 {
-	m_UpButton->SetAlpha(0);
-	m_DownButton->SetAlpha(1.0f);
+	GestureTest* test = this;
 
-	m_DownTap->SetEnabled(true);
-	m_UpTap->SetEnabled(false);
+	m_UpButton->SetAlpha(0);
+	m_UpButton->SetTouchable(false);
+
+	m_DownButton->SetAlpha(1.0f);
+	m_DownButton->SetTouchable(true);
 }
 
 void GestureTest::OnDownTap(Event& evt)
 {
 	m_DownButton->SetAlpha(0);
-	m_UpButton->SetAlpha(1.0f);
+	m_DownButton->SetTouchable(false);
 
-	m_DownTap->SetEnabled(false);
-	m_UpTap->SetEnabled(true);
+	m_UpButton->SetAlpha(1.0f);
+	m_UpButton->SetTouchable(true);
 }
 
 void GestureTest::Update(float deltaTime)
 {
-	gestureManager->Update(deltaTime);
-	m_Scene->Update(deltaTime);
+	//m_GestureManager->Update(deltaTime);
+	m_Confiture->Update(deltaTime);
 }
 
 void GestureTest::Render()
 {
-	m_Scene->Render();
+	m_Confiture->Render();
 }
 

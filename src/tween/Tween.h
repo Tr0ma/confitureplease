@@ -2,7 +2,7 @@
 #define _TWEEN_H_
 
 #include "EventDispatcher.h"
-#include "Display.h"
+#include "DisplayObject.h"
 
 class Tween;
 
@@ -194,7 +194,7 @@ private:
 
 };
 
-typedef TweenSpec<int, Container, &Container::GetX, &Container::SetX> TweenX;
+typedef TweenSpec<float, DisplayObject, &DisplayObject::GetX, &DisplayObject::SetX> TweenX;
 
 
 #endif

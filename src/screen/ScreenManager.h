@@ -1,7 +1,7 @@
 #ifndef _SEQUENCE_H_
 #define _SEQUENCE_H_
 
-#include "Display.h"
+#include "DisplayObject.h"
 #include "Transitions.h"
 #include <vector>
 
@@ -78,7 +78,7 @@ private:
 	EventDispatcher				m_Dispatcher;
 	bool						m_Busy;
 	vector<TransitionItem*>		m_Transitions;
-	vector<Container*>			m_ScreenStack;
+	vector<DisplayObject*>		m_ScreenStack;
 	TweenManager&				m_TweenManager;
 
 public:
@@ -86,7 +86,7 @@ public:
 	~ScreenManager() {}
 
 	template<class C>
-	void ShowScreen(Container& screen, Transition& (C::*fct)(), C& proxy);
+	void ShowScreen(DisplayObject& screen, Transition& (C::*fct)(), C& proxy);
 
 	void ShowPreviousScreen() {};
 
@@ -98,7 +98,7 @@ private:
 };
 
 template<class C>
-void ScreenManager::ShowScreen(Container& screen, Transition& (C::*fct)(), C& proxy)
+void ScreenManager::ShowScreen(DisplayObject& screen, Transition& (C::*fct)(), C& proxy)
 {
 	if (m_Busy) return;
 

@@ -1,5 +1,6 @@
 #include "DisplayObject.h"
 #include "DisplayObjectContainer.h"
+#include "Stage.h"
 #include <math.h>
 
 vector<DisplayObject*>	DisplayObject::ancestors;
@@ -113,6 +114,11 @@ void DisplayObject::SetParent(DisplayObjectContainer* value)
 	m_Parent = value;
 }
 
+Stage* DisplayObject::GetStage()
+{
+	return dynamic_cast<Stage*>(&GetBase());
+}
+
 DisplayObject& DisplayObject::GetBase()
 {
 	DisplayObject* current = this;
@@ -126,8 +132,7 @@ DisplayObject& DisplayObject::GetBase()
 
 bool DisplayObject::hasVisibleArea()
 {
-	// add scaleX/scaleY != 0
-	return m_Alpha != 0 && m_Visible;
+	return m_Alpha != 0 && m_Visible && m_ScaleX != 0 && m_ScaleY != 0;
 }
 
 Matrix& DisplayObject::GetTransformationMatrix()
@@ -234,6 +239,18 @@ Matrix&	DisplayObject::GetRelativeTransformationMatrix(DisplayObject* target, Ma
 	resultMatrix.Concat(helperMatrix);
 
 	return resultMatrix;
+}
+
+DisplayObject* DisplayObject::HitTest(Vec2d localPoint)
+{
+	if (!m_Visible || !m_Touchable) return nullptr;
+
+	if (GetBounds(*this, helperRect).ContainsPoint(localPoint))
+	{
+		return this;
+	}
+
+	return nullptr;
 }
 
 DisplayObject* DisplayObject::FindCommonParent(DisplayObject& objectA, DisplayObject& objectB)

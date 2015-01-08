@@ -1,30 +1,26 @@
 #ifndef _TESTS_H_
 #define _TESTS_H_
 
+#include "Confiture.h"
+#include "AssetManager.h"
 #include "Gesture.h"
+#include "Image.h"
 #include "s3eInputAdapter.h"
-#include "Iw2DSceneGraph.h"
-#include "Display.h"
-
-using namespace Iw2DSceneGraph;
-using namespace Iw2DSceneGraphCore;
 
 class GestureTest
 {
 private:
-	CNode*		m_Scene;
+	Confiture*			m_Confiture;
+	AssetManager*		m_AssetManager;
 
-	CIw2DImage* m_ImageUp;
-	CIw2DImage* m_ImageDown;
+	Image*				m_UpButton;
+	Image*				m_DownButton;
 
-	Sprite*	m_UpButton;
-	Sprite*	m_DownButton;
+	s3eInputAdapter*	m_InputAdapter;
+	GestureManager*		m_GestureManager;
 
-	s3eInputAdapter* inputAdapater;
-	GestureManager* gestureManager;
-
-	TapGesture*	m_DownTap;
-	TapGesture*	m_UpTap;
+	TapGesture*			m_DownTap;
+	TapGesture*			m_UpTap;
 
 public:
 	GestureTest();
