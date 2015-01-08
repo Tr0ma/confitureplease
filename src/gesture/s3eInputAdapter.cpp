@@ -1,4 +1,7 @@
 #include "s3eInputAdapter.h"
+#include <iostream>
+
+using namespace std;
 
 s3eInputAdapter::s3eInputAdapter()
 {
@@ -25,11 +28,11 @@ void s3eInputAdapter::TouchButtonCB(s3ePointerEvent* event, void* data)
 
 	if (event->m_Pressed)
 	{
-		adapter->GetGestureManager().OnTouchBegin(event->m_x, event->m_y);
+        adapter->GetGestureManager().OnTouchBegin(Vec2d(event->m_x, event->m_y));
 	}
 	else
 	{
-		adapter->GetGestureManager().OnTouchEnd(event->m_x, event->m_y);
+		adapter->GetGestureManager().OnTouchEnd(Vec2d(event->m_x, event->m_y));
 	}
 }
 
@@ -37,7 +40,7 @@ void s3eInputAdapter::TouchMotionCB(s3ePointerMotionEvent* event, void* data)
 {
 	s3eInputAdapter* adapter = static_cast<s3eInputAdapter*>(data);
 
-	adapter->GetGestureManager().OnTouchMove(event->m_x, event->m_y);
+	adapter->GetGestureManager().OnTouchMove(Vec2d(event->m_x, event->m_y));
 }
 
 void s3eInputAdapter::MultiTouchButtonCB(s3ePointerTouchEvent* event, void* data)
@@ -46,11 +49,11 @@ void s3eInputAdapter::MultiTouchButtonCB(s3ePointerTouchEvent* event, void* data
 
 	if (event->m_Pressed)
 	{
-		adapter->GetGestureManager().OnTouchBegin(event->m_x, event->m_y);
+		adapter->GetGestureManager().OnTouchBegin(Vec2d(event->m_x, event->m_y));
 	}
 	else
 	{
-		adapter->GetGestureManager().OnTouchEnd(event->m_x, event->m_y);
+		adapter->GetGestureManager().OnTouchEnd(Vec2d(event->m_x, event->m_y));
 	}
 }
 
@@ -58,6 +61,6 @@ void s3eInputAdapter::MultiTouchMotionCB(s3ePointerTouchMotionEvent* event, void
 {
 	s3eInputAdapter* adapter = static_cast<s3eInputAdapter*>(data);
 
-	adapter->GetGestureManager().OnTouchMove(event->m_x, event->m_y);
+	adapter->GetGestureManager().OnTouchMove(Vec2d(event->m_x, event->m_y));
 }
 

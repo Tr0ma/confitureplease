@@ -23,7 +23,7 @@ GestureTest::GestureTest()
 	m_Confiture->GetStage().AddChild(*m_DownButton);
 
 	m_InputAdapter = new s3eInputAdapter();
-	m_GestureManager = new GestureManager(*m_InputAdapter);
+	m_GestureManager = new GestureManager(*m_InputAdapter, m_Confiture->GetStage());
 
 	m_UpTap = &(m_GestureManager->AddGesture<TapGesture>(*m_UpButton, &GestureTest::OnUpTap, *this));
 	m_DownTap = &(m_GestureManager->AddGesture<TapGesture>(*m_DownButton, &GestureTest::OnDownTap, *this));

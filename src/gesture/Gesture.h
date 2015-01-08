@@ -4,6 +4,7 @@
 #include "EventDispatcher.h"
 #include "DisplayObject.h"
 #include "Updateable.h"
+#include "Stage.h"
 
 class GestureManager;
 
@@ -63,16 +64,16 @@ public:
 	explicit Gesture(DisplayObject& target) : m_Target(target), m_TouchCount(0) {}
 	virtual ~Gesture() {}
 
-	void BeginTouch(int x, int y);
-	void EndTouch(int x, int y);
-	void MoveTouch(int x, int y);
+	void BeginTouch(Vec2d point);
+	void EndTouch(Vec2d point);
+	void MoveTouch(Vec2d point);
 
 protected:
 	void SetState(GestureState state);
 
-	virtual void OnTouchBegin(int x, int y) {};
-	virtual void OnTouchEnd(int x, int y) {};
-	virtual void OnTouchMove(int x, int y) {};
+	virtual void OnTouchBegin(Vec2d point) {}
+	virtual void OnTouchEnd(Vec2d point) {}
+	virtual void OnTouchMove(Vec2d point) {}
 };
 
 
@@ -83,9 +84,9 @@ public:
 	~TapGesture() {}
 
 protected:
-	virtual void OnTouchBegin(int x, int y) override;
-	virtual void OnTouchEnd(int x, int y) override;
-	virtual void OnTouchMove(int x, int y) override;
+	virtual void OnTouchBegin(Vec2d point) override;
+	virtual void OnTouchEnd(Vec2d point) override;
+	virtual void OnTouchMove(Vec2d point) override;
 };
 
 
@@ -143,12 +144,11 @@ class GestureManager : public IUpdateable
 private:
 	InputAdapter&			m_InputAdapater;
 	vector<GestureMapItem*>	m_Items;
+    Stage&                  m_Stage;
 
 public:
-	explicit GestureManager(InputAdapter& inputAdapter);
+	explicit GestureManager(InputAdapter& inputAdapter, Stage& stage);
 	~GestureManager() {};
-
-	void Update(float deltaTime = 0.0f) override;
 
 	template<class G, class C>
 	G& AddGesture(DisplayObject& target, void (C::*fct)(Event&), C& proxy);
@@ -160,10 +160,12 @@ public:
 	void RemoveAllGesturesOf(C& proxy) {};
 
 	TapGesture& GetTapGesture(DisplayObject& target);
+    void AddHitTester();
+    void Update(float deltaTime = 0.0f) override;
 
-	void OnTouchBegin(int x, int y);
-	void OnTouchEnd(int x, int y);
-	void OnTouchMove(int x, int y);
+	void OnTouchBegin(Vec2d point);
+	void OnTouchEnd(Vec2d point);
+	void OnTouchMove(Vec2d point);
 
 private:
 	void RemoveAllGestures() {}

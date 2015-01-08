@@ -5,23 +5,23 @@ using namespace std;
 
 const char* GestureEvent::GESTURE_RECOGNIZED = "GestureEvent_GESTURE_RECOGNIZED";
 
-void Gesture::BeginTouch(int x, int y)
+void Gesture::BeginTouch(Vec2d point)
 {
 	m_TouchCount++;
 
-	OnTouchBegin(x, y);
+	OnTouchBegin(point);
 }
 
-void Gesture::EndTouch(int x, int y)
+void Gesture::EndTouch(Vec2d point)
 {
 	m_TouchCount--;
 
-	OnTouchEnd(x, y);
+	OnTouchEnd(point);
 }
 
-void Gesture::MoveTouch(int x, int y)
+void Gesture::MoveTouch(Vec2d point)
 {
-	OnTouchMove(x, y);
+	OnTouchMove(point);
 }
 
 void Gesture::SetState(GestureState state)
@@ -29,12 +29,12 @@ void Gesture::SetState(GestureState state)
 	m_State = state;
 }
 
-void TapGesture::OnTouchBegin(int x, int y)
+void TapGesture::OnTouchBegin(Vec2d point)
 {
 	SetState(BEGAN);
 }
 
-void TapGesture::OnTouchEnd(int x, int y)
+void TapGesture::OnTouchEnd(Vec2d point)
 {
 	if (m_State == BEGAN)
 	{
@@ -45,19 +45,26 @@ void TapGesture::OnTouchEnd(int x, int y)
 	}
 }
 
-void TapGesture::OnTouchMove(int x, int y)
+void TapGesture::OnTouchMove(Vec2d point)
 {
 	
 }
 
-GestureManager::GestureManager(InputAdapter& inputAdapter) : m_InputAdapater(inputAdapter)
+GestureManager::GestureManager(InputAdapter& inputAdapter, Stage& stage) : m_InputAdapater(inputAdapter), m_Stage(stage)
 {
 	inputAdapter.SetGestureManager(*this);
-};
+}
 
-void GestureManager::OnTouchBegin(int x, int y)
+void GestureManager::OnTouchBegin(Vec2d point)
 {
 	cout << "touch begin" << endl;
+
+    DisplayObject* target = m_Stage.HitTest(point);
+
+    if (!target || target == &m_Stage)
+    {
+        return;
+    }
 
 	const unsigned short l = m_Items.size();
 	for (unsigned int i = 0 ; i < l ; i++)
@@ -67,14 +74,14 @@ void GestureManager::OnTouchBegin(int x, int y)
 
 		if (!gesture.GetEnabled()) continue;
 
-		if (gesture.GetTarget().HitTest(Vec2d(x, y)))
+		if (&gesture.GetTarget() == target)
 		{
-			gesture.BeginTouch(x, y);
+			gesture.BeginTouch(point);
 		}
 	}
 }
 
-void GestureManager::OnTouchEnd(int x, int y)
+void GestureManager::OnTouchEnd(Vec2d point)
 {
 	cout << "touch end" << endl;
 	const unsigned short l = m_Items.size();
@@ -85,14 +92,14 @@ void GestureManager::OnTouchEnd(int x, int y)
 
 		if (!gesture.GetEnabled()) continue;
 
-		if (gesture.GetTarget().HitTest(Vec2d(x, y)))
+		if (gesture.GetTarget().HitTest(point))
 		{
-			gesture.EndTouch(x, y);
+			gesture.EndTouch(point);
 		}
 	}
 }
 
-void GestureManager::OnTouchMove(int x, int y)
+void GestureManager::OnTouchMove(Vec2d point)
 {
 	cout << "touch move" << endl;
 	const unsigned short l = m_Items.size();
@@ -103,9 +110,9 @@ void GestureManager::OnTouchMove(int x, int y)
 
 		if (!gesture.GetEnabled()) continue;
 
-		if (gesture.GetTarget().HitTest(Vec2d(x, y)))
+		if (gesture.GetTarget().HitTest(point))
 		{
-			gesture.MoveTouch(x, y);
+			gesture.MoveTouch(point);
 		}
 	}
 }
