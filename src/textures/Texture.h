@@ -9,11 +9,11 @@ protected:
 	CIw2DImage&		m_Image;
 
 public:
-	virtual int		GetX()		{ return 0; }
-	virtual int		GetY()		{ return 0; }
-	virtual int		GetWidth()	{ return static_cast<int>(m_Image.GetWidth()); }
-	virtual int		GetHeight() { return static_cast<int>(m_Image.GetHeight()); }
-	CIw2DImage&		GetImage()	{ return m_Image; }
+	virtual float		GetX()		{ return 0; }
+	virtual float		GetY()		{ return 0; }
+	virtual float		GetWidth()	{ return m_Image.GetWidth(); }
+	virtual float		GetHeight() { return m_Image.GetHeight(); }
+	CIw2DImage&			GetImage()	{ return m_Image; }
 
 public:
 	explicit Texture(CIw2DImage& image) : m_Image(image) {}

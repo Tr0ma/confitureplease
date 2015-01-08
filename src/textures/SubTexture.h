@@ -11,10 +11,10 @@ private:
 	Rectangle	m_Region;
 
 public:
-	virtual int		GetX() override			{ return m_Region.m_X; }
-	virtual int		GetY() override			{ return m_Region.m_Y; }
-	virtual int		GetWidth() override		{ return m_Region.m_Width; }
-	virtual int		GetHeight() override	{ return m_Region.m_Height; }
+	virtual float		GetX() override			{ return m_Region.m_X; }
+	virtual float		GetY() override			{ return m_Region.m_Y; }
+	virtual float		GetWidth() override		{ return m_Region.m_Width; }
+	virtual float		GetHeight() override	{ return m_Region.m_Height; }
 
 public:
 	explicit SubTexture(Texture& parentTexture, Rectangle region) 

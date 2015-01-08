@@ -1,7 +1,9 @@
 #include "DisplayObjectContainer.h"
 #include "RenderSupport.h"
 #include "MatrixUtil.h"
-#include <climits>
+#include <limits> 
+
+using namespace std;
 
 DisplayObject& DisplayObjectContainer::AddChild(DisplayObject& child)
 {
@@ -14,8 +16,6 @@ DisplayObject& DisplayObjectContainer::AddChildAt(DisplayObject& child, int inde
 	m_Children.insert(m_Children.begin() + index, &child);
 
 	child.SetParent(this);
-	//child.SetStage(m_Stage);
-
 	return child;
 }
 
@@ -61,34 +61,19 @@ Rectangle& DisplayObjectContainer::GetBounds(DisplayObject& target, Rectangle& r
 	}
 	else
 	{
-		int minX = INT_MAX;
-		int minY = INT_MAX;
-		int maxX = -INT_MAX;
-		int maxY = -INT_MAX; 
+		float minX = numeric_limits<float>::max();
+		float minY = numeric_limits<float>::max();
+		float maxX = numeric_limits<float>::min();
+		float maxY = numeric_limits<float>::min(); 
 
 		for (int i = 0 ; i < m_NumChildren ; i++)
 		{
 			m_Children[i]->GetBounds(target, resultRect);
 
-			if (minX > resultRect.m_X)
-			{
-				minX = resultRect.m_X;
-			}
-
-			if (maxX < resultRect.GetRight())
-			{
-				maxX = resultRect.GetRight();
-			}
-
-			if (minY > resultRect.m_Y)
-			{
-				minY = resultRect.m_Y;
-			}
-
-			if (maxY > resultRect.GetBottom())
-			{
-				maxY = resultRect.GetBottom();
-			}
+			if (minX > resultRect.m_X) minX = resultRect.m_X;
+			if (maxX < resultRect.GetRight()) maxX = resultRect.GetRight();
+			if (minY > resultRect.m_Y) minY = resultRect.m_Y;
+			if (maxY > resultRect.GetBottom()) maxY = resultRect.GetBottom();
 		}
 
 		resultRect.SetTo(minX, minY, maxX - minX, maxY - minY);

@@ -4,19 +4,19 @@
 class Rectangle
 {
 public:
-	int m_X;
-	int m_Y;
-	int m_Width;
-	int m_Height;
+	float m_X;
+	float m_Y;
+	float m_Width;
+	float m_Height;
 
 public:
-	explicit Rectangle(int x = 0, int y = 0, int width = 0, int height = 0) 
+	explicit Rectangle(float x = 0, float y = 0, float width = 0, float height = 0) 
 		: m_X(x), m_Y(y), m_Width(width), m_Height(height) {}
 
-	void SetTo(int x, int y, int width, int height);
+	void SetTo(float x, float y, float width, float height);
 
-	int GetRight();
-	int GetBottom();
+	float GetRight();
+	float GetBottom();
 
 	~Rectangle() {}
 };

@@ -1,6 +1,6 @@
 #include "Rectangle.h"
 
-void Rectangle::SetTo(int x, int y, int width, int height)
+void Rectangle::SetTo(float x, float y, float width, float height)
 {
 	m_X = x;
 	m_Y = y;
@@ -8,12 +8,12 @@ void Rectangle::SetTo(int x, int y, int width, int height)
 	m_Height = height;
 }
 
-int Rectangle::GetRight()
+float Rectangle::GetRight()
 {
 	return m_X + m_Width;
 }
 
-int Rectangle::GetBottom()
+float Rectangle::GetBottom()
 {
 	return m_Y + m_Height;
 }

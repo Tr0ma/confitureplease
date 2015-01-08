@@ -15,10 +15,10 @@ class DisplayObjectContainer;
 class DisplayObject
 {
 private:
-	int							m_X;
-	int							m_Y;
-	int							m_PivotX;
-	int							m_PivotY;
+	float						m_X;
+	float						m_Y;
+	float						m_PivotX;
+	float						m_PivotY;
 	float						m_ScaleX;
 	float						m_ScaleY;
 	float						m_Rotation;
@@ -29,17 +29,17 @@ private:
 	bool						m_OrientationChanged;
 
 public:
-	int			GetX() 							{ return m_X; }
-	void		SetX(int value);
+	float		GetX() 							{ return m_X; }
+	void		SetX(float value);
 
-	int			GetY() 							{ return m_Y; }
-	void		SetY(int value);
+	float		GetY() 							{ return m_Y; }
+	void		SetY(float value);
 
-	int			GetPivotX()						{ return m_Y; }
-	void		SetPivotX(int value);
+	float		GetPivotX()						{ return m_Y; }
+	void		SetPivotX(float value);
 
-	int			GetPivotY()						{ return m_Y; }
-	void		SetPivotY(int value);
+	float		GetPivotY()						{ return m_Y; }
+	void		SetPivotY(float value);
 
 	float		GetScaleX()						{ return m_ScaleX; }
 	void		SetScaleX(float value);
@@ -56,11 +56,11 @@ public:
 	bool		GetVisible() 					{ return m_Visible; }
 	void		SetVisible(bool value) 			{ m_Visible = value; }
 
-	int			GetWidth();
-	void		SetWidth(int value);
+	float		GetWidth();
+	void		SetWidth(float value);
 
-	int			GetHeight();
-	void		SetHeight(int value);
+	float		GetHeight();
+	void		SetHeight(float value);
 
 	DisplayObjectContainer*		GetParent() 								{ return m_Parent; }
 	void						SetParent(DisplayObjectContainer* value);

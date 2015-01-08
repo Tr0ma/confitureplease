@@ -7,7 +7,7 @@ Rectangle				DisplayObject::helperRect;
 Matrix					DisplayObject::helperMatrix;
 Vec2d					DisplayObject::helperVec2d;
 
-void DisplayObject::SetX(int value)
+void DisplayObject::SetX(float value)
 {
 	if (m_X != value)
 	{
@@ -16,7 +16,7 @@ void DisplayObject::SetX(int value)
 	}
 }
 
-void DisplayObject::SetY(int value)
+void DisplayObject::SetY(float value)
 {
 	if (m_Y != value)
 	{
@@ -25,7 +25,7 @@ void DisplayObject::SetY(int value)
 	}
 }
 
-void DisplayObject::SetPivotX(int value)
+void DisplayObject::SetPivotX(float value)
 {
 	if (m_PivotX != value)
 	{
@@ -34,7 +34,7 @@ void DisplayObject::SetPivotX(int value)
 	}
 }
 
-void DisplayObject::SetPivotY(int value)
+void DisplayObject::SetPivotY(float value)
 {
 	if (m_PivotY != value)
 	{
@@ -77,30 +77,30 @@ void DisplayObject::SetAlpha(float value)
 	m_Alpha = value < 0 ? 0 : (value > 1.0f) ? 1.0f : value;
 }
 
-int DisplayObject::GetWidth()
+float DisplayObject::GetWidth()
 {
 	return GetBounds(*m_Parent, helperRect).m_Width;
 }
 
-void DisplayObject::SetWidth(int value)
+void DisplayObject::SetWidth(float value)
 {
 	SetScaleX(1.0f);
-	int actualWidth = GetWidth();
+	float actualWidth = GetWidth();
 	if (actualWidth != 0)
 	{
 		SetScaleX(value / actualWidth);
 	}
 }
 
-int DisplayObject::GetHeight()
+float DisplayObject::GetHeight()
 {
 	return GetBounds(*m_Parent, helperRect).m_Height;
 }
 
-void DisplayObject::SetHeight(int value)
+void DisplayObject::SetHeight(float value)
 {
 	SetScaleY(1.0f);
-	int actualHeight = GetHeight();
+	float actualHeight = GetHeight();
 	if (actualHeight != 0)
 	{
 		SetScaleY(value / actualHeight);

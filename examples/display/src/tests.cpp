@@ -29,6 +29,9 @@ Tests::Tests()
 	//topContainer->AddChild(*container);
 
 	Image* image = new Image(*(atlas->GetTexture("blue.png")));
+
+	float l = static_cast<float>(100) /  static_cast<float>(98);
+
 	image->SetWidth(100);
 	//container->AddChild(*image);
 
