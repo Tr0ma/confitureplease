@@ -82,7 +82,7 @@ protected:
 public:
 	DisplayObject() 
 		: m_X(0.0f), m_Y(0.0f), m_PivotX(0.0f), m_PivotY(0.0f), m_ScaleX(1.0f), m_ScaleY(1.0f), m_Rotation(0.0f), 
-		m_Alpha(1.0f), m_Visible(true), m_Parent(nullptr), m_OrientationChanged(false) {}
+		m_Alpha(1.0f), m_Visible(true), m_Parent(nullptr), m_OrientationChanged(false), m_Touchable(true) {}
 
     virtual ~DisplayObject() {}
 

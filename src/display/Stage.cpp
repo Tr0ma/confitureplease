@@ -10,7 +10,7 @@ DisplayObject* Stage::HitTest(Vec2d localPoint)
     }
 
     DisplayObject* target = DisplayObjectContainer::HitTest(localPoint);
-    if (target) target = this;
+    if (!target) target = this;
 
     return target;
 }

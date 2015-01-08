@@ -4,7 +4,7 @@
 #include "Confiture.h"
 #include "AssetManager.h"
 #include "Gesture.h"
-#include "Image.h"
+#include "GestureManager.h"
 #include "s3eInputAdapter.h"
 
 class GestureTest

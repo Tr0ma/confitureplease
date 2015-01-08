@@ -1,8 +1,8 @@
 #ifndef _S3EINPUTADAPTER_H_
 #define _S3EINPUTADAPTER_H_
 
-#include "Gesture.h"
 #include "s3ePointer.h"
+#include "InputAdapter.h"
 
 class s3eInputAdapter : public InputAdapter
 {

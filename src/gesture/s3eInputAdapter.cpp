@@ -1,4 +1,6 @@
 #include "s3eInputAdapter.h"
+#include "Vec2d.h"
+#include "GestureManager.h"
 #include <iostream>
 
 using namespace std;

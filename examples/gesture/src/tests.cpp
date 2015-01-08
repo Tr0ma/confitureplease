@@ -1,12 +1,13 @@
 #include "tests.h"
 #include "s3eInputAdapter.h"
+#include "Image.h"
 #include <iostream>
 
 using namespace std;
 
 GestureTest::GestureTest()
 {
-	Rectangle viewport = Rectangle(0, 0, static_cast<float>(Iw2DGetSurfaceWidth()), static_cast<float>(Iw2DGetSurfaceHeight()));
+	Rectangle viewport = Rectangle(0, 0, Iw2DGetSurfaceWidth(), Iw2DGetSurfaceHeight());
 	m_Confiture = new Confiture(viewport);
 
 	m_AssetManager = new AssetManager();
@@ -19,7 +20,7 @@ GestureTest::GestureTest()
 
 	m_DownButton = new Image(*(atlas->GetTexture("green.png")));
 	m_DownButton->SetAlpha(0);
-	m_DownButton->SetTouchable(true);
+	m_DownButton->SetTouchable(false);
 	m_Confiture->GetStage().AddChild(*m_DownButton);
 
 	m_InputAdapter = new s3eInputAdapter();
