@@ -35,8 +35,9 @@ public:
 	Touch() {}
 	~Touch() {}
 
-	void SetLocation(Vec2d& point, long time);
-	bool UpdateLocation(Vec2d& point, long time);
+	void            SetLocation(Vec2d& point, long time);
+	bool            UpdateLocation(Vec2d& point, long time);
+    Vec2d           GetLocationOffset();
 };
 
 #endif

@@ -14,27 +14,27 @@ using namespace std;
 class TouchesManager;
 class Stage;
 
-class GestureMapItem
-{
-public:
-    DisplayObject&      m_Target;
-    vector<Gesture*>    m_GestureList;
-
-public:
-	explicit GestureMapItem(DisplayObject& target) : m_Target(target) {}
-	~GestureMapItem() {}
-};
-
-class TouchMapItem
-{
-public:
-    Touch*              m_Touch;
-    vector<Gesture*>    m_GestureList;
-};
-
-
 class GestureManager : public IUpdateable
 {
+private:
+    class GestureMapItem
+    {
+    public:
+        DisplayObject&      m_Target;
+        vector<Gesture*>    m_GestureList;
+
+    public:
+	    explicit GestureMapItem(DisplayObject& target) : m_Target(target) {}
+	    ~GestureMapItem() {}
+    };
+
+    class TouchMapItem
+    {
+    public:
+        Touch*              m_Touch;
+        vector<Gesture*>    m_GestureList;
+    };
+
 private:
 	InputAdapter&				m_InputAdapater;
 	TouchesManager*				m_TouchesManager;

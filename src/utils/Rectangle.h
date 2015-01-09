@@ -19,14 +19,17 @@ public:
 		: m_X(static_cast<float>(x)), m_Y(static_cast<float>(y)), 
 		m_Width(static_cast<float>(width)), m_Height(static_cast<float>(height)) {}
 
-	void SetTo(float x, float y, float width, float height);
-
-	float GetRight();
-	float GetBottom();
+	
 
 	~Rectangle() {}
 
-	bool ContainsPoint(Vec2d point);
+	bool        ContainsPoint(Vec2d point);
+    void        SetTo(float x, float y, float width, float height);
+	float       GetRight();
+	float       GetBottom();
+    void        Substract(Rectangle& rect);
+    Rectangle   Clone();
+
 };
 
 #endif

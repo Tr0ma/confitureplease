@@ -1,23 +1,30 @@
 #include "TapGesture.h"
 #include "GestureEvent.h"
 
-void TapGesture::OnTouchBegin(Vec2d point)
+#include <iostream.h>
+
+using namespace std;
+
+void TapGesture::OnTouchBegin(Touch& touch)
 {
 	SetState(BEGAN);
 }
 
-void TapGesture::OnTouchEnd(Vec2d point)
+void TapGesture::OnTouchEnd(Touch& touch)
 {
 	if (m_State == BEGAN)
 	{
-		m_State = ENDED;
+		SetState(ENDED);
 
 		GestureEvent evt(GestureEvent::GESTURE_RECOGNIZED);
 		Dispatch(evt);
 	}
 }
 
-void TapGesture::OnTouchMove(Vec2d point)
+void TapGesture::OnTouchMove(Touch& touch)
 {
-	
+    if (touch.GetLocationOffset().GetLength() > m_Slop)
+    {
+        m_State = ENDED;
+    }
 }

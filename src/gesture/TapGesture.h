@@ -6,13 +6,17 @@
 class TapGesture : public Gesture
 {
 public:
-	explicit TapGesture(DisplayObject& target) : Gesture(target) {}
+    // provide a way to get a more accurate slop depending on dpi
+    const float m_Slop;
+
+public:
+	explicit TapGesture(DisplayObject& target) : Gesture(target), m_Slop(20) {}
 	~TapGesture() {}
 
 protected:
-	virtual void OnTouchBegin(Vec2d point) override;
-	virtual void OnTouchEnd(Vec2d point) override;
-	virtual void OnTouchMove(Vec2d point) override;
+	virtual void OnTouchBegin(Touch& touch) override;
+	virtual void OnTouchEnd(Touch& touch) override;
+	virtual void OnTouchMove(Touch& touch) override;
 };
 
 #endif

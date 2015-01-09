@@ -1,9 +1,6 @@
 #include "GestureManager.h"
 #include "Stage.h"
 #include "TouchesManager.h"
-#include <iostream>
-
-using namespace std;
 
 GestureManager::GestureManager(InputAdapter& inputAdapter, Stage& stage) : m_InputAdapater(inputAdapter), m_Stage(stage)
 {
@@ -13,8 +10,6 @@ GestureManager::GestureManager(InputAdapter& inputAdapter, Stage& stage) : m_Inp
 
 void GestureManager::OnTouchBegin(Touch& touch)
 {
-	cout << "touch begin" << endl;
-
     TouchMapItem* touchMapItem = GetTouchMapItemByTouch(touch);
     vector<Gesture*>* gesturesForTouch;
     if (!touchMapItem)
@@ -59,14 +54,12 @@ void GestureManager::OnTouchBegin(Touch& touch)
     while (i-- > 0)
     {
         Gesture& gesture = *(*gesturesForTouch)[i];
-        gesture.BeginTouch(touch.GetLocation());
+        gesture.BeginTouch(touch);
     }
 }
 
 void GestureManager::OnTouchEnd(Touch& touch)
 {
-	cout << "touch end" << endl;
-
     int index = GetTouchMapItemIndexByTouch(touch);
     TouchMapItem& touchMapItem = *m_TouchMapItems[index];
 
@@ -78,7 +71,7 @@ void GestureManager::OnTouchEnd(Touch& touch)
         Gesture& gesture = *touchMapItem.m_GestureList[i];
         if (gesture.isTrackingTouch(touch.GetId()))
         {
-            gesture.EndTouch(touch.GetLocation());
+            gesture.EndTouch(touch);
         }
     }
 
@@ -88,8 +81,6 @@ void GestureManager::OnTouchEnd(Touch& touch)
 
 void GestureManager::OnTouchMove(Touch& touch)
 {
-	cout << "touch move" << endl;
-
 	int index = GetTouchMapItemIndexByTouch(touch);
     TouchMapItem& touchMapItem = *m_TouchMapItems[index];
 
@@ -101,7 +92,7 @@ void GestureManager::OnTouchMove(Touch& touch)
         Gesture& gesture = *touchMapItem.m_GestureList[i];
         if (gesture.isTrackingTouch(touch.GetId()))
         {
-            gesture.MoveTouch(touch.GetLocation());
+            gesture.MoveTouch(touch);
         }
         else
         {
@@ -130,7 +121,7 @@ void GestureManager::GetHierarchy(DisplayObject& target, vector<DisplayObject*>&
     }
 }
 
-GestureMapItem* GestureManager::GetGestureMapItemByTarget(DisplayObject& target)
+GestureManager::GestureMapItem* GestureManager::GetGestureMapItemByTarget(DisplayObject& target)
 {
     const unsigned short l = m_GestureMapItems.size();
     for (unsigned int i = 0 ; i < l ; i++)
@@ -146,7 +137,7 @@ GestureMapItem* GestureManager::GetGestureMapItemByTarget(DisplayObject& target)
     return nullptr;
 }
 
-TouchMapItem* GestureManager::GetTouchMapItemByTouch(Touch& touch)
+GestureManager::TouchMapItem* GestureManager::GetTouchMapItemByTouch(Touch& touch)
 {
     const unsigned short l = m_TouchMapItems.size();
     for (unsigned int i = 0 ; i < l ; i++)

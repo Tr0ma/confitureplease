@@ -5,29 +5,52 @@ using namespace std;
 
 bool Gesture::isTrackingTouch(int touchId)
 {
-    return true;
+    return (GetTouchIndexById(touchId) != -1);
 }
 
-void Gesture::BeginTouch(Vec2d point)
+void Gesture::BeginTouch(Touch& touch)
 {
-	m_TouchCount++;
+    int index = GetTouchIndexById(touch.GetId());
+    if (index != -1) 
+    {
+        m_TouchMap[index] = &touch;
+    }
+    else
+    {
+        m_TouchMap.push_back(&touch);
+    }
 
-	OnTouchBegin(point);
+	OnTouchBegin(touch);
 }
 
-void Gesture::EndTouch(Vec2d point)
+void Gesture::EndTouch(Touch& touch)
 {
-	m_TouchCount--;
+    int index = GetTouchIndexById(touch.GetId());
+    m_TouchMap.erase(m_TouchMap.begin() + index);
 
-	OnTouchEnd(point);
+	OnTouchEnd(touch);
 }
 
-void Gesture::MoveTouch(Vec2d point)
+void Gesture::MoveTouch(Touch& touch)
 {
-	OnTouchMove(point);
+	OnTouchMove(touch);
 }
 
 void Gesture::SetState(GestureState state)
 {
 	m_State = state;
+}
+
+int Gesture::GetTouchIndexById(int touchId)
+{
+    int i = m_TouchMap.size();
+    while (i-- > 0 )
+    {
+        if (m_TouchMap[i]->GetId() == touchId)
+        {
+            return i;
+        }
+    }
+
+    return -1;
 }

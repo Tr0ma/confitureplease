@@ -22,3 +22,8 @@ bool Touch::UpdateLocation(Vec2d& point, long time)
 
 	return true;
 }
+
+Vec2d Touch::GetLocationOffset()
+{
+    return m_Location.Clone() - m_BeginLocation;
+}
