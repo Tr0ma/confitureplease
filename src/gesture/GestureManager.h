@@ -7,56 +7,29 @@
 #include "InputAdapter.h"
 #include "TapGesture.h"
 #include "Touch.h"
+#include <vector>
+
+using namespace std;
 
 class TouchesManager;
 class Stage;
 
-class GestureMapItemSpecBase
-{
-private:
-	Gesture&	m_Gesture;
-
-public:
-	Gesture&	GetGesture() { return m_Gesture; }
-
-public:
-	explicit GestureMapItemSpecBase(Gesture& gesture) : m_Gesture(gesture) {}
-	virtual ~GestureMapItemSpecBase() {}
-
-	virtual void operator()(Event& evt) {}
-};
-
-template<class C>
-class GestureMapItemSpec : public GestureMapItemSpecBase
-{
-private:
-	C&		m_Proxy;
-	void	(C::*m_Fct)(Event&);
-
-public:
-	C&		GetProxy()					{ return m_Proxy; }
-	void	(C::*GetFunction())(Event&) { return m_Fct; };
-
-public:
-	explicit GestureMapItemSpec(Gesture& gesture, C& proxy, void (C::*fct)(Event&)) 
-		: GestureMapItemSpecBase(gesture), m_Proxy(proxy), m_Fct(fct) {}
-	virtual ~GestureMapItemSpec() {}
-
-	void operator()(Event& evt) override	{ (&m_Proxy->*m_Fct)(evt); }
-};
-
-
 class GestureMapItem
 {
-private:
-	Gesture& m_Gesture;
+public:
+    DisplayObject&      m_Target;
+    vector<Gesture*>    m_GestureList;
 
 public:
-	Gesture&	GetGesture() { return m_Gesture; }
-
-public:
-	explicit GestureMapItem(Gesture& gesture) : m_Gesture(gesture) {}
+	explicit GestureMapItem(DisplayObject& target) : m_Target(target) {}
 	~GestureMapItem() {}
+};
+
+class TouchMapItem
+{
+public:
+    Touch*              m_Touch;
+    vector<Gesture*>    m_GestureList;
 };
 
 
@@ -65,12 +38,13 @@ class GestureManager : public IUpdateable
 private:
 	InputAdapter&				m_InputAdapater;
 	TouchesManager*				m_TouchesManager;
-	vector<GestureMapItem*>		m_Items;
+	vector<GestureMapItem*>		m_GestureMapItems;
+    vector<TouchMapItem*>       m_TouchMapItems;
     Stage&						m_Stage;
 
 public:
 	explicit GestureManager(InputAdapter& inputAdapter, Stage& stage);
-	~GestureManager() {};
+	~GestureManager() {}
 
 	template<class G, class C>
 	G& AddGesture(DisplayObject& target, void (C::*fct)(Event&), C& proxy);
@@ -89,7 +63,11 @@ public:
 	void OnTouchMove(Touch& point);
 
 private:
-	void RemoveAllGestures() {}
+	void            RemoveAllGestures() {}
+    GestureMapItem* GetGestureMapItemByTarget(DisplayObject& target);
+    TouchMapItem*   GetTouchMapItemByTouch(Touch& touch);
+    int             GetTouchMapItemIndexByTouch(Touch& touch);
+    void            GetHierarchy(DisplayObject& target, vector<DisplayObject*>& result);
 };
 
 template<class G, class C>
@@ -97,8 +75,15 @@ G& GestureManager::AddGesture(DisplayObject& target, void (C::*fct)(Event&), C& 
 {
 	G* gesture = new G(target);
 	gesture->AddListener(GestureEvent::GESTURE_RECOGNIZED, fct, proxy);
-	GestureMapItem* item = new GestureMapItem(*gesture);
-	m_Items.push_back(item);
+
+    GestureMapItem* item = GetGestureMapItemByTarget(target);
+    if (!item)
+    {
+        item = new GestureMapItem(target);
+        m_GestureMapItems.push_back(item);
+    }
+
+    item->m_GestureList.push_back(gesture);
 	return *gesture;
 }
 

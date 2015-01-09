@@ -31,6 +31,8 @@ public:
 	explicit Gesture(DisplayObject& target) : m_Target(target), m_TouchCount(0) {}
 	virtual ~Gesture() {}
 
+    bool isTrackingTouch(int touchId);
+
 	void BeginTouch(Vec2d point);
 	void EndTouch(Vec2d point);
 	void MoveTouch(Vec2d point);

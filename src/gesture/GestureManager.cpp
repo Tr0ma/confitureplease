@@ -15,55 +15,99 @@ void GestureManager::OnTouchBegin(Touch& touch)
 {
 	cout << "touch begin" << endl;
 
-	const unsigned short l = m_Items.size();
-	for (unsigned int i = 0 ; i < l ; i++)
-	{
-		GestureMapItem& item = *m_Items[i];
-		Gesture& gesture = item.GetGesture();
+    TouchMapItem* touchMapItem = GetTouchMapItemByTouch(touch);
+    vector<Gesture*>* gesturesForTouch;
+    if (!touchMapItem)
+    {
+        touchMapItem = new TouchMapItem();
+        touchMapItem->m_Touch = &touch;
+        m_TouchMapItems.push_back(touchMapItem);
+        gesturesForTouch = &(touchMapItem->m_GestureList);
+    }
+    else
+    {
+        gesturesForTouch = &(touchMapItem->m_GestureList);
+        gesturesForTouch->clear();
+    }
 
-		if (!gesture.GetEnabled()) continue;
+    vector<DisplayObject*> hierarchy;
+    DisplayObject* target = touch.GetTarget();
 
-		if (&gesture.GetTarget() == touch.GetTarget())
-		{
-			gesture.BeginTouch(touch.GetLocation());
-		}
-	}
+    GetHierarchy(*target, hierarchy);
+
+    vector<Gesture*>* gesturesForTarget;
+    GestureMapItem* gestureMapItem;
+    for each (target in hierarchy)
+    {
+        gestureMapItem = GetGestureMapItemByTarget(*target);
+        if (gestureMapItem)
+        {
+            gesturesForTarget = &(gestureMapItem->m_GestureList);
+            int i = gesturesForTarget->size();
+            while (i-- > 0)
+            {
+                Gesture& gesture = *(*gesturesForTarget)[i];
+                if (gesture.GetEnabled())
+                {
+                    gesturesForTouch->insert(gesturesForTouch->begin(), &gesture);
+                }
+            }
+        }
+    }
+
+    int i = gesturesForTouch->size();
+    while (i-- > 0)
+    {
+        Gesture& gesture = *(*gesturesForTouch)[i];
+        gesture.BeginTouch(touch.GetLocation());
+    }
 }
 
 void GestureManager::OnTouchEnd(Touch& touch)
 {
 	cout << "touch end" << endl;
-	const unsigned short l = m_Items.size();
-	for (unsigned int i = 0 ; i < l ; i++)
-	{
-		GestureMapItem& item = *m_Items[i];
-		Gesture& gesture = item.GetGesture();
 
-		if (!gesture.GetEnabled()) continue;
+    int index = GetTouchMapItemIndexByTouch(touch);
+    TouchMapItem& touchMapItem = *m_TouchMapItems[index];
 
-		if (&gesture.GetTarget() == touch.GetTarget())
-		{
-			gesture.EndTouch(touch.GetLocation());
-		}
-	}
+    vector<Gesture*> gestureForTouch = touchMapItem.m_GestureList;
+    int i = gestureForTouch.size();
+
+    while (i-- > 0)
+    {
+        Gesture& gesture = *touchMapItem.m_GestureList[i];
+        if (gesture.isTrackingTouch(touch.GetId()))
+        {
+            gesture.EndTouch(touch.GetLocation());
+        }
+    }
+
+    m_TouchMapItems.erase(m_TouchMapItems.begin() + index);
+    delete &touchMapItem;
 }
 
 void GestureManager::OnTouchMove(Touch& touch)
 {
 	cout << "touch move" << endl;
-	const unsigned short l = m_Items.size();
-	for (unsigned int i = 0 ; i < l ; i++)
-	{
-		GestureMapItem& item = *m_Items[i];
-		Gesture& gesture = item.GetGesture();
 
-		if (!gesture.GetEnabled()) continue;
+	int index = GetTouchMapItemIndexByTouch(touch);
+    TouchMapItem& touchMapItem = *m_TouchMapItems[index];
 
-		if (&gesture.GetTarget() == touch.GetTarget())
-		{
-			gesture.MoveTouch(touch.GetLocation());
-		}
-	}
+    vector<Gesture*> gestureForTouch = touchMapItem.m_GestureList;
+    int i = gestureForTouch.size();
+
+    while (i-- > 0)
+    {
+        Gesture& gesture = *touchMapItem.m_GestureList[i];
+        if (gesture.isTrackingTouch(touch.GetId()))
+        {
+            gesture.MoveTouch(touch.GetLocation());
+        }
+        else
+        {
+            gestureForTouch.erase(gestureForTouch.begin() + index);
+        }
+    }
 }
 
 void GestureManager::Update(float deltaTime)
@@ -74,4 +118,62 @@ void GestureManager::Update(float deltaTime)
 TapGesture& GestureManager::GetTapGesture(DisplayObject& target)
 {
 	return *(new TapGesture(target));
+}
+
+void GestureManager::GetHierarchy(DisplayObject& target, vector<DisplayObject*>& result)
+{
+    DisplayObject* current = &target;
+    while (current)
+    {
+        result.push_back(current);
+        current = current->GetParent();
+    }
+}
+
+GestureMapItem* GestureManager::GetGestureMapItemByTarget(DisplayObject& target)
+{
+    const unsigned short l = m_GestureMapItems.size();
+    for (unsigned int i = 0 ; i < l ; i++)
+	{
+        GestureMapItem* item = m_GestureMapItems[i];
+
+        if (&item->m_Target == &target)
+        {
+            return item;
+        }
+    }
+
+    return nullptr;
+}
+
+TouchMapItem* GestureManager::GetTouchMapItemByTouch(Touch& touch)
+{
+    const unsigned short l = m_TouchMapItems.size();
+    for (unsigned int i = 0 ; i < l ; i++)
+	{
+        TouchMapItem* item = m_TouchMapItems[i];
+
+        if (item->m_Touch == &touch)
+        {
+            return item;
+        }
+    }
+
+    return nullptr;
+}
+
+int GestureManager::GetTouchMapItemIndexByTouch(Touch& touch)
+{
+    const unsigned short l = m_TouchMapItems.size();
+    for (unsigned int i = 0 ; i < l ; i++)
+	{
+        TouchMapItem* item = m_TouchMapItems[i];
+
+        if (item->m_Touch == &touch)
+        {
+            return i;
+        }
+    }
+
+    return -1;
 }

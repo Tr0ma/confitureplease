@@ -3,6 +3,11 @@
 
 using namespace std;
 
+bool Gesture::isTrackingTouch(int touchId)
+{
+    return true;
+}
+
 void Gesture::BeginTouch(Vec2d point)
 {
 	m_TouchCount++;
