@@ -6,6 +6,9 @@
 
 class s3eInputAdapter : public InputAdapter
 {
+private:
+	static const int DEFAULT_TOUCH_ID;
+
 public:
 	s3eInputAdapter();
 	~s3eInputAdapter() {}

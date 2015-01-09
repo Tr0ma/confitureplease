@@ -1,24 +1,19 @@
 #include "GestureManager.h"
 #include "Stage.h"
+#include "TouchesManager.h"
 #include <iostream>
 
 using namespace std;
 
 GestureManager::GestureManager(InputAdapter& inputAdapter, Stage& stage) : m_InputAdapater(inputAdapter), m_Stage(stage)
 {
-	inputAdapter.SetGestureManager(*this);
+	m_TouchesManager = new TouchesManager(*this, m_Stage);
+	inputAdapter.SetTouchesManager(*m_TouchesManager);
 }
 
-void GestureManager::OnTouchBegin(Vec2d point)
+void GestureManager::OnTouchBegin(Touch& touch)
 {
 	cout << "touch begin" << endl;
-
-    DisplayObject* target = m_Stage.HitTest(point);
-
-    if (!target || target == &m_Stage)
-    {
-        return;
-    }
 
 	const unsigned short l = m_Items.size();
 	for (unsigned int i = 0 ; i < l ; i++)
@@ -28,14 +23,14 @@ void GestureManager::OnTouchBegin(Vec2d point)
 
 		if (!gesture.GetEnabled()) continue;
 
-		if (&gesture.GetTarget() == target)
+		if (&gesture.GetTarget() == touch.GetTarget())
 		{
-			gesture.BeginTouch(point);
+			gesture.BeginTouch(touch.GetLocation());
 		}
 	}
 }
 
-void GestureManager::OnTouchEnd(Vec2d point)
+void GestureManager::OnTouchEnd(Touch& touch)
 {
 	cout << "touch end" << endl;
 	const unsigned short l = m_Items.size();
@@ -46,14 +41,14 @@ void GestureManager::OnTouchEnd(Vec2d point)
 
 		if (!gesture.GetEnabled()) continue;
 
-		if (gesture.GetTarget().HitTest(point))
+		if (&gesture.GetTarget() == touch.GetTarget())
 		{
-			gesture.EndTouch(point);
+			gesture.EndTouch(touch.GetLocation());
 		}
 	}
 }
 
-void GestureManager::OnTouchMove(Vec2d point)
+void GestureManager::OnTouchMove(Touch& touch)
 {
 	cout << "touch move" << endl;
 	const unsigned short l = m_Items.size();
@@ -64,9 +59,9 @@ void GestureManager::OnTouchMove(Vec2d point)
 
 		if (!gesture.GetEnabled()) continue;
 
-		if (gesture.GetTarget().HitTest(point))
+		if (&gesture.GetTarget() == touch.GetTarget())
 		{
-			gesture.MoveTouch(point);
+			gesture.MoveTouch(touch.GetLocation());
 		}
 	}
 }

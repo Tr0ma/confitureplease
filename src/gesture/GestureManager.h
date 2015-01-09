@@ -6,7 +6,9 @@
 #include "Updateable.h"
 #include "InputAdapter.h"
 #include "TapGesture.h"
+#include "Touch.h"
 
+class TouchesManager;
 class Stage;
 
 class GestureMapItemSpecBase
@@ -61,9 +63,10 @@ public:
 class GestureManager : public IUpdateable
 {
 private:
-	InputAdapter&			m_InputAdapater;
-	vector<GestureMapItem*>	m_Items;
-    Stage&                  m_Stage;
+	InputAdapter&				m_InputAdapater;
+	TouchesManager*				m_TouchesManager;
+	vector<GestureMapItem*>		m_Items;
+    Stage&						m_Stage;
 
 public:
 	explicit GestureManager(InputAdapter& inputAdapter, Stage& stage);
@@ -81,9 +84,9 @@ public:
 	TapGesture& GetTapGesture(DisplayObject& target);
     void Update(float deltaTime = 0.0f) override;
 
-	void OnTouchBegin(Vec2d point);
-	void OnTouchEnd(Vec2d point);
-	void OnTouchMove(Vec2d point);
+	void OnTouchBegin(Touch& touch);
+	void OnTouchEnd(Touch& point);
+	void OnTouchMove(Touch& point);
 
 private:
 	void RemoveAllGestures() {}

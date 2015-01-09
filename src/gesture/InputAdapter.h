@@ -3,16 +3,16 @@
 
 #include "Updateable.h"
 
-class GestureManager;
+class TouchesManager;
 
 class InputAdapter : public IUpdateable
 {
 protected:
-	GestureManager*		m_GestureManager;
+	TouchesManager*		m_TouchesManager;
 
 public:
-	GestureManager&		GetGestureManager()							{ return *m_GestureManager; }
-	void				SetGestureManager(GestureManager& value)	{ m_GestureManager = &value; }
+	TouchesManager&		GetTouchesManager()							{ return *m_TouchesManager; }
+	void				SetTouchesManager(TouchesManager& value)	{ m_TouchesManager = &value; }
 
 public:
 	InputAdapter() {}
