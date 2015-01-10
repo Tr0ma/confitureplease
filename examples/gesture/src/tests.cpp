@@ -39,7 +39,7 @@ GestureTest::~GestureTest()
 	delete m_UpButton;
 }
 
-void GestureTest::OnUpTap(Event& evt)
+void GestureTest::OnUpTap(const Event& evt)
 {
 	GestureTest* test = this;
 
@@ -50,7 +50,7 @@ void GestureTest::OnUpTap(Event& evt)
 	m_DownButton->SetTouchable(true);
 }
 
-void GestureTest::OnDownTap(Event& evt)
+void GestureTest::OnDownTap(const Event& evt)
 {
 	m_DownButton->SetAlpha(0);
 	m_DownButton->SetTouchable(false);

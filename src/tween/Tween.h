@@ -3,31 +3,9 @@
 
 #include "EventDispatcher.h"
 #include "DisplayObject.h"
+#include "TweenEvent.h"
 
-class Tween;
-
-class TweenEvent : public Event
-{
-public:
-	static const char* START;
-	static const char* UPDATE;
-	static const char* COMPLETE;
-
-private:
-	Tween& m_Tween;
-
-public:
-	Tween&	GetTween() { return m_Tween; }
-
-public:
-	explicit TweenEvent(const char* type, Tween& tween) 
-		: Event(type), m_Tween(tween) {}
-
-	virtual ~TweenEvent() {}
-};
-
-
-class Tween
+class Tween : public EventDispatcher
 {
 protected:
 	static const char STOPPED = 0;
@@ -36,7 +14,6 @@ protected:
 
 protected:
 	bool				m_IsPlaying;
-	EventDispatcher		m_Dispatcher;
 	char				m_State;
 
 public:
@@ -47,25 +24,8 @@ public:
 	virtual void	Play();
 	virtual void	Stop();
 	virtual void	Update(float deltaTime) {}
-
-	template<class C>
-	int		AddListener(const char* eventType, void (C::*fct)(Event&), C& o);
-
-	template<class C>
-	void	RemoveListener(const char* eventType, void (C::*fct)(Event&), C& o);
 };
 
-template<class C>
-int Tween::AddListener(const char* eventType, void (C::*fct)(Event&), C& proxy)
-{
-	return m_Dispatcher.AddListener(eventType, fct, proxy);
-}
-
-template<class C>
-void Tween::RemoveListener(const char* eventType, void (C::*fct)(Event&), C& proxy)
-{
-	return m_Dispatcher.RemoveListener(eventType, fct, proxy);
-}
 
 template<class V, class C, V (C::*Get)(), void (C::*Set)(V)>
 class TweenSpec : public Tween
@@ -118,16 +78,16 @@ public:
 	}
 
 	template<class P>
-	TweenSpec& OnUpdate(void (P::*fct)(Event&), P& proxy)
+	TweenSpec& OnUpdate(void (P::*fct)(const Event&), P& proxy)
 	{
-		m_Dispatcher.AddListener(TweenEvent::UPDATE, fct, proxy);
+		AddListener(TweenEvent::UPDATE, fct, proxy);
 		return *this;
 	}
 
 	template<class P>
-	TweenSpec& OnComplete(void (P::*fct)(Event&), P& proxy)
+	TweenSpec& OnComplete(void (P::*fct)(const Event&), P& proxy)
 	{
-		m_Dispatcher.AddListener(TweenEvent::COMPLETE, fct, proxy);
+		AddListener(TweenEvent::COMPLETE, fct, proxy);
 		return *this;
 	}
 
@@ -176,14 +136,14 @@ private:
 		(&m_Target->*Set)(v);
 
 		TweenEvent updateEvt(TweenEvent::UPDATE, *this);
-		m_Dispatcher.Dispatch(updateEvt);
+		Dispatch(updateEvt);
 
 		if (p == 1.0f)
 		{
 			Stop();
 
 			TweenEvent completeEvt(TweenEvent::COMPLETE, *this);
-			m_Dispatcher.Dispatch(completeEvt);
+			Dispatch(completeEvt);
 		}
 	}
 

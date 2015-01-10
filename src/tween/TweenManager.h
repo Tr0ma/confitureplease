@@ -28,7 +28,7 @@ private:
 	void		AddTween(Tween& tween);
 	int			GetTweenIndex(Tween& tween);
 	void		ClearCompleteTweens();
-	void		onTweenComplete(Event& evt);
+	void		OnTweenComplete(const Event& evt);
 
 };
 

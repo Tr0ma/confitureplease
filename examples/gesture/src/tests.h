@@ -26,8 +26,8 @@ public:
 	GestureTest();
 	~GestureTest();
 
-	void OnUpTap(Event& evt);
-	void OnDownTap(Event& evt);
+	void OnUpTap(const Event& evt);
+	void OnDownTap(const Event& evt);
 
 	void Update(float deltaTime);
 	void Render();

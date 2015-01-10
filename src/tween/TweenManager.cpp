@@ -14,7 +14,7 @@ void TweenManager::Update(float deltaTime)
 
 void TweenManager::AddTween(Tween& tween)
 {
-	tween.AddListener(TweenEvent::COMPLETE, &TweenManager::onTweenComplete, *this);
+	tween.AddListener(TweenEvent::COMPLETE, &TweenManager::OnTweenComplete, *this);
 	m_Tweens.push_back(&tween);
 }
 
@@ -44,11 +44,11 @@ void TweenManager::ClearCompleteTweens()
 	}
 }
 
-void TweenManager::onTweenComplete(Event& evt)
+void TweenManager::OnTweenComplete(const Event& evt)
 {
-	TweenEvent& tweenEvent = static_cast<TweenEvent&>(evt);
+	const TweenEvent& tweenEvent = static_cast<const TweenEvent&>(evt);
 	Tween& tween = tweenEvent.GetTween();
-	tween.RemoveListener(TweenEvent::COMPLETE, &TweenManager::onTweenComplete, *this);
+	tween.RemoveListener(TweenEvent::COMPLETE, &TweenManager::OnTweenComplete, *this);
 	m_CompleteTweens.push_back(&tween);
 
 	

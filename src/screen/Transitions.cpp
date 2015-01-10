@@ -5,7 +5,7 @@
 const char* TransitionEvent::COMPLETE = "TransitionEvent_COMPLETE";
 const float Transition::DEFAULT_ANIMATION_TIME = 0.5f;
 
-void Transition::OnTransitionComplete(Event& evt)
+void Transition::OnTransitionComplete(const Event& evt)
 {
 	TransitionEvent completeEvt(TransitionEvent::COMPLETE);
 	Dispatch(completeEvt);

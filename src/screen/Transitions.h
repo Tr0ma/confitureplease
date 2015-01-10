@@ -30,7 +30,7 @@ public:
 	virtual void Reverse() {};
 
 protected:
-	virtual void OnTransitionComplete(Event& evt);
+	virtual void OnTransitionComplete(const Event& evt);
 };
 
 class MoveLeft : public Transition
@@ -45,7 +45,7 @@ public:
 	void Reverse() override;
 
 protected:
-	void OnTransitionComplete(Event& evt) override { Transition::OnTransitionComplete(evt); };
+	void OnTransitionComplete(const Event& evt) override { Transition::OnTransitionComplete(evt); };
 };
 
 

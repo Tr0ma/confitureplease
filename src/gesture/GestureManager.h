@@ -47,10 +47,10 @@ public:
 	~GestureManager() {}
 
 	template<class G, class C>
-	G& AddGesture(DisplayObject& target, void (C::*fct)(Event&), C& proxy);
+	G& AddGesture(DisplayObject& target, void (C::*fct)(const Event&), C& proxy);
 
 	template<class C>
-	void RemoveGesture(Gesture& gesture, void (C::*fct)(Event&), C& proxy, const char* gestureType) {};
+	void RemoveGesture(Gesture& gesture, void (C::*fct)(const Event&), C& proxy);
 
 	template<class C>
 	void RemoveAllGesturesOf(C& proxy) {};
@@ -67,11 +67,12 @@ private:
     GestureMapItem* GetGestureMapItemByTarget(DisplayObject& target);
     TouchMapItem*   GetTouchMapItemByTouch(Touch& touch);
     int             GetTouchMapItemIndexByTouch(Touch& touch);
+	int				GetGestureMapIndexByTarget(DisplayObject& target);
     void            GetHierarchy(DisplayObject& target, vector<DisplayObject*>& result);
 };
 
 template<class G, class C>
-G& GestureManager::AddGesture(DisplayObject& target, void (C::*fct)(Event&), C& proxy)
+G& GestureManager::AddGesture(DisplayObject& target, void (C::*fct)(const Event&), C& proxy)
 {
 	G* gesture = new G(target);
 	gesture->AddListener(GestureEvent::GESTURE_RECOGNIZED, fct, proxy);
@@ -87,6 +88,28 @@ G& GestureManager::AddGesture(DisplayObject& target, void (C::*fct)(Event&), C& 
 	return *gesture;
 }
 
+template<class C>
+void GestureManager::RemoveGesture(Gesture& gesture, void (C::*fct)(const Event&), C& proxy)
+{
+	int index = GetGestureMapIndexByTarget(gesture.GetTarget());
+    if (index == -1) return;
 
+	GestureMapItem* item = m_GestureMapItems[index];
+	vector<Gesture*>* gestureList = &item->m_GestureList;
+	int i = gestureList->size();
+
+    while (i-- > 0)
+	{
+		if ((*gestureList)[i] == &gesture)
+		{
+			gestureList->erase(gestureList->begin() + i);
+			if (gestureList->size() == 0)
+			{
+				m_GestureMapItems.erase(m_GestureMapItems.begin() + index);
+				delete item;
+			}
+		}
+    }
+}
 
 #endif

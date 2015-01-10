@@ -1,9 +1,5 @@
 #include "Tween.h"
-
-const char* TweenEvent::START = "TweenEvent_START";
-const char* TweenEvent::UPDATE = "TweenEvent_UPDATE";
-const char* TweenEvent::COMPLETE = "TweenEvent_COMPLETE";
-
+#include "TweenEvent.h"
 
 void Tween::Play()
 {
@@ -13,8 +9,8 @@ void Tween::Play()
 
 	Init();
 
-	TweenEvent evt(TweenEvent::START, *this);
-	m_Dispatcher.Dispatch(evt);
+	const TweenEvent evt(TweenEvent::START, *this);
+	Dispatch(evt);
 }
 
 void Tween::Stop()

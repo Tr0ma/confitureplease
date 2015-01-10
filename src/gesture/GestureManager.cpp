@@ -168,3 +168,19 @@ int GestureManager::GetTouchMapItemIndexByTouch(Touch& touch)
 
     return -1;
 }
+
+int GestureManager::GetGestureMapIndexByTarget(DisplayObject& target)
+{
+	const unsigned short l = m_GestureMapItems.size();
+    for (unsigned int i = 0 ; i < l ; i++)
+	{
+        GestureMapItem* item = m_GestureMapItems[i];
+
+        if (&item->m_Target == &target)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
