@@ -11,6 +11,7 @@ int main()
 	Context*	context = new Context();
 	GameConfig* config = new GameConfig();
 	context->Configure(*config);
+	context->Execute();
 
 	while (!s3eDeviceCheckQuitRequest())
     {
