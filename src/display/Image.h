@@ -2,6 +2,7 @@
 #define _IMAGE_H_
 
 #include "RenderSupport.h"
+#include "Rectangle.h"
 
 class Texture;
 

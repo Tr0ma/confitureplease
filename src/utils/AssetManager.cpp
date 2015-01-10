@@ -8,7 +8,7 @@ AssetManager::~AssetManager()
 	for (int i = l - 1 ; i >= 0 ; i--)
 	{
 		AtlasItem* item = m_Atlases[i];
-		Atlas* atlas = &(item->m_Atlas);
+		TextureAtlas* atlas = &(item->m_Atlas);
 		Texture* texture = &(atlas->GetAtlasTexture());
 		CIw2DImage* image = &(texture->GetImage());
 
@@ -33,14 +33,14 @@ void AssetManager::AddAtlas(const char* name, const char* imagePath, const char*
 	s3eFileRead(buffer, len, 1, file);
 	s3eFileClose(file);
 
-	Atlas* atlas = new Atlas(*texture, buffer);
+	TextureAtlas* atlas = new TextureAtlas(*texture, buffer);
 	AtlasItem* item = new AtlasItem(name, *atlas);
 	m_Atlases.push_back(item);
 
 	delete buffer;
 }
 
-Atlas* AssetManager::GetTextureAtlas(const char* name)
+TextureAtlas* AssetManager::GetTextureAtlas(const char* name)
 {
 	const int l = m_Atlases.size();
 	for (int i = 0 ; i < l ; i++)

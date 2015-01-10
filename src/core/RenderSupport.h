@@ -3,12 +3,12 @@
 
 #include "Matrix.h"
 #include "DisplayObject.h"
-#include "Texture.h"
 #include <vector>
 
 using namespace std;
 
 class Image;
+class Texture;
 
 class RenderSupport
 {

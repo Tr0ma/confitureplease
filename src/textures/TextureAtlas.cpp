@@ -1,12 +1,12 @@
-#include "Atlas.h"
+#include "TextureAtlas.h"
 #include "cJSON.h"
 
-Atlas::Atlas(Texture& atlasTexture, const char* atlasData)  : m_AtlasTexture(atlasTexture)
+TextureAtlas::TextureAtlas(Texture& atlasTexture, const char* atlasData)  : m_AtlasTexture(atlasTexture)
 {
 	ParseAtlas(atlasData);
 }
 
-Atlas::~Atlas()
+TextureAtlas::~TextureAtlas()
 {
 	const int l = m_SubTextures.size();
 	for (int i = l - 1 ; i >= 0 ; i--)
@@ -19,7 +19,7 @@ Atlas::~Atlas()
 	}
 }
 
-Texture* Atlas::GetTexture(const string name)
+Texture* TextureAtlas::GetTexture(const string name)
 {
 	const int l = m_SubTextures.size();
 	for (int i = 0 ; i < l ; i++)
@@ -34,7 +34,7 @@ Texture* Atlas::GetTexture(const string name)
 	return nullptr;
 }
 
-void Atlas::ParseAtlas(const char* atlasData)
+void TextureAtlas::ParseAtlas(const char* atlasData)
 {
 	cJSON* root = cJSON_Parse(atlasData);
 	cJSON* frames = cJSON_GetObjectItem(root, "frames");
@@ -57,7 +57,7 @@ void Atlas::ParseAtlas(const char* atlasData)
 	cJSON_Delete(root);
 }
 
-void Atlas::AddRegion(const string name, Rectangle region)
+void TextureAtlas::AddRegion(const string name, Rectangle region)
 {
 	SubTexture* subTexture = new SubTexture(m_AtlasTexture, region);
 	SubTextureItem* item = new SubTextureItem(name, *subTexture);

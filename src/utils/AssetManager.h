@@ -1,7 +1,7 @@
 #ifndef _ASSETMANAGER_H_
 #define _ASSETMANAGER_H_
 
-#include "Atlas.h"
+#include "TextureAtlas.h"
 #include <vector>
 
 using namespace std;
@@ -12,10 +12,10 @@ class AssetManager
 	{
 	public:
 		const char* m_Name;
-		Atlas&		m_Atlas;
+		TextureAtlas&		m_Atlas;
 
 	public:
-		explicit AtlasItem(const char* name, Atlas& atlas) 
+		explicit AtlasItem(const char* name, TextureAtlas& atlas) 
 			: m_Name(name), m_Atlas(atlas) {}
 	};
 
@@ -27,7 +27,7 @@ public:
 	~AssetManager();
 
 	void	AddAtlas(const char* name, const char* imagePath, const char* dataPath);
-	Atlas*	GetTextureAtlas(const char* name);
+	TextureAtlas*	GetTextureAtlas(const char* name);
 
 };
 

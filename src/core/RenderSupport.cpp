@@ -1,6 +1,8 @@
 #include "RenderSupport.h"
 #include "MatrixUtil.h"
 #include "Image.h"
+#include "Texture.h"
+#include <Iw2D.h>
 #include <cmath>
 
 void RenderSupport::NextFrame()

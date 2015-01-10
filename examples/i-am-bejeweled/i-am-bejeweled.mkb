@@ -1,0 +1,89 @@
+options
+{
+	module_path="../../marmalade/"
+	enable-exceptions=1
+}
+
+includepath 
+{
+	src
+	src/commands/game
+	src/commands/startup
+	src/commands/views
+	src/config/
+	src/events/game
+	src/events/menu
+	src/events/startup
+	src/models/
+	src/types/
+	src/views/
+	src/vo/
+}
+
+files
+{
+	[src]
+	(src)
+	"*.h"
+	"*.cpp"
+	
+	[src/commands/game]
+	(src/commands/game)
+	"*.h"
+	"*.cpp"
+	
+	[src/commands/startup]
+	(src/commands/startup)
+	"*.h"
+	"*.cpp"
+	
+	[src/commands/views]
+	(src/commands/views)
+	"*.h"
+	"*.cpp"
+	
+	[src/config]
+	(src/config)
+	"*.h"
+	"*.cpp"
+	
+	[src/events/game]
+	(src/events/game)
+	"*.h"
+	"*.cpp"
+	
+	[src/events/menu]
+	(src/events/menu)
+	"*.h"
+	"*.cpp"
+	
+	[src/events/startup]
+	(src/events/startup)
+	"*.h"
+	"*.cpp"
+	
+	[src/models]
+	(src/models)
+	"*.h"
+	"*.cpp"
+	
+	[src/types]
+	(src/types)
+	"*.h"
+	
+	[src/views]
+	(src/views)
+	"*.h"
+	"*.cpp"
+	
+	[src/vo]
+	(src/vo)
+	"*.h"
+	
+}
+
+subprojects
+{
+	iw2d
+	confitureplease-framework
+}

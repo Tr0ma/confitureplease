@@ -2,6 +2,8 @@
 #include "DisplayObject.h"
 #include "DisplayObjectContainer.h"
 #include "MatrixUtil.h"
+#include "Vec2d.h"
+#include "Texture.h"
 #include <limits> 
 
 Image::Image(Texture& texture) : m_Texture(texture)

@@ -1,5 +1,5 @@
-#ifndef _ATLAS_H_
-#define _ATLAS_H_
+#ifndef _TEXTUREATLAS_H_
+#define _TEXTUREATLAS_H_
 
 #include "Texture.h"
 #include "SubTexture.h"
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class Atlas
+class TextureAtlas
 {
 	class SubTextureItem
 	{
@@ -29,8 +29,8 @@ public:
 	Texture&				GetAtlasTexture() { return m_AtlasTexture; }
 
 public:
-	explicit Atlas(Texture& atlasTexture, const char* atlasData);
-	~Atlas();
+	explicit TextureAtlas(Texture& atlasTexture, const char* atlasData);
+	~TextureAtlas();
 
 	Texture* GetTexture(const string name);
 

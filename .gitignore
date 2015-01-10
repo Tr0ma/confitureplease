@@ -46,6 +46,8 @@ examples/gesture/build_gesture_vc11/
 examples/gesture/data-ram/
 examples/tween/build_tween_vc11/
 examples/tween/data-ram/
+examples/i-am-bejeweled/build_i-am-bejeweled_vc11/
+examples/i-am-bejeweled/data-ram/
 marmalade/build_confitureplease_vc11
 marmalade/lib/
 *.free
