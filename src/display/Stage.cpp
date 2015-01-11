@@ -14,3 +14,7 @@ DisplayObject* Stage::HitTest(Vec2d localPoint)
 
     return target;
 }
+
+Stage::~Stage()
+{
+}

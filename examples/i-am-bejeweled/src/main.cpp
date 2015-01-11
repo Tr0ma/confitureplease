@@ -26,6 +26,8 @@ int main()
 		s3eDeviceYield(0);
 	}
 
+	context->Dispose();
+
 	delete config;
 	delete context;
 

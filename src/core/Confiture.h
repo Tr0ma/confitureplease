@@ -9,6 +9,9 @@
 
 class Confiture : public IUpdateable, public IRenderable
 {
+public:
+	static const char* CONFITURE_ID;
+
 private:
 	Stage*			m_Stage;
 	RenderSupport	m_RenderSupport;

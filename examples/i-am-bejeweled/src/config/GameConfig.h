@@ -4,8 +4,13 @@
 #include "ContextConfig.h"
 #include "Command.h"
 
+class Confiture;
+
 class GameConfig : public ContextConfig
 {
+
+private:
+	Confiture* confiture;
 
 public:
 	GameConfig() {}
@@ -13,6 +18,7 @@ public:
 
 protected:
 	void Configure() override;
+	void Dispose() override;
 
 private:
 	Command& GetStartUpApplication();

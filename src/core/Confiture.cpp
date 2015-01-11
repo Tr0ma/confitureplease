@@ -1,5 +1,7 @@
 #include "Confiture.h"
 
+const char* Confiture::CONFITURE_ID = "Confiture_CONFITURE_ID";
+
 Confiture::Confiture(Rectangle viewport) : m_Viewport(viewport)
 {
 	m_Stage = new Stage(viewport.m_Width, viewport.m_Height);
