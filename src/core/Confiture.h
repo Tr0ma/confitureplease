@@ -7,10 +7,10 @@
 #include "Updateable.h"
 #include "Renderable.h"
 
-class Confiture : public IUpdateable, public IRenderable
+class Confiture : public Updateable, public Renderable
 {
 public:
-	static const char* CONFITURE_ID;
+	static const char* ID;
 
 private:
 	Stage*			m_Stage;

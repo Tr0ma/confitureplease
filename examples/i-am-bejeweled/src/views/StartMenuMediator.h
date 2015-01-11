@@ -1,9 +1,9 @@
 #ifndef _STARTMENUMEDIATOR_H_
 #define _STARTMENUMEDIATOR_H_
 
-#include <Mediator.h>
+#include "BaseMediator.h"
 
-class StartMenuMediator : public Mediator
+class StartMenuMediator : public BaseMediator
 {
 public:
 	StartMenuMediator() {}

@@ -18,12 +18,10 @@ protected:
 	void Dispose() override;
 
 private:
-	Command& GetStartUpApplication();
-	Command& GetShowStartMenu();
-
-	View& GetStartMenuView();
-
-	Mediator& GetStartMenuMediator();
+	Command&	GetStartUpApplication();
+	Command&	GetShowStartMenu();
+	View&		GetStartMenuView();
+	Mediator&	GetStartMenuMediator();
 };
 
 #endif

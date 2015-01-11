@@ -10,7 +10,7 @@
 
 using namespace std;
 
-class TouchesManager : public IUpdateable
+class TouchesManager : public Updateable
 {
 private:
 	vector<Touch*>		m_TouchList;

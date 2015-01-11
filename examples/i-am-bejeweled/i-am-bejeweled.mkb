@@ -11,6 +11,7 @@ includepath
 	src/commands/startup
 	src/commands/views
 	src/config/
+	src/display/
 	src/events/game
 	src/events/startup
 	src/events/views
@@ -46,6 +47,11 @@ files
 	(src/config)
 	"*.h"
 	"*.cpp"
+
+	[src/display]
+	(src/display)
+	"*.h"
+	"*.cpp"
 	
 	[src/events/game]
 	(src/events/game)
@@ -70,6 +76,7 @@ files
 	[src/types]
 	(src/types)
 	"*.h"
+	"*.cpp"
 	
 	[src/views]
 	(src/views)
@@ -86,4 +93,10 @@ subprojects
 {
 	iw2d
 	confitureplease-framework
+}
+
+assets
+{
+	(data)
+	atlas
 }

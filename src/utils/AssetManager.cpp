@@ -2,6 +2,8 @@
 #include "s3eFile.h"
 #include <Iw2D.h>
 
+const char* AssetManager::ID = "AssetManager_ID";
+
 AssetManager::~AssetManager()
 {
 	const int l = m_Atlases.size();

@@ -9,7 +9,7 @@ using namespace std;
 
 class DisplayObject;
 
-class TweenManager : public IUpdateable
+class TweenManager : public Updateable
 {
 private:
 	vector<Tween*>	m_Tweens;

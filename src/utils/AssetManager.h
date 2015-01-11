@@ -8,6 +8,10 @@ using namespace std;
 
 class AssetManager
 {
+public:
+	static const char* ID;
+
+private:
 	class AtlasItem
 	{
 	public:
@@ -26,7 +30,7 @@ public:
 	AssetManager() {}
 	~AssetManager();
 
-	void	AddAtlas(const char* name, const char* imagePath, const char* dataPath);
+	void			AddAtlas(const char* name, const char* imagePath, const char* dataPath);
 	TextureAtlas*	GetTextureAtlas(const char* name);
 
 };

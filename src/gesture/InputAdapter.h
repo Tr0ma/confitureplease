@@ -5,7 +5,7 @@
 
 class TouchesManager;
 
-class InputAdapter : public IUpdateable
+class InputAdapter : public Updateable
 {
 protected:
 	TouchesManager*		m_TouchesManager;

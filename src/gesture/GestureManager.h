@@ -14,7 +14,7 @@ using namespace std;
 class TouchesManager;
 class Stage;
 
-class GestureManager : public IUpdateable
+class GestureManager : public Updateable
 {
 private:
     class GestureMapItem

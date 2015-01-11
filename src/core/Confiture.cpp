@@ -1,6 +1,6 @@
 #include "Confiture.h"
 
-const char* Confiture::CONFITURE_ID = "Confiture_CONFITURE_ID";
+const char* Confiture::ID = "Confiture_CONFITURE_ID";
 
 Confiture::Confiture(Rectangle viewport) : m_Viewport(viewport)
 {

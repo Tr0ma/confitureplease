@@ -4,6 +4,7 @@
 #include "Matrix.h"
 #include "Rectangle.h"
 #include "Vec2d.h"
+#include "EventDispatcher.h"
 
 #include <vector>
 
@@ -13,7 +14,7 @@ class RenderSupport;
 class DisplayObjectContainer;
 class Stage;
 
-class DisplayObject
+class DisplayObject : public EventDispatcher
 {
 private:
 	float						m_X;

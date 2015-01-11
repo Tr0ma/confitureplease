@@ -1,8 +1,14 @@
 #include "ShowStartMenu.h"
-
-const char* STARTMENU_VIEW = "StartMenuView_STARTMENU_VIEW";
+#include "MediatorMap.h"
+#include "StartMenuView.h"
+#include "Confiture.h"
+#include "Injector.h"
 
 void ShowStartMenu::Execute()
 {
+	Confiture* confiture = GetInjector().GetInstanceById<Confiture>(Confiture::ID);
+	StartMenuView* view = GetMediatorMap().GetView<StartMenuView>(StartMenuView::STARTMENU_VIEW);
 
+	confiture->GetStage().AddChild(view->GetContainer());
+	view->Show();
 }

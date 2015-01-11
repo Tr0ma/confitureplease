@@ -19,15 +19,21 @@
 
 #include "Rectangle.h"
 #include "Confiture.h"
+#include "AssetManager.h"
 #include <Iw2D.h>
+
 
 void GameConfig::Configure()
 {
 	Injector& injector = GetInjector();
 	Rectangle viewport = Rectangle(0, 0, Iw2DGetSurfaceWidth(),Iw2DGetSurfaceHeight());
-	const Confiture* confiture = new Confiture(viewport);
+	Confiture* confiture = new Confiture(viewport);
+	GetContext().AddToRenderer(*confiture);
+
+	AssetManager* assetManager = new AssetManager();
 	
-	injector.Map(confiture, Confiture::CONFITURE_ID);
+	injector.Map(confiture, Confiture::ID);
+	injector.Map(assetManager, AssetManager::ID);
 
 	DirectCommandMap& directCommandMap = GetDirectCommandMap();
 	directCommandMap.Map(&GameConfig::GetStartUpApplication, *this);
@@ -42,8 +48,8 @@ void GameConfig::Configure()
 void GameConfig::Dispose()
 {
 	Injector& injector = GetInjector();
-	const Confiture* confiture = injector.GetInstanceById<Confiture>(Confiture::CONFITURE_ID);
-	delete confiture;
+	delete injector.GetInstanceById<Confiture>(Confiture::ID);
+	delete injector.GetInstanceById<AssetManager>(AssetManager::ID);
 }
 
 // Commands
