@@ -14,7 +14,7 @@ private:
 
 public:
 	DisplayObjectContainer() : m_NumChildren(0) {}
-	~DisplayObjectContainer() {}
+	virtual ~DisplayObjectContainer();
 
 	virtual DisplayObject&	AddChild(DisplayObject& child);
 	virtual DisplayObject&	AddChildAt(DisplayObject& child, int index);
@@ -26,8 +26,11 @@ public:
     virtual DisplayObject*	HitTest(Vec2d localPoint) override;
 	virtual void			Render(RenderSupport& renderSupport, float parentAlpha) override;
 
+protected:
+	void					RemoveAllChildren();
+
 private:
-	DisplayObject& CleanChild(DisplayObject& child, int index);
+	DisplayObject&			CleanChild(DisplayObject& child, int index);
 };
 
 #endif

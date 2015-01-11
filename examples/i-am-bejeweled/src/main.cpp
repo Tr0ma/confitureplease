@@ -8,7 +8,7 @@ int main()
 {
 	Iw2DInit();
 
-	Context*	context = new Context();
+	Context* context = new Context();
 	GameConfig* config = new GameConfig();
 	context->Configure(*config);
 	context->Execute();

@@ -12,7 +12,7 @@ private:
 
 public:
 	Stage(float width, float height) : m_Width(width), m_Height(height) {}
-	~Stage() {};
+	virtual ~Stage() {};
 
     virtual DisplayObject*	HitTest(Vec2d localPoint) override;
 };

@@ -14,7 +14,7 @@ public:
 
 public:
 	StartMenuView() {}
-	~StartMenuView() {}
+	~StartMenuView();
 
 protected:
 	virtual void	CreateView() override;

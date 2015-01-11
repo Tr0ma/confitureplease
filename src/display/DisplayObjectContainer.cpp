@@ -5,6 +5,11 @@
 
 using namespace std;
 
+DisplayObjectContainer::~DisplayObjectContainer()
+{
+	RemoveAllChildren();
+}
+
 DisplayObject& DisplayObjectContainer::AddChild(DisplayObject& child)
 {
 	return AddChildAt(child, m_Children.size());
@@ -132,4 +137,19 @@ DisplayObject& DisplayObjectContainer::CleanChild(DisplayObject& child, int inde
 	m_NumChildren--;
 	child.SetParent(nullptr);
 	return child;
+}
+
+void DisplayObjectContainer::RemoveAllChildren()
+{
+	DisplayObjectContainer* child;
+	while (m_NumChildren - 1 >= 0)
+	{
+		child = dynamic_cast<DisplayObjectContainer*>(&GetChildAt(m_NumChildren - 1));
+		if (child)
+		{
+			child->RemoveAllChildren();
+		}
+
+		RemoveChildAt(m_NumChildren - 1);
+	}
 }

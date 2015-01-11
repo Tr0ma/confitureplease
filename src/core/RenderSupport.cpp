@@ -34,7 +34,13 @@ void RenderSupport::PushMatrix()
 
 void RenderSupport::PopMatrix()
 {
-	m_ModelViewMatrix.CopyFrom(*(m_MatrixStack[--m_MatrixStackSize]));
+	int index = m_MatrixStackSize - 1;
+	Matrix* matrix = m_MatrixStack[index];
+	m_MatrixStack.erase(m_MatrixStack.begin() + index);
+	m_ModelViewMatrix.CopyFrom(*(matrix));
+	delete matrix;
+
+	m_MatrixStackSize--;
 }
 
 void RenderSupport::DrawImage(Image& image, float parentAlpha)
