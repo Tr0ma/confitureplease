@@ -13,6 +13,9 @@ private:
 	int						m_NumChildren;
 
 public:
+	int						GetNumChildren()	{ return m_NumChildren; }
+
+public:
 	DisplayObjectContainer() : m_NumChildren(0) {}
 	virtual ~DisplayObjectContainer();
 

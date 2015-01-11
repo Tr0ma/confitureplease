@@ -1,9 +1,9 @@
 #include "TextureTypes.h"
 
-const char* TextureTypes::GRID_BGND = "grid_bgnd";
-const char* TextureTypes::ORANGE = "orange";
-const char* TextureTypes::BLUE = "blue";
-const char* TextureTypes::GREEN = "green";
-const char* TextureTypes::PURPLE = "purple";
-const char* TextureTypes::RED = "red";
-const char* TextureTypes::YELLOW = "yellow";
+const char* TextureTypes::GRID_BGND = "grid_bgnd.png";
+const char* TextureTypes::ORANGE = "orange.png";
+const char* TextureTypes::BLUE = "blue.png";
+const char* TextureTypes::GREEN = "green.png";
+const char* TextureTypes::PURPLE = "purple.png";
+const char* TextureTypes::RED = "red.png";
+const char* TextureTypes::YELLOW = "yellow.png";

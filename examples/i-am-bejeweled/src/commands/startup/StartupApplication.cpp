@@ -1,5 +1,6 @@
 #include "StartupApplication.h"
 #include "ShowStartMenuEvent.h"
+#include "ShowGameEvent.h"
 #include "Injector.h"
 #include "AssetManager.h"
 #include "AtlasTypes.h"
@@ -16,5 +17,6 @@ void StartupApplication::Execute()
 	const InitializeGridEvent evt;
 	GetDispatcher().Dispatch(evt);
 
-
+	const ShowGameEvent gameEvt;
+	GetDispatcher().Dispatch(gameEvt);
 }

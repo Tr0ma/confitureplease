@@ -12,6 +12,7 @@ includepath
 	src/commands/views
 	src/config/
 	src/display/
+	src/events/display
 	src/events/game
 	src/events/startup
 	src/events/views
@@ -50,6 +51,11 @@ files
 
 	[src/display]
 	(src/display)
+	"*.h"
+	"*.cpp"
+
+	[src/events/display]
+	(src/events/display)
 	"*.h"
 	"*.cpp"
 	

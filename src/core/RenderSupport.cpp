@@ -84,7 +84,7 @@ void RenderSupport::DrawImage(Image& image, float parentAlpha)
 	mat.SetTrans(CIwFVec2(tx, ty));
 	Iw2DSetTransformMatrix(mat);
 
-	Iw2DDrawImageRegion(cIw2DImage, CIwFVec2(x, y), CIwFVec2(w, h), CIwFVec2(srcX, srcY), CIwFVec2(srcW, srcH));
+	Iw2DDrawImageRegion(cIw2DImage, CIwFVec2(0, 0), CIwFVec2(w, h), CIwFVec2(srcX, srcY), CIwFVec2(srcW, srcH));
 }
 
 void RenderSupport::ResetMatrix()

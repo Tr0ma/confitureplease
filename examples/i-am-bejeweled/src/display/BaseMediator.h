@@ -9,7 +9,7 @@ public:
 	BaseMediator() {}
 	~BaseMediator() {}
 
-	virtual void OnInitialized() override;;
+	virtual void OnInitialized() override;
 };
 
 #endif

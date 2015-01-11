@@ -8,5 +8,4 @@ void BaseMediator::OnInitialized()
 	AssetManager* assetManager = GetInjector().GetInstanceById<AssetManager>(AssetManager::ID);
 	BaseView& view = GetView<BaseView>();
 	view.SetAssetManager(*assetManager);
-	view.CreateView();
 }

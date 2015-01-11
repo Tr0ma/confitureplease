@@ -32,6 +32,11 @@ public:
 
 protected:
 	virtual void	CreateView() {};
+	virtual void	OnViewShown();
+
+private:
+	void	OnAddedToStage(const Event& evt);
+
 	
 };
 

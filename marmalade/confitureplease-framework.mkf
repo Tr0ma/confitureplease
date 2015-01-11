@@ -9,6 +9,7 @@ includepath
 {
 	../src/core
 	../src/display
+	../src/events
 	../src/gesture
 	../src/screen
 	../src/textures
@@ -31,6 +32,11 @@ files
 
 	[src/display]
 	(../src/display)
+	"*.h"
+	"*.cpp"
+
+	[src/events]
+	(../src/events)
 	"*.h"
 	"*.cpp"
 	

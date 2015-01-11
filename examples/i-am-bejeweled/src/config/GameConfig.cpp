@@ -61,10 +61,21 @@ void GameConfig::Configure()
 void GameConfig::Dispose()
 {
 	Injector& injector = GetInjector();
-	delete injector.GetInstanceById<Confiture>(Confiture::ID);
-	delete injector.GetInstanceById<AssetManager>(AssetManager::ID);
-	delete injector.GetInstanceById<GridModel>(GridModel::ID);
-	delete injector.GetInstanceById<GemModel>(GemModel::ID);
+
+	Confiture* confiture = injector.GetInstanceById<Confiture>(Confiture::ID);
+	AssetManager* assetMnager = injector.GetInstanceById<AssetManager>(AssetManager::ID);
+	GridModel* gridModel = injector.GetInstanceById<GridModel>(GridModel::ID);
+	GemModel* gemModel = injector.GetInstanceById<GemModel>(GemModel::ID);
+
+	injector.UnMap(Confiture::ID);
+	injector.UnMap(AssetManager::ID);
+	injector.UnMap(GridModel::ID);
+	injector.UnMap(GemModel::ID);
+
+	delete confiture;
+	delete assetMnager;
+	delete gridModel;
+	delete gemModel;
 }
 
 // Commands

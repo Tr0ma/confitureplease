@@ -1,6 +1,7 @@
 #include "DisplayObjectContainer.h"
 #include "RenderSupport.h"
 #include "MatrixUtil.h"
+#include "DisplayObjectEvent.h"
 #include <limits> 
 
 using namespace std;
@@ -21,6 +22,16 @@ DisplayObject& DisplayObjectContainer::AddChildAt(DisplayObject& child, int inde
 	m_Children.insert(m_Children.begin() + index, &child);
 
 	child.SetParent(this);
+
+	const DisplayObjectEvent evt(DisplayObjectEvent::ADDED);
+	child.Dispatch(evt);
+
+	if (GetStage())
+	{
+		const DisplayObjectEvent addedToStageEvt(DisplayObjectEvent::ADDED_TO_STAGE);
+		child.Dispatch(addedToStageEvt);
+	}
+
 	return child;
 }
 
@@ -136,6 +147,15 @@ DisplayObject& DisplayObjectContainer::CleanChild(DisplayObject& child, int inde
 	m_Children.erase(m_Children.begin() + index);
 	m_NumChildren--;
 	child.SetParent(nullptr);
+	const DisplayObjectEvent evt(DisplayObjectEvent::REMOVED);
+	child.Dispatch(evt);
+
+	if (GetStage())
+	{
+		const DisplayObjectEvent addedToStageEvt(DisplayObjectEvent::REMOVED_FROM_STAGE);
+		child.Dispatch(addedToStageEvt);
+	}
+
 	return child;
 }
 

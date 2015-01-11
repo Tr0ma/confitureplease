@@ -11,6 +11,10 @@ private:
 	float m_Height;
 
 public:
+	float	GetStageWidth()		{ return m_Width; }
+	float	GetStageHeight()	{ return m_Height; }
+
+public:
 	Stage(float width, float height) : m_Width(width), m_Height(height) {}
 	virtual ~Stage() {};
 
