@@ -12,8 +12,8 @@ includepath
 	src/commands/views
 	src/config/
 	src/events/game
-	src/events/menu
 	src/events/startup
+	src/events/views
 	src/models/
 	src/types/
 	src/views/
@@ -52,13 +52,13 @@ files
 	"*.h"
 	"*.cpp"
 	
-	[src/events/menu]
-	(src/events/menu)
-	"*.h"
-	"*.cpp"
-	
 	[src/events/startup]
 	(src/events/startup)
+	"*.h"
+	"*.cpp"
+
+	[src/events/views]
+	(src/events/views)
 	"*.h"
 	"*.cpp"
 	

@@ -2,6 +2,7 @@
 #define _STAGE_H_
 
 #include "DisplayObjectContainer.h"
+#include "Vec2d.h"
 
 class Stage: public DisplayObjectContainer
 {
@@ -11,7 +12,7 @@ private:
 
 public:
 	Stage(float width, float height) : m_Width(width), m_Height(height) {}
-	~Stage();
+	~Stage() {};
 
     virtual DisplayObject*	HitTest(Vec2d localPoint) override;
 };

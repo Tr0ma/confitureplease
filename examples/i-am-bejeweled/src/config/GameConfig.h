@@ -2,16 +2,13 @@
 #define _GAMECONFIG_H_
 
 #include "ContextConfig.h"
-#include "Command.h"
 
-class Confiture;
+class Command;
+class Mediator;
+class View;
 
 class GameConfig : public ContextConfig
 {
-
-private:
-	Confiture* confiture;
-
 public:
 	GameConfig() {}
 	~GameConfig() {}
@@ -22,6 +19,11 @@ protected:
 
 private:
 	Command& GetStartUpApplication();
+	Command& GetShowStartMenu();
+
+	View& GetStartMenuView();
+
+	Mediator& GetStartMenuMediator();
 };
 
 #endif
