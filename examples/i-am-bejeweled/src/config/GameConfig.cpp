@@ -8,6 +8,7 @@
 #include "StartupApplication.h"
 #include "ShowStartMenu.h"
 #include "ShowGame.h"
+#include "InitializeGrid.h"
 
 // Views
 #include "StartMenuView.h"
@@ -20,6 +21,11 @@
 // Events
 #include "ShowStartMenuEvent.h"
 #include "ShowGameEvent.h"
+#include "InitializeGridEvent.h"
+
+// Models
+#include "GridModel.h"
+#include "GemModel.h"
 
 #include "Rectangle.h"
 #include "Confiture.h"
@@ -33,11 +39,11 @@ void GameConfig::Configure()
 	Rectangle viewport = Rectangle(0, 0, Iw2DGetSurfaceWidth(),Iw2DGetSurfaceHeight());
 	Confiture* confiture = new Confiture(viewport);
 	GetContext().AddToRenderer(*confiture);
-
-	AssetManager* assetManager = new AssetManager();
 	
 	injector.Map(confiture, Confiture::ID);
-	injector.Map(assetManager, AssetManager::ID);
+	injector.Map(new AssetManager(), AssetManager::ID);
+	injector.Map(new GridModel(), GridModel::ID);
+	injector.Map(new GemModel(), GemModel::ID);
 
 	DirectCommandMap& directCommandMap = GetDirectCommandMap();
 	directCommandMap.Map(&GameConfig::GetStartUpApplication, *this);
@@ -49,6 +55,7 @@ void GameConfig::Configure()
 	EventCommandMap& eventCommandMap = GetEventCommandMap();
 	eventCommandMap.Map(ShowStartMenuEvent::TYPE, &GameConfig::GetShowStartMenu, *this);
 	eventCommandMap.Map(ShowGameEvent::TYPE, &GameConfig::GetShowGame, *this);
+	eventCommandMap.Map(InitializeGridEvent::TYPE, &GameConfig::GetInitializeGrid, *this);
 }
 
 void GameConfig::Dispose()
@@ -56,12 +63,15 @@ void GameConfig::Dispose()
 	Injector& injector = GetInjector();
 	delete injector.GetInstanceById<Confiture>(Confiture::ID);
 	delete injector.GetInstanceById<AssetManager>(AssetManager::ID);
+	delete injector.GetInstanceById<GridModel>(GridModel::ID);
+	delete injector.GetInstanceById<GemModel>(GemModel::ID);
 }
 
 // Commands
 Command& GameConfig::GetStartUpApplication() { return *(new StartupApplication()); }
 Command& GameConfig::GetShowStartMenu() { return *(new ShowStartMenu()); }
 Command& GameConfig::GetShowGame() { return *(new ShowGame()); };
+Command& GameConfig::GetInitializeGrid() { return *(new InitializeGrid()); };
 
 // Views
 View& GameConfig::GetStartMenuView() { return *(new StartMenuView()); }

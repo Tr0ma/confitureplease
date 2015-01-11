@@ -7,6 +7,9 @@ using namespace std;
 
 class GemModel
 {
+public:
+	static const char* ID;
+
 private:
 	vector<const char*>		m_List;
 
@@ -18,7 +21,7 @@ public:
 	~GemModel() {}
 
 	void	Register(const char* textureId);
-	void	GetListCopy(vector<const char*>& origin, vector<const char*>& target);
+	void	GetListCopy(vector<const char*>& result);
 };
 
 #endif

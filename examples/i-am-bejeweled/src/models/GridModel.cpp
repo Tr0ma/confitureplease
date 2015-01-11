@@ -2,6 +2,33 @@
 #include "GemVO.h"
 #include "PatternListVO.h"
 
+const char* GridModel::ID = "GridModel_ID";
+
+GridModel::~GridModel()
+{
+	vector<GemVO*>* row;
+	GemVO* gemVO;
+	int i;
+	int j = -1;
+
+	while (++j < m_NumRows)
+	{
+		row = m_List[j];
+		i = -1;
+
+		while (++i < m_NumCols)
+		{
+			gemVO = (*row)[i];
+			delete gemVO;
+		}
+
+		row->clear();
+		delete row;
+	}
+	
+	m_List.clear();
+}
+
 GemVO& GridModel::AddGem(const char* textureId)
 {
 	vector<GemVO*>* row;
@@ -14,7 +41,7 @@ GemVO& GridModel::AddGem(const char* textureId)
 	}
 	else
 	{
-		row = m_List[l];
+		row = m_List[l - 1];
 		const int rowSize = row->size();
 		if (rowSize >= m_NumCols)
 		{

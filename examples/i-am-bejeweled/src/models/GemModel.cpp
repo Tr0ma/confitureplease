@@ -3,17 +3,19 @@
 
 using namespace std;
 
+const char* GemModel::ID = "GemModel_ID";
+
 void GemModel::Register(const char* textureId)
 {
 	m_List.push_back(textureId);
 }
 
-void GemModel::GetListCopy(vector<const char*>& origin, vector<const char*>& target)
+void GemModel::GetListCopy(vector<const char*>& result)
 {
-	target.clear();
-	int l = origin.size();
+	result.clear();
+	int l = m_List.size();
 	for (int i = 0 ; i < l ; i++)
 	{
-		target.push_back(origin[i]);
+		result.push_back(m_List[i]);
 	}
 }

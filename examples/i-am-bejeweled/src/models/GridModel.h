@@ -10,6 +10,9 @@ class GemVO;
 
 class GridModel
 {
+public:
+	static const char* ID;
+
 private:
 	int						m_NumCols;
 	int						m_NumRows;
@@ -24,7 +27,7 @@ public:
 
 public:
 	GridModel() : m_NumCols(9), m_NumRows(9) {}
-	~GridModel() {}
+	~GridModel();
 
 	GemVO&			AddGem(const char* textureId);
 	GemVO&			AddGemAt(const char* textureId, const int colId, const int rowId);

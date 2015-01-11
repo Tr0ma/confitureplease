@@ -21,6 +21,7 @@ private:
 	Command&	GetStartUpApplication();
 	Command&	GetShowStartMenu();
 	Command&	GetShowGame();
+	Command&	GetInitializeGrid();
 
 	View&		GetStartMenuView();
 	View&		GetGridView();
