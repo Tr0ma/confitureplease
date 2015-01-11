@@ -7,15 +7,19 @@
 // Command
 #include "StartupApplication.h"
 #include "ShowStartMenu.h"
+#include "ShowGame.h"
 
 // Views
 #include "StartMenuView.h"
+#include "GridView.h"
 
 // Mediators
 #include "StartMenuMediator.h"
+#include "GridMediator.h"
 
 // Events
 #include "ShowStartMenuEvent.h"
+#include "ShowGameEvent.h"
 
 #include "Rectangle.h"
 #include "Confiture.h"
@@ -39,10 +43,12 @@ void GameConfig::Configure()
 	directCommandMap.Map(&GameConfig::GetStartUpApplication, *this);
 
 	MediatorMap& mediatorMap = GetMediatorMap();
-	mediatorMap.Map(StartMenuView::STARTMENU_VIEW, &GameConfig::GetStartMenuView, *this).To(&GameConfig::GetStartMenuMediator, *this);
+	mediatorMap.Map(StartMenuView::ID, &GameConfig::GetStartMenuView, *this).To(&GameConfig::GetStartMenuMediator, *this);
+	mediatorMap.Map(GridView::ID, &GameConfig::GetGridView, *this).To(&GameConfig::GetGridMediator, *this);
 
 	EventCommandMap& eventCommandMap = GetEventCommandMap();
 	eventCommandMap.Map(ShowStartMenuEvent::TYPE, &GameConfig::GetShowStartMenu, *this);
+	eventCommandMap.Map(ShowGameEvent::TYPE, &GameConfig::GetShowGame, *this);
 }
 
 void GameConfig::Dispose()
@@ -54,10 +60,13 @@ void GameConfig::Dispose()
 
 // Commands
 Command& GameConfig::GetStartUpApplication() { return *(new StartupApplication()); }
-Command& GameConfig::GetShowStartMenu() { return *(new ShowStartMenu()); };
+Command& GameConfig::GetShowStartMenu() { return *(new ShowStartMenu()); }
+Command& GameConfig::GetShowGame() { return *(new ShowGame()); };
 
 // Views
 View& GameConfig::GetStartMenuView() { return *(new StartMenuView()); }
+View& GameConfig::GetGridView() { return *(new GridView()); }
 
 // Mediators
 Mediator& GameConfig::GetStartMenuMediator() { return *(new StartMenuMediator()); }
+Mediator& GameConfig::GetGridMediator() { return *(new GridMediator()); }

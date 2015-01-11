@@ -1,7 +1,7 @@
 #include "StartMenuView.h"
 #include "AtlasTypes.h"
 
-const char* StartMenuView::STARTMENU_VIEW = "StartMenuView_STARTMENU_VIEW";
+const char* StartMenuView::ID = "StartMenuView_ID";
 
 StartMenuView::~StartMenuView()
 {

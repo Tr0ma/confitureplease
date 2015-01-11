@@ -20,8 +20,13 @@ protected:
 private:
 	Command&	GetStartUpApplication();
 	Command&	GetShowStartMenu();
+	Command&	GetShowGame();
+
 	View&		GetStartMenuView();
+	View&		GetGridView();
+
 	Mediator&	GetStartMenuMediator();
+	Mediator&	GetGridMediator();
 };
 
 #endif

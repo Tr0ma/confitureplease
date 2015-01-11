@@ -10,7 +10,7 @@ private:
 	Image* image;
 
 public:
-	static const char* STARTMENU_VIEW;
+	static const char* ID;
 
 public:
 	StartMenuView() {}
