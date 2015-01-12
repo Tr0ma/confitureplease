@@ -9,6 +9,9 @@
 #include "ShowStartMenu.h"
 #include "ShowGame.h"
 #include "InitializeGrid.h"
+#include "SwapAndCheck.h"
+#include "MoveGemsDown.h"
+#include "CheckPattern.h"
 
 // Views
 #include "StartMenuView.h"
@@ -22,6 +25,9 @@
 #include "ShowStartMenuEvent.h"
 #include "ShowGameEvent.h"
 #include "InitializeGridEvent.h"
+#include "SwapAndCheckEvent.h"
+#include "CheckPatternEvent.h"
+#include "MoveGemsDownEvent.h"
 
 // Models
 #include "GridModel.h"
@@ -61,7 +67,11 @@ void GameConfig::Configure()
 	EventCommandMap& eventCommandMap = GetEventCommandMap();
 	eventCommandMap.Map(ShowStartMenuEvent::TYPE, &GameConfig::GetShowStartMenu, *this);
 	eventCommandMap.Map(ShowGameEvent::TYPE, &GameConfig::GetShowGame, *this);
+
 	eventCommandMap.Map(InitializeGridEvent::TYPE, &GameConfig::GetInitializeGrid, *this);
+	eventCommandMap.Map(SwapAndCheckEvent::TYPE, &GameConfig::GetSwapAndCheck, *this);
+	eventCommandMap.Map(MoveGemsDownEvent::TYPE, &GameConfig::GetMoveGemsDown, *this);
+	eventCommandMap.Map(CheckPatternEvent::TYPE, &GameConfig::GetCheckPatterns, *this);
 }
 
 void GameConfig::Dispose()
@@ -93,6 +103,9 @@ Command& GameConfig::GetStartUpApplication() { return *(new StartupApplication()
 Command& GameConfig::GetShowStartMenu() { return *(new ShowStartMenu()); }
 Command& GameConfig::GetShowGame() { return *(new ShowGame()); };
 Command& GameConfig::GetInitializeGrid() { return *(new InitializeGrid()); };
+Command& GameConfig::GetSwapAndCheck() { return *(new SwapAndCheck()); }
+Command& GameConfig::GetMoveGemsDown() { return *(new MoveGemsDown()); }
+Command& GameConfig::GetCheckPatterns() { return *(new CheckPattern()); }
 
 // Views
 View& GameConfig::GetStartMenuView() { return *(new StartMenuView()); }

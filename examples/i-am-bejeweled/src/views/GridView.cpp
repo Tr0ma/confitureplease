@@ -3,6 +3,7 @@
 #include "TextureTypes.h"
 #include "Stage.h"
 #include "SwipeGesture.h"
+#include "GridSwipeViewEvent.h"
 
 #include <iostream>
 
@@ -130,7 +131,33 @@ void GridView::OnSwipe(const Event& evt)
 {
 	const GestureEvent& gestureEvent = static_cast<const GestureEvent&>(evt);
 	const SwipeGesture& swipeGesture = static_cast<const SwipeGesture&>(gestureEvent.m_Gesture);
+	const Vec2d& offset = swipeGesture.GetOffset();
+	//cout << "x : " << swipeGesture.GetOffset().x << " , y : " << swipeGesture.GetOffset().y << endl;
 
-	cout << "x : " << swipeGesture.GetOffset().x << " , y : " << swipeGesture.GetOffset().y << endl;
+	GemVO& gemVO = *GetGemByTarget(swipeGesture.GetTarget());
+	Vec2d direction(offset.x, offset.y);
 
+	direction.x = direction.x < 0 ? -direction.x : direction.x;
+	direction.y = direction.y < 0 ? -direction.y : direction.y;
+
+	const GridSwipeViewEvent viewEvt(GridSwipeViewEvent::SWIPED, gemVO, direction);
+	Dispatch(viewEvt);
+}
+
+GemVO* GridView::GetGemByTarget(const DisplayObject& target) const
+{
+	int i = -1;
+	int l = m_GemList.size();
+	Gem* gem;
+
+	while (i++ < l)
+	{
+		gem = m_GemList[i];
+		if (gem->m_Image == &target)
+		{
+			return gem->m_GemVO;
+		}
+	}
+
+	return nullptr;
 }

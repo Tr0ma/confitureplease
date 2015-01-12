@@ -22,6 +22,9 @@ private:
 	Command&	GetShowStartMenu();
 	Command&	GetShowGame();
 	Command&	GetInitializeGrid();
+	Command&	GetSwapAndCheck();
+	Command&	GetMoveGemsDown();
+	Command&	GetCheckPatterns();
 
 	View&		GetStartMenuView();
 	View&		GetGridView();

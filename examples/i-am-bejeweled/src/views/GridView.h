@@ -51,6 +51,7 @@ protected:
 
 private:
 	void			OnSwipe(const Event& evt);
+	GemVO*			GetGemByTarget(const DisplayObject& target) const;
 
 };
 

@@ -19,6 +19,7 @@ private:
 	void OnInitialized() override;
 	void InitializeGrid();
 	void OnViewShown(const Event& evt);
+	void OnSwiped(const Event& evt);
 };
 
 #endif

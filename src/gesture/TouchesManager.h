@@ -18,7 +18,7 @@ private:
 	GestureManager&		m_GestureManager;
 	Stage&				m_Stage;
 	unsigned int		m_ActiveTouchesCount;
-	double				m_Timer;
+	long				m_Timer;
 	Pool<Touch>			m_TouchPool;
 
 protected:

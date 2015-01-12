@@ -1,6 +1,8 @@
 #include "GridMediator.h"
 #include "Injector.h"
 #include "ViewEvent.h"
+#include "GridSwipeViewEvent.h"
+#include "SwapAndCheckEvent.h"
 
 void GridMediator::OnInitialized()
 {
@@ -10,6 +12,7 @@ void GridMediator::OnInitialized()
 	m_GridModel = GetInjector().GetInstanceById<GridModel>(GridModel::ID);
 
 	m_GridView->AddListener(ViewEvent::VIEW_SHOWN, &GridMediator::OnViewShown, *this);
+	m_GridView->AddListener(GridSwipeViewEvent::SWIPED, &GridMediator::OnSwiped, *this);
 }
 
 void GridMediator::InitializeGrid()
@@ -34,4 +37,13 @@ void GridMediator::OnViewShown(const Event& evt)
 	m_GridView->RemoveListener(ViewEvent::VIEW_SHOWN, &GridMediator::OnViewShown, *this);
 
 	InitializeGrid();
+}
+
+void GridMediator::OnSwiped(const Event& evt)
+{
+	const GridSwipeViewEvent& viewEvt = static_cast<const GridSwipeViewEvent&>(evt);
+	m_GridView->GetContainer().SetTouchable(false);
+
+	const SwapAndCheckEvent ctxEvt(viewEvt.m_GemVO, viewEvt.m_Direction);
+	DispatchContextEvent(ctxEvt);
 }

@@ -26,7 +26,7 @@ protected:
 	GestureState	m_State;
 
 public:
-	DisplayObject&	GetTarget() { return m_Target; }
+	DisplayObject&	GetTarget() const   { return m_Target; }
 
 	bool		GetEnabled()			{ return m_Enabled; }
 	void		SetEnabled(bool value)	{ m_Enabled = value; }
