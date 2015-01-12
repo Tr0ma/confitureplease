@@ -26,6 +26,8 @@ void InitializeGrid::Execute()
 	vector<const char*> gemTypeList;
 	int numRows = m_GridModel->GetNumRows();
 	int numCols = m_GridModel->GetNumCols();
+	int numGemType;
+	double rnd;
 
 	while (++j < numRows)
 	{
@@ -47,8 +49,10 @@ void InitializeGrid::Execute()
 			}*/
 
 			/**** TMP ****/
-			selectedId = static_cast<int>(floor(random() * static_cast<float>(gemTypeList.size())));
-			selectedTexture = gemTypeList[i];
+			numGemType = gemTypeList.size();
+			rnd = static_cast<double>(rand()) / RAND_MAX;
+			selectedId = static_cast<int>(floor(rnd * static_cast<float>(numGemType)));
+			selectedTexture = gemTypeList[selectedId];
 			/************/
 
 			m_GridModel->AddGem(selectedTexture);

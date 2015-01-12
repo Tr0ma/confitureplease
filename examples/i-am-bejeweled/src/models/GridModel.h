@@ -3,9 +3,9 @@
 
 #include <vector>
 
-class PatternListVO;
 using namespace std;
 
+class PatternListVO;
 class GemVO;
 
 class GridModel

@@ -67,26 +67,26 @@ GemVO& GridModel::AddGemAt(const char* textureId, const int colId, const int row
 	gemVO->m_X = colId;
 	gemVO->m_Y = rowId;
 
-	(*m_List[rowId])[rowId] = gemVO;
+	(*m_List[rowId])[colId] = gemVO;
 
 	return *gemVO;
 }
 
 GemVO& GridModel::GetGemAt(const int colId, const int rowId) const
 {
-	return *(*m_List[rowId])[rowId];
+	return *(*m_List[rowId])[colId];
 }
 
 void GridModel::MoveGemAt(const int colId, const int rowId, GemVO& gemVO)
 {
-	(*m_List[rowId])[rowId] = &gemVO;
+	(*m_List[rowId])[colId] = &gemVO;
 	gemVO.m_X = colId;
 	gemVO.m_Y = rowId;
 }
 
 void GridModel::RemoveGemAt(const int colId, const int rowId)
 {
-	delete (*m_List[rowId])[rowId];
+	delete (*m_List[rowId])[colId];
 }
 
 void GridModel::GetPatternByGem(GemVO& gemVO, const char* patternType, PatternListVO* result)

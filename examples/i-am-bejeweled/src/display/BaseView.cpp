@@ -11,6 +11,7 @@ BaseView::BaseView()
 void BaseView::Show()
 {
 	m_Container.SetVisible(true);
+	OnViewShown();
 }
 
 void BaseView::OnViewShown()

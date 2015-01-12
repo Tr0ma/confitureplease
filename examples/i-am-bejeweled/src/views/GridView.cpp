@@ -3,18 +3,33 @@
 #include "TextureTypes.h"
 #include "Stage.h"
 
+#include <iostream>
+
+using namespace std;
+
 const char* GridView::ID = "GridView_ID";
 
 GridView::~GridView()
 {
 	DisplayObject* child;
 	int j = m_GridContainer->GetNumChildren();
-
 	while (--j >= 0)
 	{
 		child = &m_GridContainer->RemoveChildAt(j);
 		delete child;
 	}
+
+	Gem* gem;
+	j = m_GemList.size();
+	while (--j >= 0)
+	{
+		gem = m_GemList[j];
+		m_CandyContainer->RemoveChild(*gem->m_Image);
+		delete gem->m_Image;
+		delete gem;
+	}
+
+	m_GemList.clear();
 
 	DisplayObjectContainer& container = GetContainer();
 	container.RemoveChild(*m_GridContainer);
@@ -27,9 +42,32 @@ GridView::~GridView()
 	container.GetParent()->RemoveChild(container);
 }
 
-void GridView::AddCell(int colId, int rowId, GemVO& gemVO)
+GridView::Gem& GridView::AddCell(int colId, int rowId, GemVO& gemVO)
 {
+	cout << gemVO.m_Type << " [x:" << gemVO.m_X << " , y:" << gemVO.m_Y << "]" << endl;
 
+	Gem* gem = new Gem();
+	m_GemList.push_back(gem);
+
+	Image* image = new Image(*m_Atlas->GetTexture(gemVO.m_Type));
+	image->SetWidth(GEM_SIZE);
+	image->SetScaleY(image->GetScaleX());
+
+	if (image->GetHeight() > GEM_SIZE)
+	{
+		image->SetHeight(GEM_SIZE);
+		image->SetScaleX(image->GetScaleY());
+	}
+
+	image->SetX(colId * CELL_SIZE + CELL_SIZE / 2 - image->GetWidth() / 2);
+	image->SetY(rowId * CELL_SIZE + CELL_SIZE / 2 - image->GetHeight() / 2);
+
+	gem->m_Image = image;
+	gem->m_GemVO = &gemVO;
+
+	m_CandyContainer->AddChild(*image);
+
+	return *gem;
 }
 
 void GridView::CreateView()
@@ -68,9 +106,6 @@ void GridView::CreateView()
 
 	container.SetWidth(0.9f * stageWidth);
 	container.SetScaleY(container.GetScaleX());
-
-	Rectangle bounds;
-	m_GridContainer->GetBounds(*m_GridContainer->GetParent(), bounds);
 
 	container.SetX(stageWidth / 2 - container.GetWidth() / 2);
 	container.SetY(stageHeight / 2 - container.GetHeight() / 2);
