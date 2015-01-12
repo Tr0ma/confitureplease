@@ -2,12 +2,14 @@
 #include "Injector.h"
 #include "ViewEvent.h"
 #include "GridSwipeViewEvent.h"
+#include "GridViewEvent.h"
 #include "SwapAndCheckEvent.h"
 #include "SwapCancelledEvent.h"
 #include "SwapConfirmedEvent.h"
 #include "MoveDownUpdatedEvent.h"
 #include "PatternsFoundEvent.h"
 #include "MoveCompleteEvent.h"
+#include "MoveGemsDownEvent.h"
 
 GridMediator::~GridMediator()
 {
@@ -26,7 +28,7 @@ void GridMediator::OnInitialized()
 	AddContextListener(SwapCancelledEvent::TYPE, &GridMediator::OnSwapCancelled, *this);
 	AddContextListener(SwapConfirmedEvent::TYPE, &GridMediator::OnSwapConfirmed, *this);
 	AddContextListener(MoveDownUpdatedEvent::TYPE, &GridMediator::OnFillUpdated, *this);
-	AddContextListener(PatternsFoundEvent::TYPE, &GridMediator::OnPatternsFound, *this);
+	//AddContextListener(PatternsFoundEvent::TYPE, &GridMediator::OnPatternsFound, *this);
 	AddContextListener(MoveCompleteEvent::TYPE, &GridMediator::OnMoveComplete, *this);
 }
 
@@ -42,7 +44,7 @@ void GridMediator::InitializeGrid()
 		i = -1;
 		while (++i < numCols)
 		{
-			m_GridView->AddCell(i, j, m_GridModel->GetGemAt(i, j));			
+			m_GridView->AddCell(i, j, *m_GridModel->GetGemAt(i, j));			
 		}
 	}
 }
@@ -73,16 +75,26 @@ void GridMediator::OnSwapCancelled(const Event& evt)
 
 void GridMediator::OnSwapConfirmed(const Event& evt)
 {
+	m_GridView->AddListener(GridViewEvent::DELETE_COMPLETE, &GridMediator::OnDeleteComplete, *this);
+
 	const SwapConfirmedEvent& confirmEvt = static_cast<const SwapConfirmedEvent&>(evt);
 	m_GridView->SwapThenDelete(confirmEvt.m_GemA, confirmEvt.m_GemB, confirmEvt.m_GemList);
 }
 
 void GridMediator::OnDeleteComplete(const Event& evt)
 {
+	m_GridView->RemoveListener(GridViewEvent::DELETE_COMPLETE, &GridMediator::OnDeleteComplete, *this);
+
+	const MoveGemsDownEvent moveGemsDownEvt;
+	DispatchContextEvent(moveGemsDownEvt);
 }
 
 void GridMediator::OnFillUpdated(const Event& evt)
 {
+	const MoveDownUpdatedEvent& moveDownUpdated = static_cast<const MoveDownUpdatedEvent&>(evt);
+
+	m_GridView->AddListener(GridViewEvent::MOVE_DOWN_COMPLETE, &GridMediator::OnMoveComplete, *this);
+	m_GridView->MoveDown(moveDownUpdated.m_MoveDownList, moveDownUpdated.m_NewGemsList);
 }
 
 void GridMediator::OnPatternsFound(const Event& evt)
@@ -91,4 +103,5 @@ void GridMediator::OnPatternsFound(const Event& evt)
 
 void GridMediator::OnMoveComplete(const Event& evt)
 {
+	m_GridView->GetContainer().SetTouchable(true);
 }

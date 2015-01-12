@@ -28,7 +28,7 @@ void SwapAndCheck::Execute()
 		return;
 	}
 
-	GemVO& swapped = m_GridModel->GetGemAt(static_cast<int>(swappedPos.x), static_cast<int>(swappedPos.y));
+	GemVO& swapped = *m_GridModel->GetGemAt(static_cast<int>(swappedPos.x), static_cast<int>(swappedPos.y));
 
 	const int sX = swapped.m_X;
 	const int sY = swapped.m_Y;

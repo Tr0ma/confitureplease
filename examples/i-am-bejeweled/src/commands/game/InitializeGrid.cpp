@@ -69,7 +69,7 @@ bool InitializeGrid::IsHorizontalValid(const int colId, const int rowId, const c
 
 	while (i >= 0 && (colId -i) <= 2)
 	{
-		gemVO = &m_GridModel->GetGemAt(i, rowId);
+		gemVO = m_GridModel->GetGemAt(i, rowId);
 		type = gemVO->m_Type;
 		if (type != selection)
 		{
@@ -95,7 +95,7 @@ bool InitializeGrid::IsVerticalValid(const int colId, const int rowId, const cha
 
 	while (j >= 0 && (rowId - j) <= 2)
 	{
-		gemVO = &m_GridModel->GetGemAt(colId, j);
+		gemVO = m_GridModel->GetGemAt(colId, j);
 		type = gemVO->m_Type;
 		if (type != selection)
 		{

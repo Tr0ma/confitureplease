@@ -1,5 +1,4 @@
 #include "GridModel.h"
-#include "GemVO.h"
 #include "PatternListVO.h"
 
 const char* GridModel::ID = "GridModel_ID";
@@ -72,9 +71,9 @@ GemVO& GridModel::AddGemAt(const char* textureId, const int colId, const int row
 	return *gemVO;
 }
 
-GemVO& GridModel::GetGemAt(const int colId, const int rowId) const
+GemVO* GridModel::GetGemAt(const int colId, const int rowId) const
 {
-	return *(*m_List[rowId])[colId];
+	return (*m_List[rowId])[colId];
 }
 
 void GridModel::MoveGemAt(const int colId, const int rowId, GemVO& gemVO)
@@ -82,6 +81,11 @@ void GridModel::MoveGemAt(const int colId, const int rowId, GemVO& gemVO)
 	(*m_List[rowId])[colId] = &gemVO;
 	gemVO.m_X = colId;
 	gemVO.m_Y = rowId;
+}
+
+void GridModel::MoveGemAt(const float x, const float y, GemVO& gemVO)
+{
+	MoveGemAt(static_cast<int>(x), static_cast<int>(y), gemVO);
 }
 
 void GridModel::RemoveGemAt(const int colId, const int rowId)
@@ -115,7 +119,7 @@ void GridModel::CheckHorizontal(GemVO& gemVO, PatternListVO* result)
 
 	while (--i > 0)
 	{
-		gemTarget = &GetGemAt(i, rowId);
+		gemTarget = GetGemAt(i, rowId);
 		if (gemTarget->m_Type != gemVO.m_Type)
 		{
 			break;
@@ -128,7 +132,7 @@ void GridModel::CheckHorizontal(GemVO& gemVO, PatternListVO* result)
 	int numCols = GetNumCols();
 	while (++i <= numCols - 1)
 	{
-		gemTarget = &GetGemAt(i, rowId);
+		gemTarget = GetGemAt(i, rowId);
 		if (gemTarget->m_Type != gemVO.m_Type)
 		{
 			break;
@@ -155,7 +159,7 @@ void GridModel::CheckVertical(GemVO& gemVO, PatternListVO* result)
 
 	while (--j > 0)
 	{
-		gemTarget = &GetGemAt(colId, j);
+		gemTarget = GetGemAt(colId, j);
 		if (gemTarget->m_Type != gemVO.m_Type)
 		{
 			break;
@@ -168,7 +172,7 @@ void GridModel::CheckVertical(GemVO& gemVO, PatternListVO* result)
 	int numRows = GetNumRows();
 	while (++j <= numRows - 1)
 	{
-		gemTarget = &GetGemAt(colId, j);
+		gemTarget = GetGemAt(colId, j);
 		if (gemTarget->m_Type != gemVO.m_Type)
 		{
 			break;

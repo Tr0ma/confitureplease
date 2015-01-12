@@ -2,12 +2,13 @@
 #define _GRIDMODEL_H_
 
 #include "Pool.h"
+#include "GemVO.h"
+
 #include <vector>
 
 using namespace std;
 
 class PatternListVO;
-class GemVO;
 
 class GridModel
 {
@@ -33,8 +34,9 @@ public:
 
 	GemVO&			AddGem(const char* textureId);
 	GemVO&			AddGemAt(const char* textureId, const int colId, const int rowId);
-	GemVO&			GetGemAt(const int colId, const int rowId) const;
+	GemVO*			GetGemAt(const int colId, const int rowId) const;
 	void			MoveGemAt(const int colId, const int rowId, GemVO& gemVO);
+	void			MoveGemAt(const float x, const float y, GemVO& gemVO);
 	void			RemoveGemAt(const int colId, const int rowId);
 	void			GetPatternByGem(GemVO& gem, PatternListVO* result);
 
