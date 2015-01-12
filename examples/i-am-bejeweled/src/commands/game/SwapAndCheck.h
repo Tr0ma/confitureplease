@@ -3,6 +3,7 @@
 
 #include "Command.h"
 
+class GemVO;
 class GemModel;
 class GridModel;
 
@@ -18,6 +19,9 @@ public:
 
 protected:
 	virtual void Execute() override;
+
+private:
+	int	IndexOf(GemVO& gemVO, vector<GemVO*>& list);
 };
 
 #endif

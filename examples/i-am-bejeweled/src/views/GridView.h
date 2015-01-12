@@ -44,7 +44,11 @@ public:
 	~GridView();
 
 public:
-	Gem& AddCell(int colId, int rowId, GemVO& gemVO);
+	Gem&			AddCell(int colId, int rowId, GemVO& gemVO);
+	void			SwapThenCancel(GemVO& gemA, GemVO& gemB);
+	void			SwapThenDelete(GemVO& gemA, GemVO& gemB, vector<GemVO*>& list);
+	void			MoveDown(vector<GemVO*>& moveDownList, vector<GemVO*>& newGemsList);
+	void			DeleteGems(vector<GemVO*>& list);
 
 protected:
 	virtual void	CreateView() override;

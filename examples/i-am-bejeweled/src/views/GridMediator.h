@@ -13,13 +13,19 @@ private:
 
 public:
 	GridMediator() {}
-	~GridMediator() {}
+	~GridMediator();
 
 private:
 	void OnInitialized() override;
 	void InitializeGrid();
 	void OnViewShown(const Event& evt);
 	void OnSwiped(const Event& evt);
+	void OnSwapCancelled(const Event& evt);
+	void OnSwapConfirmed(const Event& evt);
+	void OnDeleteComplete(const Event& evt);
+	void OnFillUpdated(const Event& evt);
+	void OnPatternsFound(const Event& evt);
+	void OnMoveComplete(const Event& evt);
 };
 
 #endif

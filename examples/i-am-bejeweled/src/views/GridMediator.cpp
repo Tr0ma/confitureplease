@@ -3,6 +3,15 @@
 #include "ViewEvent.h"
 #include "GridSwipeViewEvent.h"
 #include "SwapAndCheckEvent.h"
+#include "SwapCancelledEvent.h"
+#include "SwapConfirmedEvent.h"
+#include "MoveDownUpdatedEvent.h"
+#include "PatternsFoundEvent.h"
+#include "MoveCompleteEvent.h"
+
+GridMediator::~GridMediator()
+{
+}
 
 void GridMediator::OnInitialized()
 {
@@ -13,6 +22,12 @@ void GridMediator::OnInitialized()
 
 	m_GridView->AddListener(ViewEvent::VIEW_SHOWN, &GridMediator::OnViewShown, *this);
 	m_GridView->AddListener(GridSwipeViewEvent::SWIPED, &GridMediator::OnSwiped, *this);
+
+	AddContextListener(SwapCancelledEvent::TYPE, &GridMediator::OnSwapCancelled, *this);
+	AddContextListener(SwapConfirmedEvent::TYPE, &GridMediator::OnSwapConfirmed, *this);
+	AddContextListener(MoveDownUpdatedEvent::TYPE, &GridMediator::OnFillUpdated, *this);
+	AddContextListener(PatternsFoundEvent::TYPE, &GridMediator::OnPatternsFound, *this);
+	AddContextListener(MoveCompleteEvent::TYPE, &GridMediator::OnMoveComplete, *this);
 }
 
 void GridMediator::InitializeGrid()
@@ -46,4 +61,34 @@ void GridMediator::OnSwiped(const Event& evt)
 
 	const SwapAndCheckEvent ctxEvt(viewEvt.m_GemVO, viewEvt.m_Direction);
 	DispatchContextEvent(ctxEvt);
+}
+
+void GridMediator::OnSwapCancelled(const Event& evt)
+{
+	const SwapCancelledEvent& cancelEvt = static_cast<const SwapCancelledEvent&>(evt);
+	m_GridView->SwapThenCancel(cancelEvt.m_GemA, cancelEvt.m_GemB);
+
+	m_GridView->GetContainer().SetTouchable(true);
+}
+
+void GridMediator::OnSwapConfirmed(const Event& evt)
+{
+	const SwapConfirmedEvent& confirmEvt = static_cast<const SwapConfirmedEvent&>(evt);
+	m_GridView->SwapThenDelete(confirmEvt.m_GemA, confirmEvt.m_GemB, confirmEvt.m_GemList);
+}
+
+void GridMediator::OnDeleteComplete(const Event& evt)
+{
+}
+
+void GridMediator::OnFillUpdated(const Event& evt)
+{
+}
+
+void GridMediator::OnPatternsFound(const Event& evt)
+{
+}
+
+void GridMediator::OnMoveComplete(const Event& evt)
+{
 }

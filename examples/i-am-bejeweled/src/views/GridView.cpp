@@ -86,6 +86,22 @@ GridView::Gem& GridView::AddCell(int colId, int rowId, GemVO& gemVO)
 	return *gem;
 }
 
+void GridView::SwapThenCancel(GemVO& gemA, GemVO& gemB)
+{
+}
+
+void GridView::SwapThenDelete(GemVO& gemA, GemVO& gemB, vector<GemVO*>& list)
+{
+}
+
+void GridView::MoveDown(vector<GemVO*>& moveDownList, vector<GemVO*>& newGemsList)
+{
+}
+
+void GridView::DeleteGems(vector<GemVO*>& list)
+{
+}
+
 void GridView::CreateView()
 {
 	m_Atlas = GetAssetManager().GetTextureAtlas(AtlasTypes::MY_ATLAS);
@@ -137,8 +153,16 @@ void GridView::OnSwipe(const Event& evt)
 	GemVO& gemVO = *GetGemByTarget(swipeGesture.GetTarget());
 	Vec2d direction(offset.x, offset.y);
 
-	direction.x = direction.x < 0 ? -direction.x : direction.x;
-	direction.y = direction.y < 0 ? -direction.y : direction.y;
+	// normalize direction
+	if (direction.x)
+	{
+		direction.x = direction.x / (direction.x < 0 ? -direction.x : direction.x);
+	}
+
+	if (direction.y)
+	{
+		direction.y = direction.y / (direction.y < 0 ? -direction.y : direction.y);
+	}
 
 	const GridSwipeViewEvent viewEvt(GridSwipeViewEvent::SWIPED, gemVO, direction);
 	Dispatch(viewEvt);

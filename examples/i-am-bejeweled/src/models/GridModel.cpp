@@ -50,7 +50,7 @@ GemVO& GridModel::AddGem(const char* textureId)
 		}
 	}
 
-	GemVO* gemVO = new GemVO();
+	GemVO* gemVO = m_GemPool.Get();
 	gemVO->m_Type = textureId;
 	gemVO->m_X = row->size();
 	gemVO->m_Y = m_List.size() - 1;
@@ -86,22 +86,24 @@ void GridModel::MoveGemAt(const int colId, const int rowId, GemVO& gemVO)
 
 void GridModel::RemoveGemAt(const int colId, const int rowId)
 {
-	delete (*m_List[rowId])[colId];
+	GemVO* gem = (*m_List[rowId])[colId];
+	m_GemPool.Release(gem);
+	(*m_List[rowId])[colId] = nullptr;
 }
 
-void GridModel::GetPatternByGem(GemVO& gemVO, const char* patternType, PatternListVO* result)
+void GridModel::GetPatternByGem(GemVO& gemVO, PatternListVO* result)
 {
 	PatternListVO* horizontal = new PatternListVO();
 	PatternListVO* vertical = new PatternListVO();
 
-	CheckHorizontal(gemVO, patternType, horizontal);
-	CheckHorizontal(gemVO, patternType, vertical);
+	CheckHorizontal(gemVO, horizontal);
+	CheckVertical(gemVO, vertical);
 
 	result->m_GemList.insert(result->m_GemList.begin() + result->m_GemList.size(), horizontal->m_GemList.begin(), horizontal->m_GemList.end());
 	result->m_GemList.insert(result->m_GemList.begin() + result->m_GemList.size(), vertical->m_GemList.begin(), vertical->m_GemList.end());
 }
 
-void GridModel::CheckHorizontal(GemVO& gemVO, const char* patternType, PatternListVO* result)
+void GridModel::CheckHorizontal(GemVO& gemVO, PatternListVO* result)
 {
 	vector<GemVO*>* gemList = &result->m_GemList;
 	gemList->clear();
@@ -141,7 +143,7 @@ void GridModel::CheckHorizontal(GemVO& gemVO, const char* patternType, PatternLi
 	}
 }
 
-void GridModel::CheckVertical(GemVO& gemVO, const char* patternType, PatternListVO* result)
+void GridModel::CheckVertical(GemVO& gemVO, PatternListVO* result)
 {
 	vector<GemVO*>* gemList = &result->m_GemList;
 	gemList->clear();

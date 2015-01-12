@@ -1,6 +1,7 @@
 #ifndef _GRIDMODEL_H_
 #define _GRIDMODEL_H_
 
+#include "Pool.h"
 #include <vector>
 
 using namespace std;
@@ -17,6 +18,7 @@ private:
 	int						m_NumCols;
 	int						m_NumRows;
 	vector<vector<GemVO*>*>	m_List;
+	Pool<GemVO>				m_GemPool;
 
 public:
 	int			GetNumCols() const		{ return m_NumCols; }
@@ -34,11 +36,11 @@ public:
 	GemVO&			GetGemAt(const int colId, const int rowId) const;
 	void			MoveGemAt(const int colId, const int rowId, GemVO& gemVO);
 	void			RemoveGemAt(const int colId, const int rowId);
-	void			GetPatternByGem(GemVO& gem, const char* patternType, PatternListVO* result);
+	void			GetPatternByGem(GemVO& gem, PatternListVO* result);
 
 private:
-	void			CheckHorizontal(GemVO& gem, const char* patternType, PatternListVO* result);
-	void			CheckVertical(GemVO& gem, const char* patternType, PatternListVO* result);
+	void			CheckHorizontal(GemVO& gem, PatternListVO* result);
+	void			CheckVertical(GemVO& gem, PatternListVO* result);
 };
 
 #endif
