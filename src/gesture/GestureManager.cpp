@@ -143,11 +143,6 @@ void GestureManager::Update(float deltaTime)
 	m_TouchesManager->Update(deltaTime);
 }
 
-TapGesture& GestureManager::GetTapGesture(DisplayObject& target)
-{
-	return *(new TapGesture(target));
-}
-
 void GestureManager::GetHierarchy(DisplayObject& target, vector<DisplayObject*>& result)
 {
     DisplayObject* current = &target;

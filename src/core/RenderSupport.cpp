@@ -7,12 +7,6 @@
 
 RenderSupport::~RenderSupport()
 {
-	int i = m_MatrixStackSize;
-	while (--i >= 0)
-	{
-		delete m_MatrixStack[i];
-	}
-
 	m_MatrixStack.clear();
 }
 
@@ -37,8 +31,7 @@ void RenderSupport::PushMatrix()
 {
 	if (m_MatrixStack.size() < m_MatrixStackSize + 1)
 	{
-		// todo: consider Matrix pulling
-		m_MatrixStack.push_back(new Matrix());
+		m_MatrixStack.push_back(m_MatrixPool.Get());
 	}
 
 	m_MatrixStack[m_MatrixStackSize++]->CopyFrom(m_ModelViewMatrix);
@@ -50,7 +43,7 @@ void RenderSupport::PopMatrix()
 	Matrix* matrix = m_MatrixStack[index];
 	m_MatrixStack.erase(m_MatrixStack.begin() + index);
 	m_ModelViewMatrix.CopyFrom(*(matrix));
-	delete matrix;
+	m_MatrixPool.Release(matrix);
 
 	m_MatrixStackSize--;
 }

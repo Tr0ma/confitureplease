@@ -5,7 +5,6 @@
 #include "GestureEvent.h"
 #include "Updateable.h"
 #include "InputAdapter.h"
-#include "TapGesture.h"
 #include "Touch.h"
 #include <vector>
 
@@ -61,7 +60,6 @@ public:
 	template<class C>
 	void RemoveAllGesturesOf(C& proxy) {};
 
-	TapGesture& GetTapGesture(DisplayObject& target);
     void Update(float deltaTime = 0.0f) override;
 
 	void OnTouchBegin(Touch& touch);

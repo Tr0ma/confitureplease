@@ -3,6 +3,7 @@
 
 #include "Matrix.h"
 #include "DisplayObject.h"
+#include "Pool.h"
 #include <vector>
 
 using namespace std;
@@ -18,6 +19,7 @@ private:
 	Matrix				m_ModelViewMatrix;
 	Texture*			m_CurrentTexture;
 	int					m_DrawCount;
+	Pool<Matrix>		m_MatrixPool;
 
 public:
 	int GetDrawCount() { return m_DrawCount; }

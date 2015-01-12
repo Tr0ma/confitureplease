@@ -23,7 +23,7 @@ void TouchesManager::OnTouchBegin(int touchID, Vec2d& point)
 		return;
 	}
 
-	Touch* touch = new Touch();
+	Touch* touch = m_TouchPool.Get();
 	touch->SetId(touchID);
 
 	DisplayObject& target = *m_Stage.HitTest(point);
@@ -51,6 +51,7 @@ void TouchesManager::OnTouchEnd(int touchID, Vec2d& point)
 	m_GestureManager.OnTouchEnd(*touch);
 
 	touch->SetTarget(nullptr);
+	m_TouchPool.Release(touch);
 }
 
 void TouchesManager::OnTouchMove(int touchID, Vec2d& point)

@@ -31,6 +31,11 @@ void SwipeGesture::OnTouchEnd(Touch& touch)
 
 void SwipeGesture::OnTouchMove(Touch& touch)
 {
+	if (m_State == ENDED)
+	{
+		return;
+	}
+
 	m_Offset= touch.GetLocationOffset();
 	//cout << "x: " << m_Offset.x << " , y:" << m_Offset.y << endl;
 

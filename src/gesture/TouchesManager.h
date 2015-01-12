@@ -5,6 +5,7 @@
 #include "Touch.h"
 #include "GestureManager.h"
 #include "Vec2d.h"
+#include "Pool.h"
 
 #include <vector>
 
@@ -18,6 +19,7 @@ private:
 	Stage&				m_Stage;
 	unsigned int		m_ActiveTouchesCount;
 	double				m_Timer;
+	Pool<Touch>			m_TouchPool;
 
 protected:
 	static long			timeHelper;
