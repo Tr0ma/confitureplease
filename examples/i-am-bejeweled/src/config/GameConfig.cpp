@@ -108,18 +108,18 @@ void GameConfig::Dispose()
 }
 
 // Commands
-Command& GameConfig::GetStartUpApplication() { return *(new StartupApplication()); }
-Command& GameConfig::GetShowStartMenu() { return *(new ShowStartMenu()); }
-Command& GameConfig::GetShowGame() { return *(new ShowGame()); };
-Command& GameConfig::GetInitializeGrid() { return *(new InitializeGrid()); };
-Command& GameConfig::GetSwapAndCheck() { return *(new SwapAndCheck()); }
-Command& GameConfig::GetMoveGemsDown() { return *(new MoveGemsDown()); }
-Command& GameConfig::GetCheckPatterns() { return *(new CheckPattern()); }
+Command& GameConfig::GetStartUpApplication()	{ return *(new StartupApplication()); }
+Command& GameConfig::GetShowStartMenu()			{ return *(new ShowStartMenu()); }
+Command& GameConfig::GetShowGame()				{ return *(new ShowGame()); };
+Command& GameConfig::GetInitializeGrid()		{ return *(new InitializeGrid()); }
+Command& GameConfig::GetSwapAndCheck()			{ return *(new SwapAndCheck()); }
+Command& GameConfig::GetMoveGemsDown()			{ return *(new MoveGemsDown()); }
+Command& GameConfig::GetCheckPatterns()			{ return *(new CheckPattern()); }
 
 // Views
-View& GameConfig::GetStartMenuView() { return *(new StartMenuView()); }
-View& GameConfig::GetGridView() { return *(new GridView()); }
+View& GameConfig::GetStartMenuView()			{ return *(new StartMenuView()); }
+View& GameConfig::GetGridView()					{ return *(new GridView()); }
 
 // Mediators
-Mediator& GameConfig::GetStartMenuMediator() { return *(new StartMenuMediator()); }
-Mediator& GameConfig::GetGridMediator() { return *(new GridMediator()); }
+Mediator& GameConfig::GetStartMenuMediator()	{ return *(new StartMenuMediator()); }
+Mediator& GameConfig::GetGridMediator()			{ return *(new GridMediator()); }

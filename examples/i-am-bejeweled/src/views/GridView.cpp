@@ -4,8 +4,10 @@
 #include "Stage.h"
 #include "SwipeGesture.h"
 #include "GridSwipeViewEvent.h"
+#include "GridViewEvent.h"
 
 #include <iostream>
+#include <Easing.h>
 
 using namespace std;
 
@@ -58,10 +60,20 @@ GridView::Gem& GridView::AddCell(int colId, int rowId, GemVO& gemVO)
 {
 	cout << gemVO.m_Type << " [x:" << gemVO.m_X << " , y:" << gemVO.m_Y << "]" << endl;
 
-	Gem* gem = new Gem();
+	Gem* gem = m_GemPool.Get();
 	m_GemList.push_back(gem);
 
-	Image* image = new Image(*m_Atlas->GetTexture(gemVO.m_Type));
+	Image* image = gem->m_Image;
+	if (!image)
+	{
+		image = new Image(*m_Atlas->GetTexture(gemVO.m_Type));
+		gem->m_Image = image;
+	}
+	else
+	{
+		image->SetTexture(*m_Atlas->GetTexture(gemVO.m_Type));
+	}
+
 	image->SetWidth(GEM_SIZE);
 	image->SetScaleY(image->GetScaleX());
 
@@ -88,10 +100,20 @@ GridView::Gem& GridView::AddCell(int colId, int rowId, GemVO& gemVO)
 
 void GridView::SwapThenCancel(GemVO& gemA, GemVO& gemB)
 {
+	DisplayObject* gemImageA = GetTargetbyGemVO(gemA);
+	DisplayObject* gemImageB = GetTargetbyGemVO(gemB);
+
+	PlaySwap(*gemImageA, *gemImageB, 0.1f);
+	CancelSwap(*gemImageA, *gemImageB, 0.07f, 0.1f);
 }
 
 void GridView::SwapThenDelete(GemVO& gemA, GemVO& gemB, vector<GemVO*>& list)
 {
+	DisplayObject* gemImageA = GetTargetbyGemVO(gemA);
+	DisplayObject* gemImageB = GetTargetbyGemVO(gemB);
+
+	PlaySwap(*gemImageA, *gemImageB, 0.1f);
+	PlayDelete(list, 0.2f, 0.1f);
 }
 
 void GridView::MoveDown(vector<GemVO*>& moveDownList, vector<GemVO*>& newGemsList)
@@ -148,9 +170,8 @@ void GridView::OnSwipe(const Event& evt)
 	const GestureEvent& gestureEvent = static_cast<const GestureEvent&>(evt);
 	const SwipeGesture& swipeGesture = static_cast<const SwipeGesture&>(gestureEvent.m_Gesture);
 	const Vec2d& offset = swipeGesture.GetOffset();
-	//cout << "x : " << swipeGesture.GetOffset().x << " , y : " << swipeGesture.GetOffset().y << endl;
 
-	GemVO& gemVO = *GetGemByTarget(swipeGesture.GetTarget());
+	GemVO& gemVO = *GetGemVOByTarget(swipeGesture.GetTarget());
 	Vec2d direction(offset.x, offset.y);
 
 	// normalize direction
@@ -168,7 +189,7 @@ void GridView::OnSwipe(const Event& evt)
 	Dispatch(viewEvt);
 }
 
-GemVO* GridView::GetGemByTarget(const DisplayObject& target) const
+GemVO* GridView::GetGemVOByTarget(const DisplayObject& target) const
 {
 	int i = -1;
 	int l = m_GemList.size();
@@ -184,4 +205,127 @@ GemVO* GridView::GetGemByTarget(const DisplayObject& target) const
 	}
 
 	return nullptr;
+}
+
+GridView::Gem* GridView::GetGemByGemVO(const GemVO& gemVO) const
+{
+	int i = -1;
+	int l = m_GemList.size();
+	Gem* gem;
+
+	while (i++ < l)
+	{
+		gem = m_GemList[i];
+		if (gem->m_GemVO == &gemVO)
+		{
+			return gem;
+		}
+	}
+
+	return nullptr;
+}
+
+DisplayObject* GridView::GetTargetbyGemVO(const GemVO& gemVO) const
+{
+	Gem* gem = GetGemByGemVO(gemVO);
+	if (gem)
+	{
+		return gem->m_Image;
+	}
+
+	return nullptr;
+}
+
+int GridView::GetGemIndex(const Gem& gem)
+{
+	int i = -1;
+	int l = m_GemList.size();
+
+	while (i++ < l)
+	{
+		if ( m_GemList[i] == &gem)
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+void GridView::PlaySwap(DisplayObject& targetA, DisplayObject& targetB, float duration)
+{
+	TweenManager& tweenManager = GetTweenManager();
+	TweenX& tweenXGemA = tweenManager.CreateTween<TweenX>(targetA);
+	TweenX& tweenXGemB = tweenManager.CreateTween<TweenX>(targetB);
+	TweenY& tweenYGemA = tweenManager.CreateTween<TweenY>(targetA);
+	TweenY& tweenYGemB = tweenManager.CreateTween<TweenY>(targetB);
+
+	tweenXGemA.From(targetA.GetX()).To(targetB.GetX()).Duration(duration).Easing(Linear::EaseNone).Play();
+	tweenYGemA.From(targetA.GetY()).To(targetB.GetY()).Duration(duration).Easing(Linear::EaseNone).Play();
+	tweenXGemB.From(targetB.GetX()).To(targetA.GetX()).Duration(duration).Easing(Linear::EaseNone).Play();
+	tweenYGemB.From(targetB.GetY()).To(targetA.GetY()).Duration(duration).Easing(Linear::EaseNone).Play();
+}
+
+void GridView::CancelSwap(DisplayObject& targetA, DisplayObject& targetB, float duration, float delay)
+{
+	TweenManager& tweenManager = GetTweenManager();
+	TweenX& tweenXGemA = tweenManager.CreateTween<TweenX>(targetA);
+	TweenX& tweenXGemB = tweenManager.CreateTween<TweenX>(targetB);
+	TweenY& tweenYGemA = tweenManager.CreateTween<TweenY>(targetA);
+	TweenY& tweenYGemB = tweenManager.CreateTween<TweenY>(targetB);
+
+	tweenXGemA.From(targetB.GetX()).To(targetA.GetX()).Duration(duration).Delay(delay).Easing(Linear::EaseNone).Play();
+	tweenYGemA.From(targetB.GetY()).To(targetA.GetY()).Duration(duration).Delay(delay).Easing(Linear::EaseNone).Play();
+	tweenXGemB.From(targetA.GetX()).To(targetB.GetX()).Duration(duration).Delay(delay).Easing(Linear::EaseNone).Play();
+	tweenYGemB.From(targetA.GetY()).To(targetB.GetY()).Duration(duration).Delay(delay).Easing(Linear::EaseNone).Play();
+}
+
+void GridView::OnDeleteComplete(const Event& evt)
+{
+	int i = -1;
+	const int l = m_DeleteList.size();
+	Gem* gem;
+
+	while (++i < l)
+	{
+		gem = m_DeleteList[i];
+		m_CandyContainer->RemoveChild(*gem->m_Image);
+
+		m_GemList.erase(m_GemList.begin() + GetGemIndex(*gem));
+		m_GemPool.Release(gem);
+	}
+
+	m_DeleteList.clear();
+
+	const GridViewEvent viewEvt(GridViewEvent::DELETE_COMPLETE);
+	Dispatch(viewEvt);
+}
+
+void GridView::PlayDelete(vector<GemVO*>& list, float duration, float delay)
+{
+	TweenManager& tweenManager = GetTweenManager();
+	TweenScaleX* tweenScaleX;
+	TweenScaleY* tweenScaleY;
+
+	DisplayObject* gemImage;
+	GemVO* gemVO;
+	Gem* gem;
+
+	m_DeleteList.clear();
+	int i = -1;
+	const int l = list.size();
+	while (++i < l)
+	{
+		gemVO = list[i];
+		gem = GetGemByGemVO(*gemVO);
+		m_DeleteList.push_back(gem);
+
+		gemImage = gem->m_Image;
+
+		tweenScaleX = &tweenManager.CreateTween<TweenScaleX>(*gemImage);
+		tweenScaleY = &tweenManager.CreateTween<TweenScaleY>(*gemImage);
+
+		tweenScaleX->To(0).Duration(duration).Delay(delay).Easing(Linear::EaseNone).OnComplete(&GridView::OnDeleteComplete, *this).Play();
+		tweenScaleY->To(0).Duration(duration).Delay(delay).Easing(Linear::EaseNone).Play();
+	}
 }

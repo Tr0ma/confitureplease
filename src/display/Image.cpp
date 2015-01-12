@@ -6,7 +6,7 @@
 #include "Texture.h"
 #include <limits> 
 
-Image::Image(Texture& texture) : m_Texture(texture)
+Image::Image(Texture& texture) : m_Texture(&texture)
 {
 	float width = texture.GetWidth();
 	float height = texture.GetHeight();

@@ -5,8 +5,6 @@ void Tween::Play()
 {
 	if (m_State == PLAYING || m_State == DELAYED) return;
 
-	m_IsPlaying = true;
-
 	Init();
 
 	const TweenEvent evt(TweenEvent::START, *this);

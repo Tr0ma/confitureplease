@@ -20,6 +20,9 @@ private:
 		GemVO*			m_GemVO;
 		Image*			m_Image;
 		SwipeGesture*	m_Gesture;
+
+	public:
+		Gem() : m_GemVO(nullptr), m_Image(nullptr){}
 	};
 
 
@@ -34,7 +37,9 @@ private:
 	DisplayObjectContainer*		m_GridContainer;
 	DisplayObjectContainer*		m_CandyContainer;
 
+	Pool<Gem>					m_GemPool;
 	vector<Gem*>				m_GemList;
+	vector<Gem*>				m_DeleteList;
 
 public:
 	static const char* ID;
@@ -55,7 +60,16 @@ protected:
 
 private:
 	void			OnSwipe(const Event& evt);
-	GemVO*			GetGemByTarget(const DisplayObject& target) const;
+	GemVO*			GetGemVOByTarget(const DisplayObject& target) const;
+	Gem*			GetGemByGemVO(const GemVO& gemVO) const;
+	DisplayObject*	GetTargetbyGemVO(const GemVO& gemVO) const;
+	int				GetGemIndex(const Gem& gem);
+
+	void			PlaySwap(DisplayObject& targetA, DisplayObject& targetB, float duration = 0.1f);
+	void			CancelSwap(DisplayObject& targetA, DisplayObject& targetB, float duration, float delay);
+	void			PlayDelete(vector<GemVO*>& list, float duration, float delay);
+
+	void			OnDeleteComplete(const Event& evt);
 
 };
 

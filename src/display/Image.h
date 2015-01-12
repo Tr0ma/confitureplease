@@ -9,11 +9,12 @@ class Texture;
 class Image : public DisplayObject
 {
 private:
-	Texture&		m_Texture;
+	Texture*		m_Texture;
 	vector<Vec2d>	m_Vertex;
 
 public:
-	Texture& GetTexture() { return m_Texture; }
+	Texture&	GetTexture()				{ return *m_Texture; }
+	void		SetTexture(Texture& value)	{ m_Texture = &value; }
 
 public:
 	explicit Image(Texture& texture);

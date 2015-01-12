@@ -13,7 +13,6 @@ protected:
 	static const char PLAYING = 2;
 
 protected:
-	bool				m_IsPlaying;
 	char				m_State;
 
 public:
@@ -37,18 +36,19 @@ private:
 	float	m_Duration;
 	float	m_Delay;
 	float	m_Elapsed;
-	bool	m_IsFromSet;
 	float	m_ElapsedDelay;
+	bool	m_FromIsSet;
 	float	(*m_EaseFct)(float);
+	bool	m_EasingIsSet;
 
 public:
 	explicit TweenSpec(C& target) 
-		: m_Target(target), m_Duration(0), m_Delay(0), m_Elapsed(0), m_ElapsedDelay(0) {}
+		: m_Target(target), m_Duration(0), m_Delay(0), m_Elapsed(0), m_ElapsedDelay(0), m_FromIsSet(false), m_EasingIsSet(false) {}
 	~TweenSpec() {}
 
 	TweenSpec& From(V value)
 	{
-		m_IsFromSet = true;
+		m_FromIsSet = true;
 		m_From = value;
 		return *this;
 	}
@@ -74,6 +74,7 @@ public:
 	TweenSpec& Easing(float (*value)(float))
 	{
 		m_EaseFct = value;
+		m_EasingIsSet = true;
 		return *this;
 	}
 
@@ -93,7 +94,7 @@ public:
 
 	void Init() override
 	{
-		if (!m_IsFromSet)
+		if (!m_FromIsSet)
 		{
 			m_From = (&m_Target->*Get)();
 		}
@@ -131,7 +132,7 @@ private:
 			p = 1.0f;
 		}
 
-		float k = m_EaseFct(p);
+		float k = (m_EasingIsSet) ? m_EaseFct(p) : p;
 		V v = Interpolate(m_From, m_To, k);
 		(&m_Target->*Set)(v);
 
@@ -155,6 +156,8 @@ private:
 };
 
 typedef TweenSpec<float, DisplayObject, &DisplayObject::GetX, &DisplayObject::SetX> TweenX;
-
+typedef TweenSpec<float, DisplayObject, &DisplayObject::GetY, &DisplayObject::SetY> TweenY;
+typedef TweenSpec<float, DisplayObject, &DisplayObject::GetScaleX, &DisplayObject::SetScaleX> TweenScaleX;
+typedef TweenSpec<float, DisplayObject, &DisplayObject::GetScaleY, &DisplayObject::SetScaleY> TweenScaleY;
 
 #endif
