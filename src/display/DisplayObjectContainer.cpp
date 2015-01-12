@@ -79,8 +79,8 @@ Rectangle& DisplayObjectContainer::GetBounds(DisplayObject& target, Rectangle& r
 	{
 		float minX = numeric_limits<float>::max();
 		float minY = numeric_limits<float>::max();
-		float maxX = numeric_limits<float>::min();
-		float maxY = numeric_limits<float>::min(); 
+		float maxX = -numeric_limits<float>::max();
+		float maxY = -numeric_limits<float>::max(); 
 
 		for (int i = 0 ; i < m_NumChildren ; i++)
 		{
@@ -89,7 +89,7 @@ Rectangle& DisplayObjectContainer::GetBounds(DisplayObject& target, Rectangle& r
 			if (minX > resultRect.m_X) minX = resultRect.m_X;
 			if (maxX < resultRect.GetRight()) maxX = resultRect.GetRight();
 			if (minY > resultRect.m_Y) minY = resultRect.m_Y;
-			if (maxY > resultRect.GetBottom()) maxY = resultRect.GetBottom();
+			if (maxY < resultRect.GetBottom()) maxY = resultRect.GetBottom();
 		}
 
 		resultRect.SetTo(minX, minY, maxX - minX, maxY - minY);

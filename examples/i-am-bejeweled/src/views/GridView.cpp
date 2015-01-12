@@ -45,10 +45,6 @@ void GridView::CreateView()
 	container.AddChild(*m_CandyContainer);
 
 	Image* image;
-	/*image = new Image(*m_Atlas->GetTexture(TextureTypes::GRID_BGND));
-	image->SetX(10);
-	container.GetStage()->AddChild(*image);*/
-
 	int j = -1;
 	int i;
 
@@ -63,13 +59,6 @@ void GridView::CreateView()
 			image->SetX(i * CELL_SIZE);
 			image->SetY(j * CELL_SIZE);
 			m_GridContainer->AddChild(*image);
-
-			
-			/*int w = image->GetWidth();
-			int h = image->GetHeight();*/
-
-			/*image->SetX(i * image->GetWidth());
-			image->SetY(j * image->GetHeight());*/
 		}
 	}
 
@@ -80,6 +69,9 @@ void GridView::CreateView()
 	container.SetWidth(0.9f * stageWidth);
 	container.SetScaleY(container.GetScaleX());
 
-	//container.SetX(stageWidth / 2 - container.GetWidth() / 2);
-	//container.SetY(stageHeight / 2 - container.GetHeight() / 2);
+	Rectangle bounds;
+	m_GridContainer->GetBounds(*m_GridContainer->GetParent(), bounds);
+
+	container.SetX(stageWidth / 2 - container.GetWidth() / 2);
+	container.SetY(stageHeight / 2 - container.GetHeight() / 2);
 }
