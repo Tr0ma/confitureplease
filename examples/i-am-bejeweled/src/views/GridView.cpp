@@ -118,6 +118,8 @@ void GridView::SwapThenDelete(GemVO& gemA, GemVO& gemB, vector<GemVO*>& list)
 
 void GridView::MoveDown(vector<GemVO*>& moveDownList, vector<GemVO*>& newGemsList)
 {
+	PlayMoveDown(moveDownList, 0.13f);
+	PlayMoveDownNewGem(newGemsList, 0.13f, 0.13f);
 }
 
 void GridView::DeleteGems(vector<GemVO*>& list)
@@ -301,6 +303,12 @@ void GridView::OnDeleteComplete(const Event& evt)
 	Dispatch(viewEvt);
 }
 
+void GridView::OnMoveDownComplete(const Event& evt)
+{
+	const GridViewEvent viewEvt(GridViewEvent::MOVE_DOWN_COMPLETE);
+	Dispatch(viewEvt);
+}
+
 void GridView::PlayDelete(vector<GemVO*>& list, float duration, float delay)
 {
 	TweenManager& tweenManager = GetTweenManager();
@@ -325,7 +333,63 @@ void GridView::PlayDelete(vector<GemVO*>& list, float duration, float delay)
 		tweenScaleX = &tweenManager.CreateTween<TweenScaleX>(*gemImage);
 		tweenScaleY = &tweenManager.CreateTween<TweenScaleY>(*gemImage);
 
-		tweenScaleX->To(0).Duration(duration).Delay(delay).Easing(Linear::EaseNone).OnComplete(&GridView::OnDeleteComplete, *this).Play();
-		tweenScaleY->To(0).Duration(duration).Delay(delay).Easing(Linear::EaseNone).Play();
+		tweenScaleX->To(0.5f).Duration(duration).Delay(delay).Easing(Linear::EaseNone).Play();
+		tweenScaleY->To(0.5f).Duration(duration).Delay(delay).Easing(Linear::EaseNone).Play();
+
+		if (i == 0)
+		{
+			tweenScaleX->OnComplete(&GridView::OnDeleteComplete, *this);
+		}
+	}
+}
+
+void GridView::PlayMoveDown(vector<GemVO*>& list, float duration, float delay)
+{
+	TweenManager& tweenManager = GetTweenManager();
+	TweenY* tweenY;
+	Gem* gem;
+	DisplayObject* gemImage;
+
+	int i = -1;
+	const int l = list.size();
+	float y;
+	while (++i < l)
+	{
+		gem = GetGemByGemVO(*list[i]);
+		gemImage = gem->m_Image;
+
+		y = (gem->m_GemVO->m_Y) * CELL_SIZE + CELL_SIZE / 2 - gemImage->GetHeight() / 2;
+
+		tweenY = &tweenManager.CreateTween<TweenY>(*gemImage);
+		tweenY->To(y).Duration(duration).Delay(delay).Easing(Linear::EaseNone).Play();
+
+		if (i == 0)
+		{
+			tweenY->OnComplete(&GridView::OnMoveDownComplete, *this);
+		}
+	}
+}
+
+void GridView::PlayMoveDownNewGem(vector<GemVO*>& list, float duration, float delay)
+{
+	TweenManager& tweenManager = GetTweenManager();
+	TweenY* tweenY;
+	Gem* gem;
+	GemVO* gemVO;
+	DisplayObject* gemImage;
+
+	int i = -1;
+	const int l = list.size();
+
+	while (++i < l)
+	{
+		gemVO = list[i];
+		gem = &AddCell(gemVO->m_X, gemVO->m_Y, *gemVO);
+		gemImage = gem->m_Image;
+
+		//tweenY = &tweenManager.CreateTween<TweenY>(*gemImage);
+		//tweenY->To(gem->m_Image->GetY()).Duration(duration).Delay(delay).Easing(Linear::EaseNone).Play();
+
+		//gem->m_Image->SetY(-3 * CELL_SIZE + CELL_SIZE / 2 - gemImage->GetHeight() / 2);
 	}
 }

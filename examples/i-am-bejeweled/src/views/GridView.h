@@ -68,8 +68,11 @@ private:
 	void			PlaySwap(DisplayObject& targetA, DisplayObject& targetB, float duration = 0.1f);
 	void			CancelSwap(DisplayObject& targetA, DisplayObject& targetB, float duration, float delay);
 	void			PlayDelete(vector<GemVO*>& list, float duration, float delay);
+	void			PlayMoveDown(vector<GemVO*>& list, float duration, float delay = 0);
+	void			PlayMoveDownNewGem(vector<GemVO*>& list, float duration, float delay);
 
 	void			OnDeleteComplete(const Event& evt);
+	void			OnMoveDownComplete(const Event& evt);
 
 };
 

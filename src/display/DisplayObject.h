@@ -93,6 +93,7 @@ public:
 	Matrix&					GetRelativeTransformationMatrix(DisplayObject* target, Matrix& resultMatrix);
 	virtual DisplayObject*	HitTest(Vec2d localPoint);
 	virtual void			Render(RenderSupport& renderSupport, float parentAlpha) {}
+	void					RemoveFromParent();
 
 private:
 	DisplayObject*			FindCommonParent(DisplayObject& objectA, DisplayObject& objectB);

@@ -31,7 +31,9 @@ void RenderSupport::PushMatrix()
 {
 	if (m_MatrixStack.size() < m_MatrixStackSize + 1)
 	{
-		m_MatrixStack.push_back(m_MatrixPool.Get());
+		Matrix* mat = m_MatrixPool.Get();
+		mat->Identity();
+		m_MatrixStack.push_back(mat);
 	}
 
 	m_MatrixStack[m_MatrixStackSize++]->CopyFrom(m_ModelViewMatrix);

@@ -18,6 +18,11 @@ DisplayObject& DisplayObjectContainer::AddChild(DisplayObject& child)
 
 DisplayObject& DisplayObjectContainer::AddChildAt(DisplayObject& child, int index)
 {
+	if (child.GetParent())
+	{
+		child.RemoveFromParent();
+	}
+
 	m_NumChildren++;
 	m_Children.insert(m_Children.begin() + index, &child);
 

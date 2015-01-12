@@ -35,6 +35,7 @@ void MoveGemsDown::Execute()
 				if (!gemVO)
 				{
 					moveDownPos.Set(i, j);
+					foundPos = true;
 				}
 			}
 			else
@@ -49,34 +50,33 @@ void MoveGemsDown::Execute()
 				}
 			}
 		}
-
-		j = -1;
-		const vector<const char*>& gemList = *m_GemModel->GetList();
-		const int numGemTypes = gemList.size();
-		int selectedId;
-		const char* selectedTexture = nullptr;
-		double rnd;
-		vector<GemVO*> newGemsList;
-		
-		while (++j < numRows)
-		{
-			i = -1;
-			while (++i < numCols)
-			{
-				if (!m_GridModel->GetGemAt(i, j))
-				{
-					rnd = static_cast<double>(rand()) / RAND_MAX;
-					selectedId = static_cast<int>(floor(rnd * static_cast<float>(numGemTypes)));
-					selectedTexture = gemList[selectedId];
-
-					gemVO = &m_GridModel->AddGemAt(selectedTexture, i, j);
-					newGemsList.push_back(gemVO);
-				}
-			}
-		}
-
-		const MoveDownUpdatedEvent evt(moveDownList, newGemsList);
-		GetDispatcher().Dispatch(evt);
 	}
 
+	j = -1;
+	const vector<const char*>& gemList = *m_GemModel->GetList();
+	const int numGemTypes = gemList.size();
+	int selectedId;
+	const char* selectedTexture = nullptr;
+	double rnd;
+	vector<GemVO*> newGemsList;
+		
+	while (++j < numRows)
+	{
+		i = -1;
+		while (++i < numCols)
+		{
+			if (!m_GridModel->GetGemAt(i, j))
+			{
+				rnd = static_cast<double>(rand()) / RAND_MAX;
+				selectedId = static_cast<int>(floor(rnd * static_cast<float>(numGemTypes)));
+				selectedTexture = gemList[selectedId];
+
+				gemVO = &m_GridModel->AddGemAt(selectedTexture, i, j);
+				newGemsList.push_back(gemVO);
+			}
+		}
+	}
+
+	const MoveDownUpdatedEvent evt(moveDownList, newGemsList);
+	GetDispatcher().Dispatch(evt);
 }

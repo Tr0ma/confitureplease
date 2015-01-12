@@ -253,6 +253,14 @@ DisplayObject* DisplayObject::HitTest(Vec2d localPoint)
 	return nullptr;
 }
 
+void DisplayObject::RemoveFromParent()
+{
+	if (m_Parent)
+	{
+		m_Parent->RemoveChild(*this);
+	}
+}
+
 DisplayObject* DisplayObject::FindCommonParent(DisplayObject& objectA, DisplayObject& objectB)
 {
 	DisplayObject* currentObject = &objectA;

@@ -23,7 +23,7 @@ private:
 	void OnSwapCancelled(const Event& evt);
 	void OnSwapConfirmed(const Event& evt);
 	void OnDeleteComplete(const Event& evt);
-	void OnFillUpdated(const Event& evt);
+	void OnMoveDownUpdated(const Event& evt);
 	void OnPatternsFound(const Event& evt);
 	void OnMoveComplete(const Event& evt);
 };

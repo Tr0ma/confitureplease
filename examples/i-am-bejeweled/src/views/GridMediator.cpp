@@ -27,7 +27,7 @@ void GridMediator::OnInitialized()
 
 	AddContextListener(SwapCancelledEvent::TYPE, &GridMediator::OnSwapCancelled, *this);
 	AddContextListener(SwapConfirmedEvent::TYPE, &GridMediator::OnSwapConfirmed, *this);
-	AddContextListener(MoveDownUpdatedEvent::TYPE, &GridMediator::OnFillUpdated, *this);
+	AddContextListener(MoveDownUpdatedEvent::TYPE, &GridMediator::OnMoveDownUpdated, *this);
 	//AddContextListener(PatternsFoundEvent::TYPE, &GridMediator::OnPatternsFound, *this);
 	AddContextListener(MoveCompleteEvent::TYPE, &GridMediator::OnMoveComplete, *this);
 }
@@ -89,7 +89,7 @@ void GridMediator::OnDeleteComplete(const Event& evt)
 	DispatchContextEvent(moveGemsDownEvt);
 }
 
-void GridMediator::OnFillUpdated(const Event& evt)
+void GridMediator::OnMoveDownUpdated(const Event& evt)
 {
 	const MoveDownUpdatedEvent& moveDownUpdated = static_cast<const MoveDownUpdatedEvent&>(evt);
 
