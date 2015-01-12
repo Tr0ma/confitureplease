@@ -37,6 +37,8 @@
 #include "Confiture.h"
 #include "AssetManager.h"
 #include "s3eInputAdapter.h"
+#include "TweenManager.h"
+
 #include <Iw2D.h>
 
 
@@ -50,9 +52,13 @@ void GameConfig::Configure()
 	s3eInputAdapter* inputAdapter = new s3eInputAdapter();
 	GestureManager* gestureManager = new GestureManager(*inputAdapter, confiture->GetStage());
 	GetContext().AddToUpdate(*gestureManager);
+
+	TweenManager* tweenManager = new TweenManager();
+	GetContext().AddToUpdate(*tweenManager);
 	
 	injector.Map(confiture, Confiture::ID);
 	injector.Map(gestureManager, GestureManager::ID);
+	injector.Map(tweenManager, TweenManager::ID);
 	injector.Map(new AssetManager(), AssetManager::ID);
 	injector.Map(new GridModel(), GridModel::ID);
 	injector.Map(new GemModel(), GemModel::ID);
@@ -83,12 +89,14 @@ void GameConfig::Dispose()
 	GridModel* gridModel = injector.GetInstanceById<GridModel>(GridModel::ID);
 	GemModel* gemModel = injector.GetInstanceById<GemModel>(GemModel::ID);
 	GestureManager* gestureManager = injector.GetInstanceById<GestureManager>(GestureManager::ID);
+	TweenManager* tweenManager = GetInjector().GetInstanceById<TweenManager>(TweenManager::ID);
 
 	injector.UnMap(Confiture::ID);
 	injector.UnMap(AssetManager::ID);
 	injector.UnMap(GridModel::ID);
 	injector.UnMap(GemModel::ID);
 	injector.UnMap(GestureManager::ID);
+	injector.UnMap(TweenManager::ID);
 
 	delete confiture;
 	delete assetMnager;
@@ -96,6 +104,7 @@ void GameConfig::Dispose()
 	delete gemModel;
 	delete &gestureManager->GetInputAdapter();
 	delete gestureManager;
+	delete tweenManager;
 }
 
 // Commands

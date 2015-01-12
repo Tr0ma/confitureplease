@@ -11,6 +11,9 @@ class DisplayObject;
 
 class TweenManager : public Updateable
 {
+public:
+	static const char* ID;
+
 private:
 	vector<Tween*>	m_Tweens;
 	vector<Tween*>	m_CompleteTweens;

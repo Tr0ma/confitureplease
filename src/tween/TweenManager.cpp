@@ -1,6 +1,8 @@
 #include "TweenManager.h"
 #include "DisplayObject.h"
 
+const char* TweenManager::ID = "TweenManager_ID";
+
 void TweenManager::Update(float deltaTime)
 {
 	ClearCompleteTweens();
