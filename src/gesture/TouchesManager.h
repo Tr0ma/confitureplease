@@ -18,11 +18,14 @@ private:
 	Stage&				m_Stage;
 	unsigned int		m_ActiveTouchesCount;
 
+protected:
+	static long			timeHelper;
+
 public:
 	explicit TouchesManager(GestureManager& gestureManager, Stage& stage) 
 		: m_GestureManager(gestureManager), m_Stage(stage), m_ActiveTouchesCount(0) {}
 	
-	~TouchesManager() {}
+	~TouchesManager();
 
 	void	OnTouchBegin(int touchID, Vec2d& point);
 	void	OnTouchEnd(int touchID, Vec2d& point);

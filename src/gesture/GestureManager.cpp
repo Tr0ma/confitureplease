@@ -2,10 +2,20 @@
 #include "Stage.h"
 #include "TouchesManager.h"
 
-GestureManager::GestureManager(InputAdapter& inputAdapter, Stage& stage) : m_InputAdapater(inputAdapter), m_Stage(stage)
+const char* GestureManager::ID = "GestureManager_ID";
+
+GestureManager::GestureManager(InputAdapter& inputAdapter, Stage& stage) : m_InputAdapter(inputAdapter), m_Stage(stage)
 {
 	m_TouchesManager = new TouchesManager(*this, m_Stage);
 	inputAdapter.SetTouchesManager(*m_TouchesManager);
+}
+
+GestureManager::~GestureManager()
+{
+	RemoveAllGestures();
+	RemoveAllTouches();
+	
+	delete m_TouchesManager;
 }
 
 void GestureManager::OnTouchBegin(Touch& touch)
@@ -32,8 +42,12 @@ void GestureManager::OnTouchBegin(Touch& touch)
 
     vector<Gesture*>* gesturesForTarget;
     GestureMapItem* gestureMapItem;
-    for each (target in hierarchy)
+
+	const unsigned int l = hierarchy.size();
+	for (unsigned int i = 0 ; i < l ; ++i)
     {
+		target = hierarchy[i];
+
         gestureMapItem = GetGestureMapItemByTarget(*target);
         if (gestureMapItem)
         {
@@ -101,9 +115,31 @@ void GestureManager::OnTouchMove(Touch& touch)
     }
 }
 
+void GestureManager::RemoveAllGestures()
+{
+	int i = m_GestureMapItems.size();
+	while (--i >= 0)
+	{
+		delete m_GestureMapItems[i];
+	}
+
+	m_GestureMapItems.clear();
+}
+
+void GestureManager::RemoveAllTouches()
+{
+	int i = m_TouchMapItems.size();
+	while (--i >= 0)
+	{
+		delete m_TouchMapItems[i];
+	}
+
+	m_TouchMapItems.clear();
+}
+
 void GestureManager::Update(float deltaTime)
 {
-	m_InputAdapater.Update(deltaTime);
+	m_InputAdapter.Update(deltaTime);
 }
 
 TapGesture& GestureManager::GetTapGesture(DisplayObject& target)

@@ -30,6 +30,7 @@
 #include "Rectangle.h"
 #include "Confiture.h"
 #include "AssetManager.h"
+#include "s3eInputAdapter.h"
 #include <Iw2D.h>
 
 
@@ -39,8 +40,12 @@ void GameConfig::Configure()
 	Rectangle viewport = Rectangle(0, 0, Iw2DGetSurfaceWidth(),Iw2DGetSurfaceHeight());
 	Confiture* confiture = new Confiture(viewport);
 	GetContext().AddToRenderer(*confiture);
-	
+
+	s3eInputAdapter* inputAdapter = new s3eInputAdapter();
+	GestureManager* gestureManager = new GestureManager(*inputAdapter, confiture->GetStage());
+
 	injector.Map(confiture, Confiture::ID);
+	injector.Map(gestureManager, GestureManager::ID);
 	injector.Map(new AssetManager(), AssetManager::ID);
 	injector.Map(new GridModel(), GridModel::ID);
 	injector.Map(new GemModel(), GemModel::ID);
@@ -66,16 +71,20 @@ void GameConfig::Dispose()
 	AssetManager* assetMnager = injector.GetInstanceById<AssetManager>(AssetManager::ID);
 	GridModel* gridModel = injector.GetInstanceById<GridModel>(GridModel::ID);
 	GemModel* gemModel = injector.GetInstanceById<GemModel>(GemModel::ID);
+	GestureManager* gestureManager = injector.GetInstanceById<GestureManager>(GestureManager::ID);
 
 	injector.UnMap(Confiture::ID);
 	injector.UnMap(AssetManager::ID);
 	injector.UnMap(GridModel::ID);
 	injector.UnMap(GemModel::ID);
+	injector.UnMap(GestureManager::ID);
 
 	delete confiture;
 	delete assetMnager;
 	delete gridModel;
 	delete gemModel;
+	delete &gestureManager->GetInputAdapter();
+	delete gestureManager;
 }
 
 // Commands

@@ -2,6 +2,19 @@
 #include "Stage.h"
 #include <time.h>
 
+long	TouchesManager::timeHelper;
+
+TouchesManager::~TouchesManager()
+{
+	int i = m_ActiveTouchesCount;
+	while (--i >= 0)
+	{
+		delete m_TouchList[i];
+	}
+
+	m_TouchList.clear();
+}
+
 void TouchesManager::OnTouchBegin(int touchID, Vec2d& point)
 {
 	if (GetTouchByTouchID(touchID))
@@ -14,7 +27,9 @@ void TouchesManager::OnTouchBegin(int touchID, Vec2d& point)
 
 	DisplayObject& target = *m_Stage.HitTest(point);
 	touch->SetTarget(&target);
-	touch->SetLocation(point, time(nullptr) * 1000);
+
+	timeHelper = time(nullptr);
+	touch->SetLocation(point, timeHelper);
 
 	m_TouchList.push_back(touch);
 	m_ActiveTouchesCount++;
@@ -28,7 +43,8 @@ void TouchesManager::OnTouchEnd(int touchID, Vec2d& point)
 	if (index == -1) return;
 
 	Touch* touch = m_TouchList[index];
-	touch->UpdateLocation(point, time(nullptr) * 1000);
+	timeHelper = time(nullptr);
+	touch->UpdateLocation(point, timeHelper);
 
 	m_TouchList.erase(m_TouchList.begin() + index);
 	m_ActiveTouchesCount--;
@@ -44,7 +60,8 @@ void TouchesManager::OnTouchMove(int touchID, Vec2d& point)
 	if (index == -1) return;
 
 	Touch* touch = m_TouchList[index];
-	if (touch->UpdateLocation(point, time(nullptr) * 1000))
+	timeHelper = time(nullptr);
+	if (touch->UpdateLocation(point, timeHelper))
 	{
 		m_GestureManager.OnTouchMove(*touch);
 	}

@@ -19,7 +19,8 @@ protected:
 	enum GestureState
 	{
 		BEGAN,
-		ENDED
+		ENDED,
+		FAILED
 	};
 
 	GestureState	m_State;

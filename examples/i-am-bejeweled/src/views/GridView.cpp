@@ -2,6 +2,7 @@
 #include "AtlasTypes.h"
 #include "TextureTypes.h"
 #include "Stage.h"
+#include "SwipeGesture.h"
 
 #include <iostream>
 
@@ -19,13 +20,23 @@ GridView::~GridView()
 		delete child;
 	}
 
+	GestureManager& gestureManager = GetGestureManager();
 	Gem* gem;
+	Image* image;
+	SwipeGesture* gesture;
+
 	j = m_GemList.size();
 	while (--j >= 0)
 	{
 		gem = m_GemList[j];
-		m_CandyContainer->RemoveChild(*gem->m_Image);
-		delete gem->m_Image;
+		image = gem->m_Image;
+		gesture = gem->m_Gesture;
+
+		m_CandyContainer->RemoveChild(*image);
+		gestureManager.RemoveGesture(*gesture, &GridView::OnSwipe, *this);
+		
+		delete gesture;
+		delete image;
 		delete gem;
 	}
 
@@ -62,8 +73,12 @@ GridView::Gem& GridView::AddCell(int colId, int rowId, GemVO& gemVO)
 	image->SetX(colId * CELL_SIZE + CELL_SIZE / 2 - image->GetWidth() / 2);
 	image->SetY(rowId * CELL_SIZE + CELL_SIZE / 2 - image->GetHeight() / 2);
 
+	GestureManager& gestureManager = GetGestureManager();
+	SwipeGesture* swipeGesture = &(gestureManager.AddGesture<SwipeGesture>(*image, &GridView::OnSwipe, *this));
+
 	gem->m_Image = image;
 	gem->m_GemVO = &gemVO;
+	gem->m_Gesture = swipeGesture;
 
 	m_CandyContainer->AddChild(*image);
 
@@ -109,4 +124,13 @@ void GridView::CreateView()
 
 	container.SetX(stageWidth / 2 - container.GetWidth() / 2);
 	container.SetY(stageHeight / 2 - container.GetHeight() / 2);
+}
+
+void GridView::OnSwipe(const Event& evt)
+{
+	const GestureEvent& gestureEvent = static_cast<const GestureEvent&>(evt);
+	const SwipeGesture& swipeGesture = static_cast<const SwipeGesture&>(gestureEvent.m_Gesture);
+
+	cout << "x : " << swipeGesture.GetOffset().x << " , y : " << swipeGesture.GetOffset().y << endl;
+
 }

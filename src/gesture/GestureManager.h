@@ -16,6 +16,9 @@ class Stage;
 
 class GestureManager : public Updateable
 {
+public:
+	static const char* ID;
+
 private:
     class GestureMapItem
     {
@@ -36,15 +39,18 @@ private:
     };
 
 private:
-	InputAdapter&				m_InputAdapater;
+	InputAdapter&				m_InputAdapter;
 	TouchesManager*				m_TouchesManager;
 	vector<GestureMapItem*>		m_GestureMapItems;
     vector<TouchMapItem*>       m_TouchMapItems;
     Stage&						m_Stage;
 
 public:
+	InputAdapter&				GetInputAdapter() { return m_InputAdapter; }
+
+public:
 	explicit GestureManager(InputAdapter& inputAdapter, Stage& stage);
-	~GestureManager() {}
+	~GestureManager();
 
 	template<class G, class C>
 	G& AddGesture(DisplayObject& target, void (C::*fct)(const Event&), C& proxy);
@@ -63,8 +69,9 @@ public:
 	void OnTouchMove(Touch& point);
 
 private:
-	void            RemoveAllGestures() {}
-    GestureMapItem* GetGestureMapItemByTarget(DisplayObject& target);
+	void			RemoveAllGestures();
+	void			RemoveAllTouches();
+	GestureMapItem* GetGestureMapItemByTarget(DisplayObject& target);
     TouchMapItem*   GetTouchMapItemByTouch(Touch& touch);
     int             GetTouchMapItemIndexByTouch(Touch& touch);
 	int				GetGestureMapIndexByTarget(DisplayObject& target);

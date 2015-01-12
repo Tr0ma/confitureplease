@@ -16,13 +16,13 @@ private:
 	GestureManager*				m_GestureManager;
 
 public:
-	DisplayObjectContainer&		GetContainer()							{ return m_Container; }
-	AssetManager&				GetAssetManager()						{ return *m_AssetManager; }
-	GestureManager&				GetGestureManager()						{ return *m_GestureManager; }
+	DisplayObjectContainer&		GetContainer()								{ return m_Container; }
+	AssetManager&				GetAssetManager()							{ return *m_AssetManager; }
+	GestureManager&				GetGestureManager()							{ return *m_GestureManager; }
 
 private:
-	void						SetAssetManager(AssetManager& value)	{ m_AssetManager = &value; }
-	void						SetAssetManager(GestureManager& value)	{ m_GestureManager = &value; }
+	void						SetAssetManager(AssetManager& value)		{ m_AssetManager = &value; }
+	void						SetGestureManager(GestureManager& value)	{ m_GestureManager = &value; }
 
 public:
 	BaseView();

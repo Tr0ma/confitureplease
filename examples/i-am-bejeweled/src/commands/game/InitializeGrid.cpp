@@ -17,6 +17,7 @@ void InitializeGrid::Execute()
 	m_GemModel->Register(TextureTypes::BLUE);
 	m_GemModel->Register(TextureTypes::GREEN);
 	m_GemModel->Register(TextureTypes::PURPLE);
+	m_GemModel->Register(TextureTypes::RED);
 
 	int j = -1;
 	int i;
@@ -37,23 +38,18 @@ void InitializeGrid::Execute()
 			validated = false;
 			m_GemModel->GetListCopy(gemTypeList);
 
-			/*while (!validated)
+			while (!validated)
 			{
-				selectedId = static_cast<int>(floor(random() * static_cast<float>(gemTypeList.size())));
-				selectedTexture = gemTypeList[i];
+				numGemType = gemTypeList.size();
+				rnd = static_cast<double>(rand()) / RAND_MAX;
+				selectedId = static_cast<int>(floor(rnd * static_cast<float>(numGemType)));
+				selectedTexture = gemTypeList[selectedId];
 
 				if (IsHorizontalValid(i, j, selectedTexture) && IsVerticalValid(i, j, selectedTexture))
 				{
 					validated = true;
 				}
-			}*/
-
-			/**** TMP ****/
-			numGemType = gemTypeList.size();
-			rnd = static_cast<double>(rand()) / RAND_MAX;
-			selectedId = static_cast<int>(floor(rnd * static_cast<float>(numGemType)));
-			selectedTexture = gemTypeList[selectedId];
-			/************/
+			}
 
 			m_GridModel->AddGem(selectedTexture);
 		}

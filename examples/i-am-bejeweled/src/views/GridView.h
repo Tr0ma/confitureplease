@@ -4,6 +4,7 @@
 #include "BaseView.h"
 #include "Image.h"
 #include "GemVO.h"
+#include "SwipeGesture.h"
 #include <vector>
 
 using namespace std;
@@ -16,8 +17,9 @@ private:
 	class Gem
 	{
 	public:
-		GemVO*	m_GemVO;
-		Image*	m_Image;
+		GemVO*			m_GemVO;
+		Image*			m_Image;
+		SwipeGesture*	m_Gesture;
 	};
 
 
@@ -46,6 +48,9 @@ public:
 
 protected:
 	virtual void	CreateView() override;
+
+private:
+	void			OnSwipe(const Event& evt);
 
 };
 

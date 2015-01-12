@@ -16,7 +16,7 @@ void TapGesture::OnTouchEnd(Touch& touch)
 	{
 		SetState(ENDED);
 
-		GestureEvent evt(GestureEvent::GESTURE_RECOGNIZED);
+		GestureEvent evt(GestureEvent::GESTURE_RECOGNIZED, *this);
 		Dispatch(evt);
 	}
 }
