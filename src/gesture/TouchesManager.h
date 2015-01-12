@@ -17,19 +17,22 @@ private:
 	GestureManager&		m_GestureManager;
 	Stage&				m_Stage;
 	unsigned int		m_ActiveTouchesCount;
+	double				m_Timer;
 
 protected:
 	static long			timeHelper;
 
 public:
 	explicit TouchesManager(GestureManager& gestureManager, Stage& stage) 
-		: m_GestureManager(gestureManager), m_Stage(stage), m_ActiveTouchesCount(0) {}
+		: m_GestureManager(gestureManager), m_Stage(stage), m_ActiveTouchesCount(0), m_Timer(0) {}
 	
 	~TouchesManager();
 
 	void	OnTouchBegin(int touchID, Vec2d& point);
 	void	OnTouchEnd(int touchID, Vec2d& point);
 	void	OnTouchMove(int touchID, Vec2d& point);
+
+	void	Update(float deltaTime = 0.0f) override;
 
 private:
 	Touch*	GetTouchByTouchID(int touchID);

@@ -34,7 +34,7 @@ void SwipeGesture::OnTouchMove(Touch& touch)
 	m_Offset= touch.GetLocationOffset();
 	//cout << "x: " << m_Offset.x << " , y:" << m_Offset.y << endl;
 
-	long totalTime = (touch.GetTime() - m_StartTime) * 1000;
+	long totalTime = (touch.GetTime() - m_StartTime);
 
 	//cout << "total time : " << totalTime << endl;
 
@@ -44,11 +44,15 @@ void SwipeGesture::OnTouchMove(Touch& touch)
 
 	float absOffset;
 
+	//cout << "absVel.x : " << absVel.x << " , y : " << absVel.y << endl;
+
 	if (absVel.x > absVel.y)
 	{
 		absOffset = m_Offset.x > 0 ? m_Offset.x : - m_Offset.x;
 		if (absOffset > m_Slop)
 		{
+			//cout << "beyiond slop" << endl;
+
 			if (abs(atan(m_Offset.y / m_Offset.x) > ANGLE))
 			{
 				m_State = FAILED;

@@ -5,6 +5,17 @@
 #include <Iw2D.h>
 #include <cmath>
 
+RenderSupport::~RenderSupport()
+{
+	int i = m_MatrixStackSize;
+	while (--i >= 0)
+	{
+		delete m_MatrixStack[i];
+	}
+
+	m_MatrixStack.clear();
+}
+
 void RenderSupport::NextFrame()
 {
 	ResetMatrix();
@@ -26,6 +37,7 @@ void RenderSupport::PushMatrix()
 {
 	if (m_MatrixStack.size() < m_MatrixStackSize + 1)
 	{
+		// todo: consider Matrix pulling
 		m_MatrixStack.push_back(new Matrix());
 	}
 

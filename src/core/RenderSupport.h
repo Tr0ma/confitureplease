@@ -24,7 +24,7 @@ public:
 
 public:
 	RenderSupport() : m_MatrixStackSize(0), m_CurrentTexture(nullptr), m_DrawCount(0) {}
-	~RenderSupport() {}
+	~RenderSupport();
 
 	void NextFrame();
 	void PrependMatrix(Matrix& matrix);

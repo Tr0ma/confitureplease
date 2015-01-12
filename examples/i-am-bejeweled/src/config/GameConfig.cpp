@@ -43,7 +43,8 @@ void GameConfig::Configure()
 
 	s3eInputAdapter* inputAdapter = new s3eInputAdapter();
 	GestureManager* gestureManager = new GestureManager(*inputAdapter, confiture->GetStage());
-
+	GetContext().AddToUpdate(*gestureManager);
+	
 	injector.Map(confiture, Confiture::ID);
 	injector.Map(gestureManager, GestureManager::ID);
 	injector.Map(new AssetManager(), AssetManager::ID);

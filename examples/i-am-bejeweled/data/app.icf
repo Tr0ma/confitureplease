@@ -24,4 +24,4 @@ MemSize=50000000
 DataCacheSize=1000000
 
 [Util]
-#MemoryBreakpoint=157
+#MemoryBreakpoint=50489

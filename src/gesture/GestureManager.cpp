@@ -140,6 +140,7 @@ void GestureManager::RemoveAllTouches()
 void GestureManager::Update(float deltaTime)
 {
 	m_InputAdapter.Update(deltaTime);
+	m_TouchesManager->Update(deltaTime);
 }
 
 TapGesture& GestureManager::GetTapGesture(DisplayObject& target)
