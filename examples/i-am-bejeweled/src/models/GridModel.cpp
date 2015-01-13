@@ -49,7 +49,8 @@ GemVO& GridModel::AddGem(const char* textureId)
 		}
 	}
 
-	GemVO* gemVO = m_GemPool.Get();
+	//GemVO* gemVO = m_GemPool.Get();
+	GemVO* gemVO = new GemVO();
 	gemVO->m_Type = textureId;
 	gemVO->m_X = row->size();
 	gemVO->m_Y = m_List.size() - 1;
@@ -61,7 +62,8 @@ GemVO& GridModel::AddGem(const char* textureId)
 
 GemVO& GridModel::AddGemAt(const char* textureId, const int colId, const int rowId)
 {
-	GemVO* gemVO = m_GemPool.Get();
+	//GemVO* gemVO = m_GemPool.Get();
+	GemVO* gemVO = new GemVO();
 	gemVO->m_Type = textureId;
 	gemVO->m_X = colId;
 	gemVO->m_Y = rowId;
@@ -90,8 +92,10 @@ void GridModel::MoveGemAt(const float x, const float y, GemVO& gemVO)
 
 void GridModel::RemoveGemAt(const int colId, const int rowId)
 {
-	GemVO* gem = (*m_List[rowId])[colId];
-	m_GemPool.Release(gem);
+	//GemVO* gem = (*m_List[rowId])[colId];
+	//m_GemPool.Release(gem);
+
+	//delete gem;
 	(*m_List[rowId])[colId] = nullptr;
 }
 
