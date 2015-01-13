@@ -58,9 +58,8 @@ GridView::~GridView()
 
 GridView::Gem& GridView::AddCell(int colId, int rowId, GemVO& gemVO)
 {
-	cout << gemVO.m_Type << " [x:" << gemVO.m_X << " , y:" << gemVO.m_Y << "]" << endl;
-
-	Gem* gem = m_GemPool.Get();
+	//Gem* gem = m_GemPool.Get();
+	Gem* gem = new Gem();
 	m_GemList.push_back(gem);
 
 	Image* image = gem->m_Image;
@@ -294,7 +293,9 @@ void GridView::OnDeleteComplete(const Event& evt)
 		m_CandyContainer->RemoveChild(*gem->m_Image);
 
 		m_GemList.erase(m_GemList.begin() + GetGemIndex(*gem));
-		m_GemPool.Release(gem);
+
+		delete gem;
+		//m_GemPool.Release(gem);
 	}
 
 	m_DeleteList.clear();
@@ -322,6 +323,7 @@ void GridView::PlayDelete(vector<GemVO*>& list, float duration, float delay)
 	m_DeleteList.clear();
 	int i = -1;
 	const int l = list.size();
+
 	while (++i < l)
 	{
 		gemVO = list[i];
@@ -387,9 +389,9 @@ void GridView::PlayMoveDownNewGem(vector<GemVO*>& list, float duration, float de
 		gem = &AddCell(gemVO->m_X, gemVO->m_Y, *gemVO);
 		gemImage = gem->m_Image;
 
-		//tweenY = &tweenManager.CreateTween<TweenY>(*gemImage);
-		//tweenY->To(gem->m_Image->GetY()).Duration(duration).Delay(delay).Easing(Linear::EaseNone).Play();
+		tweenY = &tweenManager.CreateTween<TweenY>(*gemImage);
+		tweenY->To(gem->m_Image->GetY()).Duration(duration).Delay(delay).Easing(Linear::EaseNone).Play();
 
-		//gem->m_Image->SetY(-3 * CELL_SIZE + CELL_SIZE / 2 - gemImage->GetHeight() / 2);
+		gem->m_Image->SetY(-3 * CELL_SIZE + CELL_SIZE / 2 - gemImage->GetHeight() / 2);
 	}
 }

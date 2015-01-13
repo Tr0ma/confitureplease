@@ -31,9 +31,11 @@ void RenderSupport::PushMatrix()
 {
 	if (m_MatrixStack.size() < m_MatrixStackSize + 1)
 	{
-		Matrix* mat = m_MatrixPool.Get();
+		/*Matrix* mat = m_MatrixPool.Get();
 		mat->Identity();
-		m_MatrixStack.push_back(mat);
+		m_MatrixStack.push_back(mat);*/
+
+		m_MatrixStack.push_back(new Matrix());
 	}
 
 	m_MatrixStack[m_MatrixStackSize++]->CopyFrom(m_ModelViewMatrix);
@@ -45,7 +47,9 @@ void RenderSupport::PopMatrix()
 	Matrix* matrix = m_MatrixStack[index];
 	m_MatrixStack.erase(m_MatrixStack.begin() + index);
 	m_ModelViewMatrix.CopyFrom(*(matrix));
-	m_MatrixPool.Release(matrix);
+	//m_MatrixPool.Release(matrix);
+
+	delete matrix;
 
 	m_MatrixStackSize--;
 }
