@@ -46,7 +46,7 @@ void SwapAndCheck::Execute()
 
 	int l = patternSwapped.m_GemList.size();
 	int i = -1;
-	while (++i > l)
+	while (++i < l)
 	{
 		patternOrigin.m_GemList.push_back(patternSwapped.m_GemList[i]);
 	}
@@ -54,6 +54,7 @@ void SwapAndCheck::Execute()
 	vector<GemVO*> gemList;
 	GemVO* gemVO;
 	l = patternOrigin.m_GemList.size();
+
 	i = -1;
 	while (++i < l)
 	{
@@ -65,6 +66,7 @@ void SwapAndCheck::Execute()
 	}
 
 	l = gemList.size();
+
 	if (l > 0)
 	{
 		i = -1;

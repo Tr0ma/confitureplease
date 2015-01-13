@@ -61,7 +61,7 @@ GemVO& GridModel::AddGem(const char* textureId)
 
 GemVO& GridModel::AddGemAt(const char* textureId, const int colId, const int rowId)
 {
-	GemVO* gemVO = new GemVO();
+	GemVO* gemVO = m_GemPool.Get();
 	gemVO->m_Type = textureId;
 	gemVO->m_X = colId;
 	gemVO->m_Y = rowId;
@@ -168,7 +168,7 @@ void GridModel::CheckVertical(GemVO& gemVO, PatternListVO* result)
 		gemList->push_back(gemTarget);
 	}
 
-	j = gemVO.m_X;
+	j = gemVO.m_Y;
 	int numRows = GetNumRows();
 	while (++j <= numRows - 1)
 	{
