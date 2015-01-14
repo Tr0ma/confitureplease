@@ -1,6 +1,6 @@
 #include "ScreenManager.h"
 
-void ScreenManager::OnNextScreen(Event& evt)
+void ScreenManager::OnNextScreen(const Event& evt)
 {
 	m_Busy = false;
 

@@ -94,7 +94,7 @@ private:
 	template<class C>
 	Transition* GetTransition(Transition& (C::*fct)());
 
-	void OnNextScreen(Event& evt);
+	void OnNextScreen(const Event& evt);
 };
 
 template<class C>
@@ -103,14 +103,16 @@ void ScreenManager::ShowScreen(DisplayObject& screen, Transition& (C::*fct)(), C
 	if (m_Busy) return;
 
 	Transition* transition = GetTransition(fct);
+	TransitionItem* item;
+
 	if (!transition)
 	{
 		transition = proxy.fct();
 		transition->SetTweenManager(m_TweenManager);
 		transition->AddListener(TransitionEvent::COMPLETE, &ScreenManager::OnNextScreen, *this);
 
-		TransitionItem& item(transition, fct);
-		m_Transitions.push_back(&item);
+		item = new TransitionItem(transition, fct);
+		m_Transitions.push_back(item);
 	}
 
 	int numViews = m_ScreenStack.size();
